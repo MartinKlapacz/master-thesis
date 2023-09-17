@@ -1,0 +1,27 @@
+
+iCharge:
+
+US:
+ICD10 for diagnoses
+CPT for services and procedures
+
+
+Problem of the EHR:
+missing support of the existing electronic billing workflow:
+ - billing was done in a separate system -> separate patient lists, difficult to verify supporting documentation for each bill
+
+Methods: iCharge = Separate program communicating with EHR's API (ObjectsPlus)
+
+ - accessed from the inpatient EHR with look and feel of existing system
+ - closely integrated with the doc workflow
+ - link note/doc with bill -> automatic association of bill with supporting documentation
+ - note history -> review unsubmitted bills
+ - billing statistics (num of bills, avg. num of diagnoses per bill)
+ - fast and efficient search of diagnoses (select from previous diagnoses, personal presets, frequently used)
+    - full catalog search contains suggestions derived textual matches
+ - use of  IMO (Northbrook, IL) provides an extensive terminology of physician-friendly terms that are mapped to ICD code
+
+
+Discussion:
+ - high importance of seamless integration into existing workflow
+ -

@@ -1,0 +1,28 @@
+1. Introduction
+
+2. Other approaches for billing optimization
+
+2.1 Natural language processing
+
+3. Medical Billing  Germany
+
+3.1 Billing Catalogs in Germany
+
+3.1 EBM
+-- structure
+
+3.2 GOÄ
+-- structure
+
+4. Billing Optimization
+4.1 Process Optimization:
+
+4.1.1 Rule based billing automation
+
+4.2 Revenue Optimization
+
+
+-- Weight factors in private billing
+
+-- Special Flat Rates
+
