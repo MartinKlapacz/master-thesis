@@ -32,7 +32,7 @@ Below are some of the common multipliers in the GOÄ:
 The fact that the GÖÄ does not provide much meta information per code is not very helpful when building a system to automatically derive codes from treatment documentation.
 Which is indeed very helpful are the titles of the billing codes.
 With the necessary domain specific knowledge and a rule language which is expressive enough one can implement automatic rule derivation per code.
-The EBM, however, provides enough information to enable a smarter approach.
+The EBM, however, provides enough information to enable a more sophisticated approach.
 
 
 \subsection{Einheitlicher Bewertungsmaßstab (EBM)}
@@ -43,25 +43,30 @@ As mentioned earlier the EBM is way more expressive than the GOÄ.
 In fact the KBV maintains the EBM as a downloadable and well documented dataset in XML format which stores a lot of meta information for each rule.
 Large parts of the meta information describes exclusion rules and conditions which decide wether the code can be billed or not.
 
-\subsubitem{Static Code Conditions}
+\subsubsection{Static Billing Code Conditions}
 
-\subsubitem{Obligate Service Conditions}
+
+\subsubsection{Obligate Service Conditions}
 Most EBM codes description have a section with obligate services.
 It is a HTML content that precisely describes which exact services need to be provided so the code can be billed.
-According to the EBM specification, HTML content describing the obligate services can be considered a logical expression evaluating.
+According to the EBM specification, HTML content describing the obligate services can be considered a logical expression.
 For example the code 16232 "Diagnostik und/oder Behandlung von Erkrankungen der Wirbelsäule bei Jugendlichen und Erwachsenen" has the following obligate service description:
 
 
 \begin{itemize}
-    \item Diagnostik und/oder Therapie von Erkrankungen der Wirbelsäule
+    \item Diagnosis and/or treatment of spinal diseases
 \end{itemize}
 and/or
 \begin{itemize}
-    \item Segmentale Funktionsdiagnostik und Differentialdiagnostik,
-    \item Mindestens zwei persönliche Arzt-Patienten-Kontakte im Behandlungsfall,
+    \item Segmental functional diagnostics and differential diagnosis,
+    \item At least two personal doctor-patient contacts in the treatment case,
 \end{itemize}
 
+Obligate service descriptions make use of logical OR and AND expressions.
+Items in a bullet point list are part of a AND expression, whereas the term "and/or" means the logical OR.
 
+The current means EBM version contains 3xxx codes, but only 1855 distinct obligate services.
+The latter are reused across many services. For exaple the most prominent obligate service
+% todo: list obligate service statistics
 
-
-
+Instead of implementing rules for specific content
