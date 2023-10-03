@@ -7,33 +7,7 @@ Both use a point system to quantify the value of medical services, which is used
 These points are then converted into monetary amounts for billing.
 For example the EBM code 34221 "Photographs of parts of the spine" is billed with 140 points, which translates to 16,09€.
 
-
-\subsection{Gebührenordnung für Ärzte (GOÄ)}
-The Gebührenordnung für Ärzte (GOÄ) is the coding catalog used for billing medical services covered by private health insurance.
-The GOÄ is designed in such a way that a typical GÖÄ code has less meta information and is less restrictive compared to codes in the EBM.
-This makes the GOÄ more flexible during billing than the EBM.
-A GOÄ code is always assigned to a service area, i.e. the chapter in the catalog, a number of points and excluded codes.
-Codes which are too similar to each other cannot be billed at the same time.
-Additionally, GOÄ codes also have a set of applicable multipliers.
-Unlike statutory billing, the GÖÄ allows for the application of multipliers to make the billing of medical services more flexible.
-These multipliers can vary depending on the complexity, time expenditure, or special circumstances of the treatment.
-Below are some of the common multipliers in the GOÄ:
-
-\begin{itemize}
-    \item \textbf{Simple Rate (1.0 Multiplier)}: This is the base rate for most medical services and corresponds to the fee listed in the GOÄ catalog.
-    \item \textbf{1.15 to 1.8 Multiplier}: This range is used for general medical services that go beyond the base rate.
-    The exact multiplier can vary depending on the complexity and time required for the treatment.
-    \item \textbf{2.3 to 3.5 Multiplier}: This range is used for specialized or particularly complex services.
-    The application of these multipliers typically requires a detailed justification.
-    \item \textbf{Higher Multipliers}: In exceptional cases, even higher multipliers can be applied.
-    However, this must be particularly justified and clarified on a case-by-case basis with the private health insurance company.
-\end{itemize}
-
-The fact that the GÖÄ does not provide much meta information per code is not very helpful when building a system to automatically derive codes from treatment documentation.
-Which is indeed very helpful are the titles of the billing codes.
-With the necessary domain specific knowledge and a rule language which is expressive enough one can implement automatic rule derivation per code.
-The EBM, however, provides enough information to enable a more sophisticated approach.
-
+\input{content/02_germanHearlthcare/01_goae/goae}
 
 \subsection{Einheitlicher Bewertungsmaßstab (EBM)}
 The Einheitlicher Bewertungsmaßstab (EBM) is a standardized coding catalog used in Germany for billing outpatient services for patients with statutory insurances.
@@ -70,3 +44,6 @@ The latter are reused across many services. For exaple the most prominent obliga
 % todo: list obligate service statistics
 
 Instead of implementing rules for specific content
+
+
+\
