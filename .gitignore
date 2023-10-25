@@ -3,3 +3,4 @@
 /logos/*.pdf
 
 .idea
+/out/*
