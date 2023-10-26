@@ -115,18 +115,12 @@ Additionally, for each entity class there is a protobuf message enabling transmi
 
 The protobuf message of \code{LiverPalpationMsg} looks like this:
 
-\begin{lstlisting}[language=protobuf, caption={Liver Palpation Block}, label={lst:protobuf_example}]
-message LiverPalpationBlock {
-  BoolW isLiverPalpable = 1;
-  Int32W liverRim = 2;
-  LiverTexture liverTexture = 3;
-  LiverSurface liverSurface = 4;
-  BoolW tendernessPresent = 5;
-  BoolW pulsationsPresent = 6;
-  BoolW hepatojugularRefluxPresent = 7;
-  string text = 8;
-}
-\end{lstlisting}
+\lstinputlisting[
+    language=protobuf2,
+    style=protobuf,
+    caption={LiverPalpation protobuf messages}
+]{proto/liverPalpation.proto}
+
 
 This is an example for a block from the physical examination, but the exact principle is applied in the procedures and anamnesis as well.
 A crucial part of the rule language is not only to check for block content availabilities in the treatment but also to look inside the blocks and check for conditions on fields.
@@ -136,13 +130,7 @@ The rule engine needs to provide checks on field values but also logical combina
 
 Additionally, the \AVS supports multiple input types, which require special handling.
 Wether tenderness is present is stored in a \code{BoolW} attribute while the liver texture type is stored in the following enum type:
-\begin{lstlisting}[language=protobuf, caption={Liver Palpation Block}, label={lst:protobuf_example}]
-enum LiverSurface {
-  LIVER_SURFACE_NONE = 0;
-  LIVER_SURFACE_SMOOTH = 1;
-  LIVER_SURFACE_KNOTTY = 2;
-}
-\end{lstlisting}
+
 
 As most fields are not obligatory each enum type needs to provide a \code{NONE} value as well.
 This needs to be considered during rule evaluation.

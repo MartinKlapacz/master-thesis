@@ -1,0 +1,21 @@
+message LiverPalpationBlock {
+  BoolW isLiverPalpable = 1;
+  Int32W liverRim = 2;
+  LiverTexture liverTexture = 3;
+  LiverSurface liverSurface = 4;
+  BoolW tendernessPresent = 5;
+  BoolW pulsationsPresent = 6;
+  BoolW hepatojugularRefluxPresent = 7;
+  string text = 8;
+}
+enum LiverTexture {
+  LIVER_TEXTURE_NONE = 0;
+  LIVER_TEXTURE_SOFT = 1;
+  LIVER_TEXTURE_TENDER = 2;
+}
+
+enum LiverSurface {
+  LIVER_SURFACE_NONE = 0;
+  LIVER_SURFACE_SMOOTH = 1;
+  LIVER_SURFACE_KNOTTY = 2;
+}
