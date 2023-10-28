@@ -1,0 +1,46 @@
+\subsection{Einheitlicher Bewertungsmaßstab (EBM)}
+The Einheitlicher Bewertungsmaßstab (EBM) is a standardized coding catalog used in Germany for billing outpatient services for patients with statutory insurances.
+The EBM is maintained by the Kassenärztliche Bundesvereinigung (KBV), the Federal Association of Statutory Health Insurance Physicians\cite[]{hermanns2015ebm}.
+
+As mentioned earlier the EBM is more expressive than the GOÄ.
+In fact the KBV maintains the EBM as a downloadable and well documented dataset in XML format which stores a lot of meta information for each rule.
+Large parts of the meta information describe exclusion rules and conditions that decide if a rule is applicable or not.
+
+This information is stored as structured data and can be loaded into the system where it can be used to implement the EBM code derivation pipeline.
+
+The following information is relevant for rule derivation
+\subsubsection{Service Area List}
+Unlike the GOÄ each EBM code contains a list of pairs where one entry is a medical field and the second entry a physician type.
+Only attending physicians that match to one of the pairs are authorized to bill the respective code.
+
+For example, the EBM code
+
+
+\subsubsection{}
+
+
+
+\subsubsection{Obligate Service Conditions}
+Most EBM codes description have a section with obligate services.
+It is a HTML content that precisely describes which exact services need to be provided so the code can be billed.
+According to the EBM specification, HTML content describing the obligate services can be considered a logical expression.
+For example the code 16232 "Diagnostik und/oder Behandlung von Erkrankungen der Wirbelsäule bei Jugendlichen und Erwachsenen" has the following obligate service description:
+
+
+\begin{itemize}
+    \item Diagnosis and/or treatment of spinal diseases
+\end{itemize}
+and/or
+\begin{itemize}
+    \item Segmental functional diagnostics and differential diagnosis,
+    \item At least two personal doctor-patient contacts in the treatment case,
+\end{itemize}
+
+Obligate service descriptions make use of logical OR and AND expressions.
+Items in a bullet point list are part of a AND expression, whereas the term "and/or" means the logical OR.
+
+The current means EBM version contains 3xxx codes, but only 1855 distinct obligate services.
+The latter are reused across many services. For exaple the most prominent obligate service
+% todo: list obligate service statistics
+
+Instead of implementing rules for specific content
