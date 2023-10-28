@@ -9,8 +9,32 @@ Part of this work is to understand and identify all conditions that determine un
 For automated derivation of applicable EBM codes these conditions need to be automatically checked.
 In this section we go through all identified relevant EBM conditions, that the billing framework need to check automatically.
 
+\subsection{Authorized Practitioner Types List}
 
-\subsection{Service Area List}
+The EBM maintains an extensive specification of what type of practitioners are allowed to bill which EBM codes.
+For that it defines the two axes medical specialization and service area.
+
+All values for service area of a practitioner are
+\begin{itemize}
+    \item Specialist (Facharzt)
+    \item General Practitioner (Hausarzt)
+    \item Specialist-General Practitioner (Fach- Hausarzt)
+    \item Authorized Physician (Ermächtigter Arzt)
+\end{itemize}
+
+The EBM distinguishes 206 medical specializations.
+Possible service medical specializations are the following:
+\begin{itemize}
+    \item TG Hematology (TG Hämatologie)
+    \item Specialist/Consultant in Neurosurgery (FÄ/FA Neurochirurgie)
+    \item Specialist/Consultant in General Surgery (FÄ/FA Allgemeine Chirurgie)
+    \item TG Vascular Surgery (TG Gefäßchirurgie)
+    \item Subspecialty Neuropediatrics (SP Neuropädiatrie)
+\end{itemize}
+
+Formally, each EBM code specifies a set of points from the space spanned by those two axes.
+If and only if the practitioner's service area and medical specialization pair is an element of that set, they will be authorized to bill that EBM code.
+\todo{Add example}
 
 
 \subsection{Code Justification List}
@@ -39,19 +63,33 @@ Generally, the KBV defines the following time contexts that are relevant for the
     \item
 \end{itemize}
 
+\subsection{Exclusion List}\label{subsec:exclusion-list}
 
-\subsection{Exclusion List}
+\subsection{Administrative Gender}\label{subsec:administrative-gender}
+EBM codes that contain that condition type can only be explicitly applied for a specific gender.
+The number of gender-specific EBM is 150.
+Most gender-specific EBM codes come from the fields of gynecology and urology.
 
-\subsection{Administrative Gender}
+\subsection{Form Type List}\label{subsec:form-type-list}
 
-\subsection{Form Type List}
+\subsection{Obligate Service Content}\label{subsec:obligate-service-content}
 
-\subsection{Obligate Service Content}
-
-\subsection{Additional Information}
-
-Unlike the GOÄ each EBM code contains a list of pairs where one entry is a medical field and the second entry a physician type.
-Only attending physicians that match to one of the pairs are authorized to bill the respective code.
+\subsection{Additional Input Information}\label{subsec:additional-information}
+Form Type lists are code specific additional input fields.
+The KBV defines 35 different additional input information types.
+An EBM code can define a subset of these as required additional input information.
+This requires the practitioner to add more information to the billing.
+Effectively, the billing framework obligates the practitioner to add the required additional information for billing codes that otherwise are perfect billing candidates.
+This can be assured by displaying the inputs with the correct data types in the front-end.
+\todo{Provide a example}
+In the current version of the EBM only few additional input types are actually used.
+Those are:
+\begin{itemize}
+    \item Finish time
+    \item OPS number
+    \item ICD code
+    \item BSNR
+\end{itemize}
 
 
 788200
