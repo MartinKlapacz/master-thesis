@@ -3,7 +3,8 @@
 % TODO: decide if one-sided/two-sided
 %\documentclass[headsepline,footsepline,footinclude=false,fontsize=11pt,paper=a4,listof=totoc,bibliography=totoc,BCOR=12mm,DIV=12]{scrbook} % two-sided
 \documentclass[headsepline,footsepline,footinclude=false,oneside,fontsize=11pt,paper=a4,listof=totoc,bibliography=totoc]{scrbook}
-\usepackage{color} % one-sided
+\usepackage{color}
+\usepackage{wasysym} % one-sided
 
 % TODO: change citation style in settings
 \input{settings}
@@ -30,6 +31,8 @@
 \newcommand{\Be}{Billing experts }
 \newcommand{\Se}{Software engineers }
 \newcommand{\se}{software engineers }
+\newcommand{\meco}[1]{\textbf{#1}}
+\newcommand{\mete}[1][]{\textbf{#1}}
 
 \begin{document}
 

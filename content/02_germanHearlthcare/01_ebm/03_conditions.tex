@@ -1,0 +1,57 @@
+\section{Conditions}\label{sec:conditions}
+
+
+Each EBM code is represented by a EBM code record in the EBM dataset.
+The KBV maintains an extensive xml schema documentation for the EBM data model.
+
+
+Part of this work is to understand and identify all conditions that determine under which circumstances a code can be billed or not.
+For automated derivation of applicable EBM codes these conditions need to be automatically checked.
+In this section we go through all identified relevant EBM conditions, that the billing framework need to check automatically.
+
+
+\subsection{Service Area List}
+
+
+\subsection{Code Justification List}
+Some EBM codes can have a code justification list.
+A justification is one of the following:
+\begin{itemize}
+    \item An OPS code identifying a procedure conducted in this treatment.
+    \item An ICD10 code of a diagnosis given to the patient during this treatment
+    \item Another EBM code that is part of this billing
+\end{itemize}
+A code justification list condition holds if and only if it is empty or at least one code of the three justification categories is present.
+Localization specific OPS codes are combined with a localization identifiers (left, right or both sides).
+For example the EBM code \meco{31658} has the ops number \meco{5-184.1} in combination with the \meco{B} localization identifier in its code justification list.
+For example, \meco{OPS 5-184.1} is listed in combination with the \meco{B} localization identifier and is thus a possible justification code for \meco{EBM 31658}.
+This means, applying the billing code \mete{Postoperative Behandlung Hals-Nasen-Ohren VI/2a} (\meco{31658}) i.e. \mete{Postoperative treatment of ear, nose, and throat (ENT) VI/2a} to a \mete{plastic correction of protruding ears through excision of soft tissues} is only possible if both ears were operated on.
+
+The idea behind EBM codes being justifications for other EBM codes is the following.
+There are EBM codes with a very general description.
+
+\subsection{Amount Condition}
+
+Another class of conditions are amount conditions.
+EBM codes can be limited in how often the code can be billed in a specific time context.
+Generally, the KBV defines the following time contexts that are relevant for the EBM:
+\begin{itemize}
+    \item
+\end{itemize}
+
+
+\subsection{Exclusion List}
+
+\subsection{Administrative Gender}
+
+\subsection{Form Type List}
+
+\subsection{Obligate Service Content}
+
+\subsection{Additional Information}
+
+Unlike the GOÄ each EBM code contains a list of pairs where one entry is a medical field and the second entry a physician type.
+Only attending physicians that match to one of the pairs are authorized to bill the respective code.
+
+
+788200
