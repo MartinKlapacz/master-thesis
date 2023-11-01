@@ -58,12 +58,24 @@ There are EBM codes with a very general description.
 
 Another class of conditions are amount conditions.
 EBM codes can be limited in how often the code can be billed in a specific time context.
-Generally, the KBV defines the following time contexts that are relevant for the EBM:
+
+\subsubsection{EBM time contexts}
+The KBV defines the following time contexts:
+
 \begin{itemize}
-    \item
+    \item The current treatment time context is the smallest unit atomic time context and refers to all services within the current treatment
+    \item The current treatment time context \todo{exlain treatment case (EBM)}
+    \item The current case time context contains all services provided throughout the current quarter of the year.
+    \item The current visit time context is self-explanatory and
+    \item current year
+    \item current day
+    \item current week
 \end{itemize}
 
 \subsection{Exclusion List}\label{subsec:exclusion-list}
+Almost all EBM codes maintain an exclusion list.
+The exclusion list contains all EBM codes that cannot be billed in the same billing with the current EBM code.
+The practitioner must resolve exclusion conflicts by hand.
 
 \subsection{Administrative Gender}\label{subsec:administrative-gender}
 EBM codes that contain that condition type can only be explicitly applied for a specific gender.
@@ -73,6 +85,7 @@ Most gender-specific EBM codes come from the fields of gynecology and urology.
 \subsection{Form Type List}\label{subsec:form-type-list}
 
 \subsection{Obligate Service Content}\label{subsec:obligate-service-content}
+Obligate service contents is a description text of \todo{}
 
 \subsection{Additional Input Information}\label{subsec:additional-information}
 Form Type lists are code specific additional input fields.
@@ -90,6 +103,3 @@ Those are:
     \item ICD code
     \item BSNR
 \end{itemize}
-
-
-788200
