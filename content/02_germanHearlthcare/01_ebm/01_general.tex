@@ -1,18 +1,11 @@
 The Einheitlicher Bewertungsmaßstab (EBM) is a standardized coding catalog used in Germany for billing outpatient services for patients with statutory insurances.
 The EBM is maintained by the Kassenärztliche Bundesvereinigung (KBV), the Federal Association of Statutory Health Insurance Physicians\cite[]{hermanns2015ebm}.
 
-As mentioned earlier the EBM is more expressive than the GOÄ.
 In fact the KBV maintains the EBM as a downloadable and well documented dataset in XML format which stores a lot of meta information for each rule.
 Large parts of the meta information describe exclusion rules and conditions that decide if a rule is applicable or not.
 
-This information is stored as structured data and can be loaded into the system where it can be used to implement the EBM code derivation pipeline.
-
 The following information is relevant for rule derivation
-\section{Service Area List}\label{sec:service-area-list}
-Unlike the GOÄ each EBM code contains a list of pairs where one entry is a medical field and the second entry a physician type.
-Only attending physicians that match to one of the pairs are authorized to bill the respective code.
 
-For example, the EBM code
 
 
 \section{Obligate Service Conditions}\label{sec:obligate-service-conditions}
