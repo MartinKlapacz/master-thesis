@@ -1,3 +1,5 @@
+syntax = "proto3";
+
 message LiverPalpationBlock {
   BoolW isLiverPalpable = 1;
   Int32W liverRim = 2;

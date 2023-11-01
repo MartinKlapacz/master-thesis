@@ -128,16 +128,39 @@ A GOÄ code might have as a condition that a liver palpation examination has bee
 Or a OPS code might only be true if there exists a procedure block \code{ECG} where the input field \code{telemetricExamination} contains the value \code{true} and the value of \code{numberOfLeads} is \code{9}.
 The rule engine needs to provide checks on field values but also logical combinations of those conditions as some rules may be quite complex.
 
-Additionally, the \AVS supports multiple input types, which require special handling.
-Wether tenderness is present is stored in a \code{BoolW} attribute while the liver texture type is stored in the following enum type:
+\subsection{Block Content Field Types}
+A block content can contain information of different input types.
+The rule language needs to know how to validate and handle those types.
+
+The most basic field types are boolean flags and numeric inputs.
+The \AV uses the following scalar wrapper protobuf messages for them:
+
+\lstinputlisting[
+    language=protobuf2,
+    style=protobuf,
+    caption={LiverPalpation protobuf messages}
+]{proto/scalarWrapper.proto}
 
 
-As most fields are not obligatory each enum type needs to provide a \code{NONE} value as well.
-This needs to be considered during rule evaluation.
+Liver tenderness can either be present or not.
+This information is thus entered in a boolean field.
+The enumeration field type is used for fields that have a limited number of predefined values.
+For example, the most important enum type that is used in a large amount of physical examination block contents is \code{AbnormalitiesExaminationResult}.
+
+\lstinputlisting[
+    language=protobuf2,
+    style=protobuf,
+    caption={LiverPalpation protobuf messages}
+]{proto/enum.proto}
+
+
 
 This concept of blocks being a medical questionnaire holding relevant data in the form of protobuf messages is used across the physical examination, anamnesis and procedures stage.
 
-Throughout this work such a condition in a higher level rule is called a \code{BlockContentSubRule} and has a dedicated field.
+
+
+Block content conditions are a powerful tool to make codes dependent on concrete medical information from anamnesis, physical examination and procedures.
+They are one of multiple condition types in a rule and are called \code{BlockContentSubRules}
 
 
 There are other condition as well that are related to information outside the treatment such as general patient information, that get

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+message Int32W {
+  int32 value = 1;
+}
+
+message Int64W {
+  int64 value = 1;
+}
+
+message BoolW {
+  bool value = 1;
+}
+
+message DoubleW {
+  double value = 1;
+}
