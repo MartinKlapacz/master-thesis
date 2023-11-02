@@ -9,6 +9,42 @@ Part of this work is to understand and identify all conditions that determine un
 For automated derivation of applicable EBM codes these conditions need to be automatically checked.
 In this section we go through all identified relevant EBM conditions, that the billing framework need to check automatically.
 
+
+\subsection{EBM reference contexts}
+Before describing the EBM condition types we need to introduce the concept of reference contexts.
+Condition types such as exclusion rules often refer to a specific reference context.
+The following is a description of those reference contexts defined by the EBM.
+\begin{itemize}
+    \item The smallest reference context is the Visit (in der selben Sitzung), which simply refers to all services occurred during the patients visit at the practitioner.
+    It occurs in 2688 EBM codes.
+    \item One level above is the case (Behandlungsfall), which refers to the current quarter of the year.
+     The case encompasses all billing positions that happened between start and end of the quarter.
+    It is even more important than the visit reference context.
+    It is used 4091 times.
+    \item The Illness Case (Krankheitsfall) refers to the current and the three following quarters.
+    It is less important but still occurs in 343 conditions.
+    \item A Reproduction Case (Reproduktionsfall) encompasses all services that are linked to a pregnancy.
+    It refers to the entire pregnancy of a patient from the determination of the pregnancy to delivery, including postnatal care.
+    It has just 13 usages.
+    \item Similarly to the reproduction case, the Cycle Case encompasses all service provisions linked to the patients menstrual cycle
+    All issues, consultations, or examinations associated with menstruation fall into that context.
+\end{itemize}
+Reference contexts for the current year, current month, current weeks and treatment day that are self-explanatory exist as well.
+There are very specific reference contexts used by very few specialized EBM codes that need to be taken into consideration as well.
+For the sake of completeness they are listed in the following:
+\begin{itemize}
+    \item Within a period of 21 days after the provision of a service from section 31.2:
+    Section 31.2 contains the \glqq outpatient operations\glqq.
+    \item Within a period of 3 days after the provision of a service from section 36.2:
+    Section 36.2 contains the \glqq Attendant medical operations\glqq.
+    \item Within a period of 3 days after the provision of a service from section 31.2:
+\end{itemize}
+In the current version of the EBM the latter two reference contexts are not used at all.
+The system should, nonetheless, take them consideration as well as they can be used in future versions.
+
+
+
+
 \subsection{Authorized Practitioner Types List}
 
 The EBM maintains an extensive specification of what type of practitioners are allowed to bill which EBM codes.
@@ -57,24 +93,13 @@ There are EBM codes with a very general description.
 \subsection{Amount Condition}
 
 Another class of conditions are amount conditions.
-EBM codes can be limited in how often the code can be billed in a specific time context.
+EBM codes can be limited in how often the code can be billed in a specific reference context.
 
-\subsubsection{EBM time contexts}
-The KBV defines the following time contexts:
-
-\begin{itemize}
-    \item The current treatment time context is the smallest unit atomic time context and refers to all services within the current treatment
-    \item The current treatment time context \todo{exlain treatment case (EBM)}
-    \item The current case time context contains all services provided throughout the current quarter of the year.
-    \item The current visit time context is self-explanatory and
-    \item current year
-    \item current day
-    \item current week
-\end{itemize}
 
 \subsection{Exclusion List}\label{subsec:exclusion-list}
 Almost all EBM codes maintain an exclusion list.
-The exclusion list contains all EBM codes that cannot be billed in the same billing with the current EBM code.
+
+A exclusion condition can be seen as a quadrupel consisting of the current EBM code, the excluded EBM code, the reference context and a positive integer.
 The practitioner must resolve exclusion conflicts by hand.
 
 \subsection{Administrative Gender}\label{subsec:administrative-gender}
