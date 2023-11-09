@@ -55,7 +55,7 @@ This way the system makes sure that the user is notified about all possible mult
 
 Part of the research of this work is to collect commonly used billing justifications from experts.
 Additionally, it is also important to understand what the relevant data is that multiplier justification relies on.
-If necessary, the existing code base of Avelios needs to be extended in such a way that it collects all the data necessary needed to justify multipliers.
+If necessary, the existing code base of \AV needs to be extended in such a way that it collects all the data necessary needed to justify multipliers.
 
 The results of this research will be discussed in chapter\ldots
 
@@ -69,3 +69,9 @@ For example, the surcharge \mete{GOÄ C} can be billed as an additional billing 
 One must take into account that there are strict exclusion rules that limit the application of surcharges\cite{kommentar2012zuschlage}.
 Surcharge \mete{A} cannot be billed with \mete{B}, \mete{C} or \mete{D}.
 Surcharges \mete{A}, \mete{B}, \mete{C}, \mete{D}, \mete{K1} cannot be billed in combination with \mete{E}, \mete{F}, \mete{G}, \mete{K2}\cite{kommentar2012zuschlage}.
+
+\section{Conditions}\label{sec:goae-conditions}
+Code exclusions that are bound to the current treatment billing are the only structured condition types in the GOÄ.
+There are more conditions on GOÄ codes which, however, only exist as unstructured text.
+There is, unfortunately, no direct way to make use of these unstructured conditions as we do in the EBM.
+Section\ref{sec:rule-based-approach} introduces a new approach to effectively solve this issue.
