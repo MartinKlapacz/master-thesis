@@ -4,11 +4,13 @@ The GOÄ has the reputation of being highly outdated\cite{heller2015goa}.
 The current version was defined in 1982, last update took place in 1996.
 Not only the lack of modern procedures in the catalog and as well as ambiguities and interpretation difficulties presents issues for healthcare providers.
 Since 1996 the consumer prices have increased by more than 50\%, inflation has effectively reduced professional fees by more than 28\% \cite{schmitzgoa}.
-
-The only thing practitioners can do to manage this discrepancy on their own is to create correct billings that compensate them for all services provided.
+Each service in the GOÄ has a number of points that determines its base price.
+The point value which was initially set to 5 ct.
+It was increased to 5.62ct in July 1, 1988 and again increased to 5.83 ct from January 1, 1996\cite{hermanns2013bemessung}.
+Of course, these point value updates do not compensate the actual price increase associated with medical treatments in the last decades.
+The only thing practitioners can do to manage this discrepancy on their own is to create correct billings that cover the occurred costs as good as possible.
 Fortunately, the GOÄ has some characteristics that allow for flexible billing price optimization.
-
-Given this growing financial discrepancy healthcare providers find themselves in, applying those optimization techniques correctly plays a more and more important role in modern medical billing.
+Given this growing financial discrepancy healthcare providers find themselves in, applying those optimization techniques correctly plays an important role in modern medical billing.
 In the following sections we take a closer look at GOÄ characteristics that are relevant for optimization in private billing.
 
 \section{Billing Multipliers}\label{sec:billing-multipliers}
@@ -20,34 +22,43 @@ They are assignable to individual billing codes in a treatment billing and incre
 \[
     \mathrm{final\ price} = \mathrm{base\ code\ points} \times \mathrm{billing\ multiplier} \times \mathrm{point\ value}
 \]
-
-
-These multipliers can vary depending on the complexity, time expenditure, or special circumstances of the treatment.
+These multipliers can be adjusted depending on the complexity, time expenditure, or special circumstances of the treatment.
 
 However, billing position costs cannot be freely increased.
-Each GöA code specifies ranges for valid multiplier values.
-Below are commonly used multipliers in the GOÄ\cite[]{bruck1998kommentar}:
+Each GOÄ code specifies a base rate, a threshold and a max rate\cite[]{bruck1998kommentar}.
 
 \begin{itemize}
-    \item \textbf{Simple Rate (1.0 Multiplier)}: This is the base rate for most medical services and corresponds to the fee listed in the GOÄ catalog.
-    \item \textbf{1.15 to 1.8 Multiplier}: This range is used for general medical services that go beyond the base rate.
-    The exact multiplier can vary depending on the complexity and time required for the treatment.
-    \item \textbf{2.3 to 3.5 Multiplier}: This range is used for specialized or particularly complex services.
+    \item \textbf{Base Rate of 1.0}: This is the base rate for all GOÄ services and corresponds to the fee listed in each GOÄ record.
+    \item \textbf{Threshold}: Applying multipliers up to this value does not require any justifications.
+    \item \textbf{Maximum Rate}: This range is used for specialized or particularly complex services.
     The application of these multipliers typically requires a detailed justification.
-    \item \textbf{Higher multipliers}: In exceptional cases, even higher multipliers can be applied.
-    However, this must be particularly justified and clarified on a case-by-case basis with the private health insurance company.
 \end{itemize}
 
-GOÄ codes from section A are an exception, as only the maximum multiplier 2.5 is applicable\cite[]{hermanns2011gebuhrenordnung}.
+The actual values of the threshold and the maximum rate depend on the fee frame the code belongs to.
+Table\ref{tab:fee-frames} displays all fee frames with their corresponding values for the threshold and the maximum rate\cite{hermanns2013bemessung}.
+Services that include a personal patient-practitioner contact are part of the personal-medical service.
+The GOÄ allows higher multiplier values for services in that area as complications and directly affect the treating practitioner.
+%Services in the technical frame and especially laboratory services affect have smaller direct effect on the practitioner and, thus,
 
+
+\begin{center}
+    \begin{tabular}{ |c|c|c| }\label{tab:fee-frames}
+        \hline
+        fee frame type & threshold & Max Rate \\
+        \hline
+        personal-medical service frame & 2.3 & 3.5 \\
+        technical service frame & 1.8 & 2.5 \\
+        laboratory service frame & 1.15 & 1.3 \\
+        \hline
+    \end{tabular}
+\end{center}
 
 \section{Billing Justifications}\label{sec:billing-justifications}
 
-Applying a specific multiplier to a billing position always requires a justification.
-multiplier justifications, however, are not standardized by the GOÄ\cite[]{bruck1998kommentar}.
+Applying a specific multiplier that exceed the multiplier threshold to a billing position require a justification.
+Multiplier justifications, however, are not standardized by the GOÄ\cite[]{bruck1998kommentar}.
 There is no official collection of applicable and excepted justifications for multipliers.
 They are essentially free texts that appear next to the respective multiplier in the billing.
-
 
 The billing framework should define a way of expressing multiplier justifications as rules.
 As part of private billing, the system automatically checks for factor justifications that can be applied, i.e. multiplier rules that hold.
@@ -64,7 +75,7 @@ The results of this research will be discussed in chapter\ldots
 Surcharges are additional billing codes that can be added to the base charge.
 Serving a similar purpose as billing multipliers\ref{sec:billing-justifications}, they don't directly refer to the services provided by the practitioner but rather describe special conditions that were present during the treatment\cite{walter2008abrechnung}.
 Unlike billing multipliers they are not attached to another billing position.
-Instead, they are a standalone billing position that, however, can only be billed with a multiplier of \mete{1.0}.
+Instead, they are a standalone billing position that, can only be billed with a multiplier of \mete{1.0}.
 For example, the surcharge \mete{GOÄ C} can be billed as an additional billing position for treatments carried out between 10pm and 6am.
 One must take into account that there are strict exclusion rules that limit the application of surcharges\cite{kommentar2012zuschlage}.
 Surcharge \mete{A} cannot be billed with \mete{B}, \mete{C} or \mete{D}.
