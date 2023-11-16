@@ -142,3 +142,124 @@ ceil([0.5, 1) = 1
 
 berücksichtigung von schwierigkeit, zeitaufwand, umstände
 schwierigkeit der Leistung
+
+@inproceedings{vawdrey2014integrated,
+    title={An integrated billing application to streamline clinician workflow},
+    author={Vawdrey, David K and Walsh, Colin and Stetson, Peter D},
+    booktitle={AMIA Annual Symposium Proceedings},
+    volume={2014},
+    pages={1141},
+    year={2014},
+    organization={American Medical Informatics Association}
+}
+
+Problem statement: difficult to verify supporting documentation for bills, difficult to tract whether notes have billable charges
+Solution: transition to an electronic provider documentation using a commercial electronic health record system (iCharge)
+
+billing for hospital encounter = facility fees + professional service fees
+
+traditionally  physician bills were submitted using a standardized paper "Universal Billing Form"
+
+@article{https://doi.org/10.1111/exsy.12218,
+    author = {Abdullah, Umair and Ligęza, Antoni and Zafar, Kashif},
+    title = {Performance evaluation of rule-based expert systems: An example from medical billing domain},
+    journal = {Expert Systems},
+    volume = {34},
+    number = {6},
+    pages = {e12218},
+    keywords = {health care IT, medical billing, medical claim processing, rule-based expert system},
+    doi = {https://doi.org/10.1111/exsy.12218},
+    url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/exsy.12218},
+    eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1111/exsy.12218},
+    note = {e12218 EXSY-Feb-16-039.R1},
+    abstract = {Abstract Most of the research in the area of performance evaluation of rule-based expert systems (RBESs) is focused on verification and validation issues. Many researchers discuss usability, usefulness, portability, and response time for the evolution of RBES. The final goal of all such studies is to construct a system with optimal, accurate knowledge base. Arguably, a system with best knowledge base is actually worthless if it is never utilized in the real world. We have proposed “benefit” as a measure of evaluation and suggested some guidelines for performance evaluation of RBESs. The proposed measure has been demonstrated for performance evaluation of an RBES applied in the medical billing domain. Results showed that the system has saved hundreds of working hours during the evaluation period of 3 months. Moreover, other associated measures have also been considered. Associated measures in the medical billing domain are “claim rejection rate”—reduced by 54\%—and “claim aging,” which has decreased from 34 to 28 days due to the RBES. Guidelines proposed by this research can be applied for the evaluation of expert systems implemented in other application domains, including in the first place business decision support systems.},
+    year = {2017}
+}
+
+medical billing == process of sending claims to insurance companies in order to receive reimbursements for rendered services
+
+about 30% of allclaims are rejected first time, and of those first‐time rejected claims,60% are never resubmitted, which means medical practices lose 18%of the revenue due to faulty claims or errors in medical billing process,and 90% of those errors are avoidable (Jones, 2014)
+
+its about avoiding medical billing errors and reimbursements, scrutinize claims before sending them to insurances
+
+https://www.advancedmd.com/ (Pocatello, 2015)
+Is a powerful error checking tool for medical billing claims
+As a result, the first‐pass claim acceptance rate is 95% or better (Pocatello, 2015).
+
+https://multimedia.3m.com/mws/media/218379O/3m-audit-expert-system-fact-sheet.pdf
+    state of the art tool for scrubbing medical claims (.i.e perform small actions to maintain accuracy) -> robust code auditing
+    evaluate consistency with coding guidelines, inpatient only
+
+
+Criterias for evaluating a rule based expert system: ...
+
+Components of a RBEs (Abdullah, 2012):
+- rule-based engine
+- rule learning module (rule-mining module, warehouse)
+- knowledge editor
+- knowledge base
+
+distinction between meta-rules and rules:
+- meta-rules: evaluated first, activate relevant normal production rules
+- notmal rules:
+    - warning rules (e.g. missing optional data)
+    - autocorrection rules (identify critical issues in the data, correct the faulty mistakes themselves)
+    - claim blocking rules (block claims when finding issues, wait for manual correction)
+        - table-based rules
+        - singular rules
+
+
+
+@article{https://doi.org/10.1002/widm.11,
+    author = {Ligęza, Antoni and Nalepa, Grzegorz J.},
+    title = {A study of methodological issues in design and development of rule-based systems: proposal of a new approach},
+    journal = {WIREs Data Mining and Knowledge Discovery},
+    volume = {1},
+    number = {2},
+    pages = {117-137},
+    doi = {https://doi.org/10.1002/widm.11},
+    url = {https://wires.onlinelibrary.wiley.com/doi/abs/10.1002/widm.11},
+    eprint = {https://wires.onlinelibrary.wiley.com/doi/pdf/10.1002/widm.11},
+    abstract = {Abstract Rule-based systems (RBSs) constitute a powerful technology for declarative encoding and automated processing of large bodies of knowledge. A typical RBS consists of a knowledge base containing facts and production rules, and an inference engine managing the reasoning process. Despite their simple conceptual scheme, design and development of a RBS often turn out to be unexpectedly complex task. This paper presents an overview of issues concerning design and development of such systems. Differences between RBSs and classical software are exemplified, and design and implementation issues are analyzed. A novel, consistent, three-phase methodology incorporating conceptual, logical, and physical design is outlined. Moreover, tools supporting the complete design and development process are presented. © 2011 John Wiley \& Sons, Inc. WIREs Data Mining Knowl Discov 2011 1 117-137 DOI: 10.1002/widm.11 This article is categorized under: Application Areas > Business and Industry Fundamental Concepts of Data and Knowledge > Knowledge Representation Technologies > Visualization},
+    year = {2011}
+}
+
+Rule-based system is based on strong logical foundations
+logic as the core formalisism for knowledge specification and formalism
+
+Main problems:
+a complete specification, non-redudancy -> requires far-going effort, good understanding, domain knowledge patience
+vague character of the domain
+finding the correct level of expressiveness and abstraction
+conflict between expressiveness and complexity of writing those rules
+
+Forms of rules:
+1. IF <condition> THEN <conclusion>
+2. <id>: <precondition> -> <conclusion>
+
+p1 AND p2 AND ... AND pn -> b
+
+basic structure of a rule can be extendet with:
+- operation context
+- exclusions
+- next: pointer to the next rule to be checked if this rule holds
+- else: pointer to another rule to be tried next if this rule does not hold
+
+rules are represented in a declarative way:
+- knowledge engineer does not specify how something is infered, but just what is infered
+- declarative knowledge instead of procedural knowledge
+- Knowledge base is separated from inference engine
+- rule language is declarative, find weight between expressive power and usability/complexity
+- inference engine is required
+- inference process should be transparent to users
+
+
+Fundamental issues to be solved when building a rule-based system:
+1. Rule representation
+    conflict between expressiveness and complexity
+    possible
+2. design and implementation of an inference mechanism
+3. Knowledge acquisition: loading knowledge into the knowledge base
+4. knowledge veririfcation
+5. explaining solutions: transparency and finding explanantion for inference results
+6. man-machine interface
