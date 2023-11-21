@@ -1,0 +1,17 @@
+\section{Amount Functions}\label{sec:amount-functions}
+
+
+How often a code is supposed to be billed in a billing is also highly relevant.
+
+In the previous section we explained how the billing framework derives a set of applicable billing codes.
+
+However, the question of how often we want to bill a code is also highly relevant.
+
+In this section we are generalizing the framework so that for each billable code, it returns the number of times it should be billed, instead of just indicating whether it is billable or not.
+Instead of just a set of billable codes, the framework returns a mapping of codes to an integer which indicates the code's amount in the current billing.
+Codes, that cannot be billed, get the amount value zero.
+
+For that we extend the general structure by introducing the concept of amount functions.
+
+
+One example is the
