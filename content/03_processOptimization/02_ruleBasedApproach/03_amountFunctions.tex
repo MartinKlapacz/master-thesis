@@ -13,5 +13,31 @@ Codes, that cannot be billed, get the amount value zero.
 
 For that we extend the general structure by introducing the concept of amount functions.
 
+Similarly to rule conditions, the billing framework evaluates amount functions of rules for a \code{RuleEvaluationInput}.
+They return an integer value which indicates the number of how often it should be billed in the current billing.
 
-One example is the
+\mete{GOÄ 255: Injection, intra-articular or perineural}\cite{hermanns2013bemessung} is one example for a code that is likely to be billed multiple times in a single billing.
+
+The so-called Spine Infiltration is a procedure, which includes injections and thus can be billed with GOÄ 255.
+It is mapped as the procedure block \code{SpineInfiltrationMsg} in the system.
+GOÄ 255 is typically billed once for injection that actually occurred.
+So there must be a way to specify that the final amount is the number of injection localizations entered into the spine infiltration procedure block.
+
+The human spine is divisible into three primary regions:
+the cervical spine, the thoracic spine, and the lumbar spine.
+The cervical spine comprises the uppermost part of the spine, which is the neck and head.
+The thoracic spine, located in the middle, has twelve vertebrae attached to the rib cage, providing stability and structure to the upper body. Lastly, the lumbar spine at the lower back is made up of five larger vertebrae, designed to bear the body's weight and provide flexibility and movement.
+
+Figure n displays a simplified version the protobuf structure of \code{SpineInfiltrationMsg} procedure block.
+\code{SpineInfiltrationMsg} has a nested message \code{NerveRootBlockMsg} which contains the messages \code{CervicalSpineMsg}, \code{ThoracicSpineMsg} and \code{LumbarSpineMsg}.
+
+Each variable in these sub-messages represents a localization for an injection alongside the spine.
+The laterality indicates whether the injection targeted on the left, on the right or on both sides targeted.
+
+
+\lstinputlisting[
+    language=protobuf3,
+    style=protobuf,
+    caption={Relevant localizations in a spine infiltration}
+    label={lst:spineInfiltration}
+]{proto/spineInfiltration.proto}

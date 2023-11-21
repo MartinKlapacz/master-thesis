@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+message SpineInfiltrationMsg {
+  string id = 1;
+  //  ...
+  NerveRootBlockMsg nerveRootBlock = 5;
+  //  ...
+}
+
+message NerveRootBlockMsg {
+  //  ...
+  CervicalSpineMsg cervicalSpine = 2;
+  //  ...
+  ThoracicSpineMsg thoracicSpine = 4;
+  //  ...
+  LumbarSpineMsg lumbarSpine = 6;
+  //  ...
+}
+
+enum Laterality {
+  LATERALITY_NONE = 0;
+  LATERALITY_RIGHT = 1;
+  LATERALITY_LEFT = 2;
+}
+
+message CervicalSpineMsg {
+  repeated Laterality c4 = 1;
+  repeated Laterality c5 = 2;
+  repeated Laterality c6 = 3;
+  repeated Laterality c7 = 4;
+  repeated Laterality c8 = 5;
+}
+
+message ThoracicSpineMsg {
+  repeated Laterality Th1 = 1;
+  repeated Laterality Th2 = 2;
+  repeated Laterality Th3 = 3;
+  repeated Laterality Th4 = 4;
+  repeated Laterality Th5 = 5;
+  repeated Laterality Th6 = 6;
+  repeated Laterality Th7 = 7;
+  repeated Laterality Th8 = 8;
+  repeated Laterality Th9 = 9;
+  repeated Laterality Th10 = 10;
+  repeated Laterality Th11 = 11;
+  repeated Laterality Th12 = 12;
+}
+
+message LumbarSpineMsg {
+  repeated Laterality l1 = 1;
+  repeated Laterality l2 = 2;
+  repeated Laterality l3 = 3;
+  repeated Laterality l4 = 4;
+  repeated Laterality l5 = 5;
+  repeated Laterality s1 = 6;
+}
+
+
