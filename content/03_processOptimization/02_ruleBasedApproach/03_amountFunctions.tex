@@ -36,8 +36,8 @@ The thoracic spine, located in the middle, has twelve vertebrae attached to the 
 Lastly, the lumbar spine at the lower back is made up of five larger vertebrae, designed to bear the body's weight and provide flexibility and movement.
 
 
-The following code displays a simplified version the of protobuf message for the \code{SpineInfiltrationMsg}procedure block.
-\lstinputlisting[
+The code snipped\ref{lst:spineInfiltration} displays a simplified version of the \code{SpineInfiltrationMsg}procedure block.
+\lstinputlisting[label={lst:spineInfiltration}][
     language=protobuf3,
     style=protobuf,
     caption={Relevant localizations in a spine infiltration}
@@ -51,5 +51,5 @@ Each variable in these nested messages is of type \code{repeated Laterality}and 
 Data type \code{repeated Laterality}is essentially a set of enum values.
 %The fields \code{c4}, \code{c4}, indicates whether the injection targets the left, right or on both sides of the vertebrae.
 
-In order to get the total number of injections, the system would need to peek into the nested messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg} count the total number of \code{LATERALITY\_LEFT} and \code{LATERALITY\_RIGHT} values in all localization fields.
+To get the total number of injections, the system would need to peek into the nested messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg} count the total number of \code{LATERALITY\_LEFT}and \code{LATERALITY\_RIGHT}values in all localization fields.
 
