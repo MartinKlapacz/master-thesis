@@ -3,41 +3,53 @@
 
 How often a code is supposed to be billed in a billing is also highly relevant.
 
-In the previous section we explained how the billing framework derives a set of applicable billing codes.
+In the previous section, we explained how the billing framework derives a set of applicable billing codes.
 
 However, the question of how often we want to bill a code is also highly relevant.
 
-In this section we are generalizing the framework so that for each billable code, it returns the number of times it should be billed, instead of just indicating whether it is billable or not.
+In this section, we are generalizing the framework so that for each billable code,
+it returns the number of times it should be billed, instead of just indicating whether it is billable or not.
 Instead of just a set of billable codes, the framework returns a mapping of codes to an integer which indicates the code's amount in the current billing.
-Codes, that cannot be billed, get the amount value zero.
+Codes that cannot be billed get the amount value zero.
 
-For that we extend the general structure by introducing the concept of amount functions.
+For that, we extend the general structure by introducing the concept of amount functions.
 
-Similarly to rule conditions, the billing framework evaluates amount functions of rules for a \code{RuleEvaluationInput}.
+Similarly to rule conditions, the billing framework evaluates amount functions of rules for a\code{RuleEvaluationInput}.
 They return an integer value which indicates the number of how often it should be billed in the current billing.
 
-\mete{GOÄ 255: Injection, intra-articular or perineural}\cite{hermanns2013bemessung} is one example for a code that is likely to be billed multiple times in a single billing.
+\mete{GOÄ 255: Injection, intra-articular or perineural}\cite{hermanns2013bemessung} is one example of a code that is likely to be billed multiple times in a single billing.
 
-The so-called Spine Infiltration is a procedure, which includes injections and thus can be billed with GOÄ 255.
-It is mapped as the procedure block \code{SpineInfiltrationMsg} in the system.
-GOÄ 255 is typically billed once for injection that actually occurred.
-So there must be a way to specify that the final amount is the number of injection localizations entered into the spine infiltration procedure block.
+The so-called Spine Infiltration is a procedure, which includes injections into spine nerves.
+Billing experts use GOÄ 255 for this medical service.
+Procedure block \code{SpineInfiltrationMsg}represents it in the system.
+However, GOÄ 255 is typically billed once for injection that actually occurred and a spine infiltration can include multiple injections at different localizations.
+This is where a new requirement for the billing framework occurred.
+The system should not only be able to derive GOÄ 255 for provided spine infiltrations, but also be able to derive the correct amount of GOÄ 255.
+In this example, the number of GOÄ billings is the number of actual injections into the spine.
 
-The human spine is divisible into three primary regions:
-the cervical spine, the thoracic spine, and the lumbar spine.
+Luckily, this information can be found in the procedure block of \code{SpineInfiltration}in the treatment data.
+
+Firstly, it is worth mentioning that the human spine is divisible into three primary regions:
+The cervical spine, the thoracic spine, and the lumbar spine.
 The cervical spine comprises the uppermost part of the spine, which is the neck and head.
-The thoracic spine, located in the middle, has twelve vertebrae attached to the rib cage, providing stability and structure to the upper body. Lastly, the lumbar spine at the lower back is made up of five larger vertebrae, designed to bear the body's weight and provide flexibility and movement.
-
-Figure n displays a simplified version the protobuf structure of \code{SpineInfiltrationMsg} procedure block.
-\code{SpineInfiltrationMsg} has a nested message \code{NerveRootBlockMsg} which contains the messages \code{CervicalSpineMsg}, \code{ThoracicSpineMsg} and \code{LumbarSpineMsg}.
-
-Each variable in these sub-messages represents a localization for an injection alongside the spine.
-The laterality indicates whether the injection targeted on the left, on the right or on both sides targeted.
+The thoracic spine, located in the middle, has twelve vertebrae attached to the rib cage, providing stability and structure to the upper body.
+Lastly, the lumbar spine at the lower back is made up of five larger vertebrae, designed to bear the body's weight and provide flexibility and movement.
 
 
+The following code displays a simplified version the of protobuf message for the \code{SpineInfiltrationMsg}procedure block.
 \lstinputlisting[
     language=protobuf3,
     style=protobuf,
     caption={Relevant localizations in a spine infiltration}
     label={lst:spineInfiltration}
 ]{proto/spineInfiltration.proto}
+
+\code{SpineInfiltrationMsg} has a nested message\code{NerveRootBlockMsg}.
+\code{NerveRootBlockMsg} contains the messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg}.
+These messages represent the before-mentioned sections of the human spine.
+Each variable in these nested messages is of type \code{repeated Laterality}and represents injections at the respective localization alongside the spine.
+Data type \code{repeated Laterality}is essentially a set of enum values.
+%The fields \code{c4}, \code{c4}, indicates whether the injection targets the left, right or on both sides of the vertebrae.
+
+In order to get the total number of injections, the system would need to peek into the nested messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg} count the total number of \code{LATERALITY\_LEFT} and \code{LATERALITY\_RIGHT} values in all localization fields.
+
