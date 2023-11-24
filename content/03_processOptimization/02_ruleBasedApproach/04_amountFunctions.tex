@@ -36,13 +36,14 @@ The thoracic spine, located in the middle, has twelve vertebrae attached to the 
 Lastly, the lumbar spine at the lower back is made up of five larger vertebrae, designed to bear the body's weight and provide flexibility and movement.
 
 
-The code snipped\ref{lst:spineInfiltration} displays a simplified version of the \code{SpineInfiltrationMsg}procedure block.
-\lstinputlisting[label={lst:spineInfiltration}][
+The following code snipped displays a simplified version of the \code{SpineInfiltrationMsg}procedure block.
+\lstinputlisting[
     language=protobuf3,
     style=protobuf,
     caption={Relevant localizations in a spine infiltration}
     label={lst:spineInfiltration}
-]{proto/spineInfiltration.proto}
+]{code/proto/spineInfiltration.proto}
+
 
 \code{SpineInfiltrationMsg} has a nested message\code{NerveRootBlockMsg}.
 \code{NerveRootBlockMsg} contains the messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg}.

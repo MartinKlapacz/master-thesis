@@ -1,0 +1,10 @@
+{
+  "code": "<code>",
+  "description": "<description>",
+  "condition": {
+    // condition body
+  },
+  "amount": {
+    // amount function body
+  }
+}
