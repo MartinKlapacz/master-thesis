@@ -4,18 +4,18 @@ Traditionally, billing experts create bills for treatments using their knowledge
 
 They need to know the conditions which must hold and which make a billing code applicable.
 
-This work introduces a new json based rule language to automate this process.
+This work introduces a new JSON-based rule language to automate this process.
 This requires treatment data relevant for billing to exist in a structured and accessible form,
 which is luckily the case in the\AVS.
 
 The workflow is as follows:
 \begin{enumerate}
     \item \Me
-    at \AV use their knowledge to define formal specifications for the anamnesis,
+    at\AV use their knowledge to define formal specifications for the anamnesis,
     physical examination and procedures blocks.
     This is a continuous process where requests and feedback from customers are taken into consideration.
-    \item \Se at \AV create new blocks or update existing ones according to changes in the medical specifications.
-    \item \Be at \AV with medical background,
+    \item \Se at\AV create new blocks or update existing ones according to changes in the medical specifications.
+    \item \Be at\AV with medical background,
     an understanding of the block data models and the rule language implement formal billing rules
     using the rule language.
     \item At Back-End start-up the system loads the rule files into the Billing-Service which are then available for automated billing code derivation.
@@ -39,14 +39,11 @@ Each rule type has different information sources
 
 But it turned out that many condition types exist that are relevant for multiple rule types.
 For example, the patient age is highly relevant for GOÄ and Multiplier Justifications.
-Therefore,
-it makes sense that the implementation of patient age fetching as well as evaluation should be shared among those two rule types.
+Therefore, it makes sense that the implementation of patient age fetching as well as evaluation should be shared among those two rule types.
 I quickly changed the strategy.
 Instead of implementing multiple separate rule engines,
 I implemented a single large rule engine that supports all condition types that are relevant in any rule type.
 
-
-Two aspects need to be taken into consideration when defining a rule type:
 
 \subsection{Information Scope}
 One must identify all possible conditions and the respective information which is relevant for rule evaluation.
@@ -75,9 +72,11 @@ Each rule type explicitly enables just a subset of all features that are relevan
 Which conditions and information are relevant for which rule type is part of the research of this work.
 
 The system currently supports the following rule types:
-
-
 \section{Shared Rule Inputs}
+
+
+
+
 
 \subsection{Block Contents}
 A medical treatment consist of multiple stages of patient care.
