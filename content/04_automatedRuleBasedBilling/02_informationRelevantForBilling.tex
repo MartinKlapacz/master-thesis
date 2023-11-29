@@ -49,7 +49,7 @@ The following list contains all rule types that the framework currently supports
 \end{itemize}
 
 The initial idea of having separate implementations for each rule type turned out to be not very scalable.
-Each rule type has a set of relevant information sources and therefore also sources that can be ignored.
+Each rule type has a set of relevant information sources and therefore also ignores sources.
 But the key point is that there are many information sources shared by multiple rule types.
 
 For example, the patient age is highly relevant for GOÄ and EBM codes, Multiplier Justifications but not for OPS codes.
@@ -60,21 +60,20 @@ Therefore,
 we consider each information source illustrated in this section as primarily independent of any rule type or use case.
 
 \subsection{Information Scope}
-
-From a higher level perspective are all billing-relevant information sources can be part of the following domains:
+Part of this work was
+to identify billing-relevant information sources through and expert interviews and cooperation with medical experts.
+From a higher level perspective, all found information sources are part of the following domains:
 \begin{itemize}
-    \item The treatment documentation that contains all medical information of the treatment whose services we want to bill
+    \item
+    The treatment documentation that contains all medical information of the treatment whose services we want to bill
     \item Patient characteristics that are independent of the current treatment
     \item Information referring to the providing practitioner
-    \item Treatment history
+    \item Treatment history consisting of all billing codes in previous treatments aggregated by treatment,
+    visit and billing case
 \end{itemize}
-When a new condition is identified during development,
-it needs to be added to the core rule engine
-and added to the information input and semantics of the respective rule type.
-The condition implementation is part of the core engine and not specific to the rule type.
-So if needed, the new condition can be added to other rule types with ease.
-It makes sense to keep those rule types as simple as possible,
-so only conditions that are explicitly relevant for the rule type are added.
+During the development of the billing framework, I placed great emphasis on extensibility.
+Adding new condition types to the core engine and making them available to all rule types is straightforward.
+The following subsections give further explanations for the most important information sources.
 
 \subsection{Block Contents}
 A medical treatment consists of multiple stages of patient care.
