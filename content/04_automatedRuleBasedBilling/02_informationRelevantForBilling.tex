@@ -1,56 +1,71 @@
-\section{Rule Language}\label{sec:rule-language}
+\section{Billing Relevant Information Sources}\label{sec:billing-relevant-information-sources}
 
 Traditionally, billing experts create bills for treatments using their knowledge in this field.
-
 They need to know the conditions which must hold and which make a billing code applicable.
-
 This work introduces a new JSON-based rule language to automate this process.
-This requires treatment data relevant for billing to exist in a structured and accessible form,
-which is luckily the case in the\AVS.
 
-The workflow is as follows:
-\begin{enumerate}
-    \item \Me
-    at\AV use their knowledge to define formal specifications for the anamnesis,
-    physical examination and procedures blocks.
-    This is a continuous process where requests and feedback from customers are taken into consideration.
-    \item \Se at\AV create new blocks or update existing ones according to changes in the medical specifications.
-    \item \Be at\AV with medical background,
-    an understanding of the block data models and the rule language implement formal billing rules
-    using the rule language.
-    \item At Back-End start-up the system loads the rule files into the Billing-Service which are then available for automated billing code derivation.
-\end{enumerate}
+Before introducing the rule language,
+we need to firstly define all sources of information that are relevant for billing.
+Its semantics and features were designed based on this knowledge.
+
+Additionally,
+it must be assured that the\AVS actually tracks and stores all information relevant for billing as structured data.
+For that, the\AVS might require further adjustments and updates.
+
+On one hand, the treatment documentation must contain all medically relevant data,
+but now it also needs to cover billing-related information as well.
 
 
-This section introduces the formal semantics and features of this rule language.
+%The workflow is as follows:
+%\begin{enumerate}
+%    \item \Me
+%    at\AV use their knowledge to define formal specifications for the anamnesis,
+%    physical examination and procedures blocks.
+%    This is a continuous process where requests and feedback from customers are taken into consideration.
+%    \item \Se at\AV create new blocks or update existing ones according to changes in the medical specifications.
+%    \item \Be at\AV with medical background,
+%    an understanding of the block data models and the rule language implement formal billing rules
+%    using the rule language.
+%    \item At Back-End start-up the system loads the rule files into the Billing-Service
+%which are then available for automated billing code derivation.
+%\end{enumerate}
 
-It became clear that we do not only need rules for statutory (EBM) and private
-(GOÄ) billing but that there are more rule types relevant for billing.
+Firstly, we need to specify the concrete use-cases for the rule language.
+The initial plan was to implement two separate languages, one for statutory billing and one for private billing.
+Section\ref{sec:billing-catalogs} introduces their billing catalogs and presents their differences and characteristics.
 
+However, collaboration with medical experts has revealed further requirements for the billing framework.
+This includes additional use-cases for the billing language.
+The following list contains all rule types that the framework currently supports:
 \begin{itemize}
     \item GOÄ billing rules for deriving GOÄ billing codes from private treatments
     \item EBM billing rules for deriving EBM billing codes from statutory treatments
-    \item OPS code rules for deriving procedure IDs from procedure documentation.
-    \item Multiplier Justification rules for detecting difficult conditions in private treatments which can be used as justifications for multipliers
-    \item Special Flat Rate rules for detecting flat rates that can be applied to billing positions in the statutory treatment
+    \item OPS code rules for deriving procedure codes from treatment documentation.
+    OPS codes are relevant information for both GOÄ and EBM codes as well as multiplier justifications.
+    \item Multiplier Justification rules for detecting challenging conditions in private treatments
+    which serve as justifications for multipliers
+    \item Special Flat Rate rules
+    for detecting flat rates that can be applied to billing positions in the statutory treatment
 \end{itemize}
 
-Each rule type has different information sources
+The initial idea of having separate implementations for each rule type turned out to be not very scalable.
+Each rule type has a set of relevant information sources and therefore also sources that can be ignored.
+But the key point is that there are many information sources shared by multiple rule types.
 
-But it turned out that many condition types exist that are relevant for multiple rule types.
-For example, the patient age is highly relevant for GOÄ and Multiplier Justifications.
-Therefore, it makes sense that the implementation of patient age fetching as well as evaluation should be shared among those two rule types.
-I quickly changed the strategy.
-Instead of implementing multiple separate rule engines,
-I implemented a single large rule engine that supports all condition types that are relevant in any rule type.
-
+For example, the patient age is highly relevant for GOÄ and EBM codes, Multiplier Justifications but not for OPS codes.
+Previous allergies are relevant for Multiplier Justifications but not necessarily for GOÄ codes.
+This is the reason I decided to use a single rule engine that implements all conditions used by any rule type.
+Each rule type defines its own interface and re-uses the rule engine.
+Therefore,
+we consider each information source illustrated in this section as primarily independent of any rule type or use case.
 
 \subsection{Information Scope}
-One must identify all possible conditions and the respective information which is relevant for rule evaluation.
-Higher level information sources are:
+
+From a higher level perspective are all billing-relevant information sources can be part of the following domains:
 \begin{itemize}
-    \item The treatment documentation the billing refers to
-    \item Treatment unspecific patient data
+    \item The treatment documentation that contains all medical information of the treatment whose services we want to bill
+    \item Patient characteristics that are independent of the current treatment
+    \item Information referring to the providing practitioner
     \item Treatment history
 \end{itemize}
 When a new condition is identified during development,
@@ -61,57 +76,40 @@ So if needed, the new condition can be added to other rule types with ease.
 It makes sense to keep those rule types as simple as possible,
 so only conditions that are explicitly relevant for the rule type are added.
 
-\subsection{Semantics}
-The challenge is to make sure the language is rich enough
-to express all conditions that exist in the respective rule type.
-On the other side, the users of the rule language don't have a technical background.
-So whilst being expressive enough, its semantics need to be as simple as possible.
-It is important that semantic errors are identified, and the rule engine responds with an understandable error message.
-
-Each rule type explicitly enables just a subset of all features that are relevant in the respective rule type.
-Which conditions and information are relevant for which rule type is part of the research of this work.
-
-The system currently supports the following rule types:
-\section{Shared Rule Inputs}
-
-
-
-
-
 \subsection{Block Contents}
-A medical treatment consist of multiple stages of patient care.
+A medical treatment consists of multiple stages of patient care.
 Each stage has its specific aims and tools.
-Anamnesis, physical examination,
-and procedures represent different stages of patient care and are highly relevant for billing.
+Anamnesis,
+physical examination and procedures represent different stages of patient care and are highly relevant for billing.
 
-\paragraph{Anamnesis}
-The anamnesis is the first stage of a treatment.
+\subsubsection{Anamnesis}
+Anamnesis is the first stage of a treatment.
 Its purpose is to collect a detailed medical history from the patient\cite{lino2021medical}.
 More specifically, it is about understanding the patient's general health conditions,
 their lifestyle and previous patients' diagnoses.
 If possible, the practitioner reviews available medical records,
 interviews the patient directly or using a questionnaire\cite{zhang2011anamnevis}.
 
-\paragraph{Physical Examination}
-The anamnesis is followed by the physical examination.
+\subsubsection{Physical Examination}
+Anamnesis is followed by the Physical Examination.
 In this practical stage, the practitioner assesses the current patient's conditions,
 looking for further information about the patient's issues\cite{seidel2010mosby}.
 The practitioner decides based on patient's symptoms which exact examinations are conducted.
 Common examinations are checking of vital sings like blood pressure, pulse and temperature.
 
 \paragraph{Procedures}
-The procedures stage contains the actual patient specific interventions that
+The procedures stage contains the actual patient specific interventions that \todo
 
 \subsubsection{Block Contents}
 During Anamnesis,
 Physical Examination and Procedures the practitioner enters medical treatment specific information into the \AVS.
-The data is part of the treatment documentation and extremely important for billing.
+The data is part of the treatment documentation and critical for billing.
 
 The documentations of all three stages are filled out by the practitioner and are structured in sections,
 cards and blocks.
 
-For example, inside the physical examination there is the section\code{abdomen},
-which contains the \code{liver} section.
+For example, inside the physical examination there is the section \mete{abdomen},
+which contains the\mete{liver} section.
 Blocks are essentially small questionnaires for the practitioner with input fields to be filled out by the practitioner.
 They play a huge role in the treatment documentation
 and contain all relevant medical information specific to this conducted examination,
@@ -128,11 +126,10 @@ A liver palpation involves investigating the following questions
     \item Is a hepato jugular reflux present?
 \end{itemize}
 
-Each of the more than 100 block contents in the \AVS are represented by a dedicated Hibernate entity class.
+Each of the more than 100 block contents in the \AVS are represented by a dedicated Hibernate entity classes.
 Each attribute of that class stores a questionnaire input entered by the practitioner.
-Additionally,
-for each entity class there is a protobuf message
-enabling transmission of block content data from one service to another one.
+Additionally, for each entity, there is a protobuf message enabling transmission of block content data from one service
+to another one.
 
 The protobuf message of \code{LiverPalpationMsg} looks like this:
 
@@ -142,32 +139,28 @@ The protobuf message of \code{LiverPalpationMsg} looks like this:
     caption={LiverPalpation protobuf messages}
 ]{code/proto/liverPalpation.proto}
 
-
-This is an example for a block from the physical examination,
-but the exact principle is applied in the procedures and anamnesis as well.
+The exact principle is applied throughout all the procedures and anamnesis as well.
 A crucial part of the rule language is not only to check for block content availabilities in the treatment
 but also to look inside the blocks and check for conditions on fields.
-A GOÄ code might have as a condition that a liver palpation examination has been conducted
-and the liver turned out to be palpable.
-Or a OPS code might only be true
-if there exists a procedure block \code{ECG}
-where the input field \code{telemetricExamination} contains the value \code{true} and the value of \code{numberOfLeads} is \code{9}.
-The rule engine needs
-to provide checks on field values but also logical combinations of those conditions as some rules may be quite complex.
+A GOÄ code might have as a condition that a liver palpation examination is part of the treatment and
+the liver turned out to be palpable.
+Or an OPS code should only be derived if a \code{ECG}procedure was provided and the
+input field\code{telemetricExamination} inside its block has the value\code{true}.
+Logical combinations of such single field conditions may also occur.
+Expressing such conditions in a well-defined and user-friendly way is an important requirement for the rule language.
 
 \subsection{Block Content Field Types}
 A block content can contain information of different input types.
 The rule language needs to know how to validate and handle those types.
 
 The most basic field types are boolean flags and numeric inputs.
-The \AV uses the following scalar wrapper protobuf messages for them:
+The \AVuses the following scalar wrapper protobuf messages for them:
 
 \lstinputlisting[
     language=protobuf2,
     style=protobuf,
     caption={LiverPalpation protobuf messages}
 ]{code/proto/scalarWrapper.proto}
-
 
 Liver tenderness can either be present or not.
 This information is thus entered in a boolean field.
@@ -199,11 +192,11 @@ as well that are related to information outside the treatment such as general pa
 that get
 
 \subsection{EBM billing rules}\label{subsec:ebm-billing-rules}
-As described in section\ref{sec:ebm-conditions} the Ebm catalog already contains structured, treatment content unrelated conditions.
+As described in section\ref{sec:ebm-conditions} the Ebm catalog already contains structured,
+treatment content unrelated conditions.
 EBM rules therefore do not need to include them.
 However, what is left are treatment-specific conditions.
 Rules
-
 
 \subsection{OPS code rules}\label{subsec:ops-code-rules}
 OPS codes are identifiers of medical procedures.
