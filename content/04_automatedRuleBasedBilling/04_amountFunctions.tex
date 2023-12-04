@@ -1,5 +1,6 @@
 \section{Amount Functions}\label{sec:amount-functions}
 
+\section{Amount Function Requirements}
 
 How often a code is supposed to be billed in a billing is also highly relevant.
 
@@ -7,25 +8,37 @@ In the previous section, we explained how the billing framework derives a set of
 
 However, the question of how often we want to bill a code is also highly relevant.
 
-In this section, we are generalizing the framework so that for each billable code,
-it returns the number of times it should be billed, instead of just indicating whether it is billable or not.
-Instead of just a set of billable codes, the framework returns a mapping of codes to an integer which indicates the code's amount in the current billing.
-Codes that cannot be billed get the amount value zero.
+In the previous section, the framework derived a set of billing codes for a treatment.
+The result type was a set of billing codes.
 
-For that, we extend the general structure by introducing the concept of amount functions.
+In this section, we generalize the framework in such a way that
+it returns the code in combination with the number of times it should be billed.
+Now the framework returns a set of pairs, one entry being the code and the second entry an integer which indicates the code's amount.
 
-Similarly to rule conditions, the billing framework evaluates amount functions of rules for a\code{RuleEvaluationInput}.
-They return an integer value which indicates the number of how often it should be billed in the current billing.
+We extend the general rule structure by introducing the concept of amount functions.
+Similarly to rule conditions, amount functions are evaluatable subcomponents of a rule.
+The framework evaluates amount functions of rules for a\code{RuleEvaluationInput}.
+The result is an integer that indicates how often it should be billed in the billing.
 
-\mete{GOÄ 255: Injection, intra-articular or perineural}\cite{hermanns2013bemessung} is one example of a code that is likely to be billed multiple times in a single billing.
+\[
+    \text{f_{amount function}}: \code{RuleEvaluationInput} \longrightarrow \mathbb{N}
+\]
 
-The so-called Spine Infiltration is a procedure, which includes injections into spine nerves.
-Billing experts use GOÄ 255 for this medical service.
-Procedure block \code{SpineInfiltrationMsg}represents it in the system.
-However, GOÄ 255 is typically billed once for injection that actually occurred and a spine infiltration can include multiple injections at different localizations.
+Billing code amounts typically rely on two types of billing information.
+Subsection\ref{subsec:amount-derivation-from-procedure-information} and\ref{subsec:amount-derivation-from-durations} explain these sources.
+
+\subsection{Amount Derivation From Procedure Information}\label{subsec:amount-derivation-from-procedure-information}
+
+\mete{GOÄ 255: Injection, intra-articular or perineural}\cite{hermanns2013bemessung} is an example of a code that is likely to be billed multiple times in a single billing.
+
+The so-called Spine Infiltration is a procedure, that includes injections into spine nerves.
+Billing experts use \mete{GOÄ 255} for this medical service.
+Procedure block \code{SpineInfiltrationMsg} represents this procedure.
+However, \mete{GOÄ 255} is typically billed once for each injection the practitioner actually provided.
+Therefore, a spine infiltration can include multiple injections at different localizations.
+
 This is where a new requirement for the billing framework occurred.
-The system should not only be able to derive GOÄ 255 for provided spine infiltrations, but also be able to derive the correct amount of GOÄ 255.
-In this example, the number of GOÄ billings is the number of actual injections into the spine.
+The system should not only be able to derive GOÄ 255 for a provided spine infiltration, but should also be able to derive the correct number of GOÄ 255.
 
 Luckily, this information can be found in the procedure block of \code{SpineInfiltration}in the treatment data.
 
@@ -34,7 +47,7 @@ The cervical spine, the thoracic spine, and the lumbar spine.
 The cervical spine comprises the uppermost part of the spine, which is the neck and head.
 The thoracic spine, located in the middle, has twelve vertebrae attached to the rib cage, providing stability and structure to the upper body.
 Lastly, the lumbar spine at the lower back is made up of five larger vertebrae, designed to bear the body's weight and provide flexibility and movement.
-
+Each region has specific localizations that are relevant for spine infiltrations.
 
 The following code snipped displays a simplified version of the \code{SpineInfiltrationMsg}procedure block.
 \lstinputlisting[
