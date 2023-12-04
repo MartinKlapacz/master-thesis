@@ -1,5 +1,6 @@
 \section{Amount Functions}\label{sec:amount-functions}
 
+
 \section{Amount Function Requirements}
 
 How often a code is supposed to be billed in a billing is also highly relevant.
@@ -29,12 +30,12 @@ Subsection\ref{subsec:amount-derivation-from-procedure-information} and\ref{subs
 
 \subsection{Amount Derivation From Procedure Information}\label{subsec:amount-derivation-from-procedure-information}
 
-\mete{GOÄ 255: Injection, intra-articular or perineural}\cite{hermanns2013bemessung} is an example of a code that is likely to be billed multiple times in a single billing.
+\goa{255: Injection, intra-articular or perineural}\cite{hermanns2013bemessung} is an example of a code that is likely to be billed multiple times in a single billing.
 
 The so-called Spine Infiltration is a procedure, that includes injections into spine nerves.
-Billing experts use \mete{GOÄ 255} for this medical service.
+Billing experts use \goa{255} for this medical service.
 Procedure block \code{SpineInfiltrationMsg} represents this procedure.
-However, \mete{GOÄ 255} is typically billed once for each injection the practitioner actually provided.
+However, \goa{255} is typically billed once for each injection the practitioner actually provided.
 Therefore, a spine infiltration can include multiple injections at different localizations.
 
 This is where a new requirement for the billing framework occurred.
@@ -51,10 +52,10 @@ Each region has specific localizations that are relevant for spine infiltrations
 
 The following code snipped displays a simplified version of the \code{SpineInfiltrationMsg}procedure block.
 \lstinputlisting[
-    language=protobuf3,
-    style=protobuf,
-    caption={Relevant localizations in a spine infiltration}
-    label={lst:spineInfiltration}
+language=protobuf3,
+style=protobuf,
+caption={Relevant localizations in a spine infiltration}
+label={lst:spineInfiltration}
 ]{code/proto/spineInfiltration.proto}
 
 
@@ -67,3 +68,40 @@ Data type \code{repeated Laterality}is essentially a set of enum values.
 
 To get the total number of injections, the system would need to peek into the nested messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg} count the total number of \code{LATERALITY\_LEFT}and \code{LATERALITY\_RIGHT}values in all localization fields.
 
+\subsection{Amount Derivation From Durations}\label{subsec:amount-derivation-from-durations}
+
+Many GOÄ codes specify not only a service content but also a time range.
+If provided services exceed that time range the respective code can be billed more than once.
+
+\goa{21: Incoming human genetic counseling, per commenced half-hour and session} is an example for such a code.
+If the counseling takes one hour and 10 minutes, \goa{21} can be billed 3 times.
+Similar codes are \goa{61: Assistance in the medical service of another doctor (Assistance), per commenced half-hour}
+and \goa{85: Written expert opinion involving an effort exceeding the usual extent – possibly with scientific justification –, per commenced hour of work}
+Codes that with that characteristic often end with \("\)per commenced hour\("\) or \("\)per commenced half-hour\("\) to indicate the time range.
+Those are comparably simple cases.
+
+\mete{Section D: Anesthesia Services} contains a specific class of edge case that use time ranges.
+
+\goa{462: Combined anesthesia with endotracheal intubation, up to one hour} and \goa{463: Combined anesthesia with endotracheal intubation, each additional commenced half-hour}
+both denote the same procedure provided, but as their names suggest, they distinguish between different periods of service provision.
+\goa{462} is applicable only once per procedure.
+On the other hand, code \goa{463} covers each additional half-hour beyond the initial hour.
+Its billing number is variable and depends on the total duration of the anesthesia.
+\goa{463} excludes the first hour of service provision, already covered under code \goa{462}.
+
+The GOÄ distinguishes between \goa{462} and \goa{463} because of the following reasons.
+\goa{462} covers both the induction and the maintenance of anesthesia for the first hour.
+This is the most critical phase involving continuous administration of medication to make sure the patient remains asleep.
+The time after the first hour typically requires only maintenance of anesthesia and is therefore less critical.
+\goa{463} applies to subsequent commenced half-hours after the first hour and is therefore lower priced than \goa{462}.
+
+
+Anesthesia services frequently use this pattern of code groups referring to the same provided procedure but distinguishing between service periods.
+Equivalent examples are \goa{460/461}, \goa{476/477} and \goa{478/479}.
+\goa{473, 474 and 475} are a more special example.
+They refer to an initiation and monitoring of a continuous subarachnoid spinal anesthesia, again distinguishing between durations.
+\goa{473} applies to durations shorter than five hours, \goa{474} greater than five hours and \goa{475} applies once for the second and every subsequent day.
+
+These examples lead to concrete requirements for the billing framework and underline the importance of \"amount functions\".
+They must be expressive enough to represent and manage the nuances of these examples.
+Section\ref{sec:amount-function-specification} illustrates how users can express these cases using the rule language.
