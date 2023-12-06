@@ -1,0 +1,11 @@
+{
+  "code": "<code>",
+  "condition": {
+    // condition body
+  },
+  "amount": {
+    "blockName": "woundTreatment",
+    "fieldPath": ["path", "to", "field"],
+    "evaluationMode": "<evaluation type>"
+  }
+}

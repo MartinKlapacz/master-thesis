@@ -1,2 +1,60 @@
 \section{Amount Function Specification}\label{sec:amount-function-specification}
 
+
+As described in section\ref{sec:amount-functions} amount functions are evaluatable subcomponents of rules that return
+the number for a billing code.
+
+They are recursively defined evaluation trees that consist of two types of nodes, each node being an own amount function:
+\begin{itemize}
+    \item leaf nodes with information how to directly evaluate this node
+    \item inner nodes with an operator and a collection of child amount functions
+\end{itemize}
+
+Code snippets\ref{lst:per-n-minutes-amount-function} and\ref{lst:per-n-hours-amount-function} illustrate the usage of time related
+amount functions using the fields\code{perNHours} and \code{perNMinutes}.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Rule root},
+    label={lst:per-n-minutes-amount-function}
+]{code/rules/amountfunctions/per-n-minutes.json}
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Rule root},
+    label={lst:per-n-hours-amount-function}
+]{code/rules/amountfunctions/per-n-hours.json}
+
+The framework evaluates this type of amount function by dividing the procedure's duration by the number of minutes or hours and rounding up the result.
+The \code{blockName} field specifies the procedure.
+
+Field related amount functions work similarly but use other keys.
+They refer to a field within a procedure block using \code{blockName} and \code{fieldPath}.
+
+Additionally, they must specify an \code{evaluationMode} which can be one of the following:
+
+\begin{itemize}
+    \item \code{nonNull} evaluates to 1 if anything was entered into the field in the procedure block and 0 if this field is empty.
+    \item \code{length} evaluates to the total number of elements in the field.
+    This only works for list type fields.
+    \item \code{positive} evaluates to 1 if the field has value \code{true}.
+    This only works for fields of type \code{BoolW}.
+\end{itemize}
+
+Code snippet \ref{lst:field-path-amount-function} shows an example usage of a field related amount function.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Field Path Amount Function},
+    label={lst:field-path-amount-function}
+]{code/rules/amountfunctions/field-path.json}
+
+
+The \code{sum} operator
+
+
+Possible use cases for the \code{mul} operator are billing codes that depend on characteristics of the provided procedure and its total duration.
+

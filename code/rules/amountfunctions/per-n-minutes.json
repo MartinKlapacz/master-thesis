@@ -1,0 +1,10 @@
+{
+  "code": "<code>",
+  "condition": {
+    // condition body
+  },
+  "amount": {
+    "blockName": "woundTreatment",
+    "perNMinutes": 120
+  }
+}

@@ -96,10 +96,10 @@ looking for further information about the patient's issues\cite{seidel2010mosby}
 The practitioner decides based on patient's symptoms which exact examinations are conducted.
 Common examinations are checking of vital sings like blood pressure, pulse and temperature.
 
-\paragraph{Procedures}
+\subsubsection{Procedures}
 The procedures stage contains the actual patient specific interventions that \todo
 
-\subsubsection{Block Contents}
+\subsection{Block Contents}
 During Anamnesis,
 Physical Examination and Procedures the practitioner enters medical treatment specific information into the \AVS.
 The data is part of the treatment documentation and critical for billing.
@@ -150,36 +150,39 @@ Expressing such conditions in a well-defined and user-friendly way is an importa
 
 \subsection{Block Content Field Types}
 A block content can contain information of different input types.
-The rule language needs to know how to validate and handle those types.
+The billing framework must handle and validate each input type differently.
 
 The most basic field types are boolean flags and numeric inputs.
-The \AVuses the following scalar wrapper protobuf messages for them:
+The \AVS uses the following scalar wrapper protobuf messages for them:
 
 \lstinputlisting[
     language=protobuf2,
     style=protobuf,
-    caption={LiverPalpation protobuf messages}
+    caption={Scalar wrapper types}
 ]{code/proto/scalarWrapper.proto}
 
 Liver tenderness can either be present or not.
-This information is thus entered in a boolean field.
-The enumeration field type is used for fields that have a limited number of predefined values.
-For example,
-the most important enum type
-used in a large number of physical examination block contents is \code{AbnormalitiesExaminationResult}.
+This information is thus entered in a \code{BoolW]} field.
+We use enumeration fields for inputs that have a limited number of predefined values
+For example, the most frequently used enum type is \code{AbnormalitiesExaminationResult}.
+It denotes the result of a specific examination, which can be either conspicuous or inconspicuous.
 
 \lstinputlisting[
     language=protobuf2,
     style=protobuf,
-    caption={LiverPalpation protobuf messages}
+    caption={\code{AbnormalitiesExaminationResult}}
 ]{code/proto/enum.proto}
 
+Another important input type are knowledge inputs.
+They serve similar purposes as enum types but are not hard-coded into the code base.
+The system fetches them from a dedicated microservice that stores them in a MeiliSearch database.
+Enum field
 
 
-This concept of blocks being a medical questionnaire
-holding relevant data in the form of protobuf messages is used across the physical examination,
-anamnesis and procedures stage.
+The \AVS uses block content messages to store user inputs of medical questionnaires filled out by practitioners.
 
+The \AVS uses this concept of blocks as a medical questionnaires storing anamnesis, physical examination and procedure
+data as protobuf messages.
 
 Block content conditions are a powerful tool to make codes dependent on concrete medical information from anamnesis,
 physical examination and procedures.

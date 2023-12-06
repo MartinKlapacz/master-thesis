@@ -1,0 +1,9 @@
+{
+  "code": "<code>",
+  "condition": {
+    // condition body
+  },
+  "amount": {
+    "perNMinutes": 120
+  }
+}
