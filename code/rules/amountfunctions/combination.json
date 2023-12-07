@@ -1,0 +1,26 @@
+{
+  "code": "<code>",
+  "condition": {
+    // condition body
+  },
+  "amount": {
+    "mul": [
+      {
+        "blockName": "woundTreatment",
+        "perNMinutes": "30"
+      },
+      {
+        "sum": [
+          {
+            "fieldPath": ["pupilsAndLightReaction", "pupilLeft", "pupilSize"],
+            "evaluationMode": "nonNull"
+          },
+          {
+            "fieldPath": ["pupilsAndLightReaction", "pupilRight", "pupilSize"],
+            "evaluationMode": "nonNull"
+          }
+        ]
+      }
+    ]
+  }
+}

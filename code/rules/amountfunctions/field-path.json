@@ -4,7 +4,7 @@
     // condition body
   },
   "amount": {
-    "blockName": "woundTreatment",
+    "blockName": "<block content name>",
     "fieldPath": ["path", "to", "field"],
     "evaluationMode": "<evaluation type>"
   }

@@ -21,9 +21,10 @@ Similarly to rule conditions, amount functions are evaluatable subcomponents of 
 The framework evaluates amount functions of rules for a\code{RuleEvaluationInput}.
 The result is an integer that indicates how often it should be billed in the billing.
 
-\[
-    \text{f_{amount function}}: \code{RuleEvaluationInput} \longrightarrow \mathbb{N}
-\]
+\begin{equation}
+    \label{eq:amount-function-natural}
+    f_{amount}: \code{RuleEvaluationInput} \longrightarrow \mathbb{N}
+\end{equation}
 
 Billing code amounts typically rely on two types of billing information.
 Subsection\ref{subsec:amount-derivation-from-procedure-information} and\ref{subsec:amount-derivation-from-durations} explain these sources.
@@ -66,7 +67,7 @@ Each variable in these nested messages is of type \code{repeated Laterality}and 
 Data type \code{repeated Laterality}is essentially a set of enum values.
 %The fields \code{c4}, \code{c4}, indicates whether the injection targets the left, right or on both sides of the vertebrae.
 
-To get the total number of injections, the system would need to peek into the nested messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg} count the total number of \code{LATERALITY\_LEFT}and \code{LATERALITY\_RIGHT}values in all localization fields.
+To get the total number of injections, the system would need to peek into the nested messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg} count the .
 
 \subsection{Amount Derivation From Durations}\label{subsec:amount-derivation-from-durations}
 
@@ -100,8 +101,28 @@ Anesthesia services frequently use this pattern of code groups referring to the 
 Equivalent examples are \goa{460/461}, \goa{476/477} and \goa{478/479}.
 \goa{473, 474 and 475} are a more special example.
 They refer to an initiation and monitoring of a continuous subarachnoid spinal anesthesia, again distinguishing between durations.
-\goa{473} applies to durations shorter than five hours, \goa{474} greater than five hours and \goa{475} applies once for the second and every subsequent day.
+\goa{473} applies to durations shorter than five hours, \goa{474} to the subsequent five hours and \goa{475} applies once for the second and every subsequent day.
 
 These examples lead to concrete requirements for the billing framework and underline the importance of \"amount functions\".
 They must be expressive enough to represent and manage the nuances of these examples.
 Section\ref{sec:amount-function-specification} illustrates how users can express these cases using the rule language.
+
+\subsection{Partial Billing Amounts}\label{subsec:partial-billing-amounts}
+In very special cases billing codes apply with a reduced amount of points.
+
+There are at least two cases:
+\goa{D} is a surcharge for services provided on saturday, sunday and on holidays.
+If service provision happens during an opening hour, \goa{D} only applies with half the fee, though.
+This is also the case for surcharges \goa{E}, \goa{F}, \goa{G} and \goa{H} if \goa{51} is part of the billing, as well.
+
+The framework must be able to express these edge cases but does not allow any point value manipulations of billing codes.
+It solves this issue using amount functions.
+In those cases the amount function must be able to evaluate to 0.5 which results in the same fee reduction as required by the GOÄ specification.
+
+This requirement changes the formal definition given in formula \ref{eq:amount-function-natural} to:
+\begin{equation}
+    \label{eq:amount-function-real}
+    f_{amount}: \code{RuleEvaluationInput} \longrightarrow \mathbb{R}^{+} \\ \left{0\right}
+\end{equation}
+Amount function now evaluate
+

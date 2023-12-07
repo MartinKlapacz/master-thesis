@@ -31,7 +31,7 @@ The framework evaluates this type of amount function by dividing the procedure's
 The \code{blockName} field specifies the procedure.
 
 Field related amount functions work similarly but use other keys.
-They refer to a field within a procedure block using \code{blockName} and \code{fieldPath}.
+They refer to a field within a block content using \code{blockName} and \code{fieldPath}.
 
 Additionally, they must specify an \code{evaluationMode} which can be one of the following:
 
@@ -43,7 +43,7 @@ Additionally, they must specify an \code{evaluationMode} which can be one of the
     This only works for fields of type \code{BoolW}.
 \end{itemize}
 
-Code snippet \ref{lst:field-path-amount-function} shows an example usage of a field related amount function.
+Code snippet \ref{lst:field-path-amount-function} illustrates how to use a field related amount function.
 
 \lstinputlisting[
     language=json,
@@ -51,10 +51,43 @@ Code snippet \ref{lst:field-path-amount-function} shows an example usage of a fi
     caption={Field Path Amount Function},
     label={lst:field-path-amount-function}
 ]{code/rules/amountfunctions/field-path.json}
+365/351
 
 
-The \code{sum} operator
 
+Code snippet \ref{lst:constant-amount-function} shows the definition of a constant amount function.
+It always evaluates to the value of the \code{constant} key.
+This is particularly useful in more complex scenarios as a node in a deeper evaluation tree.
 
-Possible use cases for the \code{mul} operator are billing codes that depend on characteristics of the provided procedure and its total duration.
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Constant},
+    label={lst:constant-amount-function}
+]{code/rules/amountfunctions/constant.json}
+
+Using the previously introduced examples the user can only create evaluation tree solely consisting of the root node.
+This is already sufficient for many time-related use cases.
+However, what about more complex scenarios where the final amount depends on multiple factors?
+
+Amount functions allow for arbitrarily deep evaluation trees using nested amount functions.
+They have an operator key of type \code{list} which can be one of the following:
+\begin{itemize}
+    \item \code{sum} adds up the results of all child functions
+    \item \code{mul} multiplies the results of all child functions
+    \item \code{max} returns the maximum value of all child functions
+    \item \code{min} returns the minimum value of all child functions
+\end{itemize}
+
+\code{sum} is the most frequently used operator and enables users to count
+\code{mul} is very useful in combination with constants to apply a factor to the final result of the amount function.
+
+Code snipped \ref{lst:combined-amount-function} shows an example usage of a child amount functions.
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Combinations},
+    label={lst:combined-amount-function}
+]{code/rules/amountfunctions/combination.json}
+
 

@@ -4,6 +4,6 @@
     // condition body
   },
   "amount": {
-    "perNMinutes": 120
+    "constant": "<number>"
   }
 }
