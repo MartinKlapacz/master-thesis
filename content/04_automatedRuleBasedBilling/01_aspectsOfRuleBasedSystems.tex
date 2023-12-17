@@ -4,9 +4,21 @@ Rule-based systems, often encountered in the fields of artificial intelligence a
 are systems that apply predefined rules to a given problem or dataset
 and derive conclusions or make decisions based on the input data\cite{grosan2011rule}.
 
-These rules are typically explicit, declarative and logical statements about specific conditions that must hold to make the system act in a specific way.
+Deriving conclusions requires expert knowledge in the respective domain.
+The main difference to an ordinary software system is that the system does not hard-cde the domain-specific knowledge.
+Instead, we have rules that encode domain knowledge in a predefined rule language.
+The system treats these rules as an external resource and loads them into a rule-base.
+It directly uses the rule-encoded knowledge found in the rule-base to derive conclusions.
+A rule-based systems is therefore a framework for knowledge experts that do not need to have a technical background.
+However, users must possess the requisite skill to translate their expert knowledge into rules,
+which requires them to have a profound understanding of the rule language.
+
+
+These rules are typically explicit,
+declarative and logical statements about specific conditions that must hold to make the system act in a specific way.
 Rule-based systems are inherently knowledge-intensive applications\cite{hayes1985rule}.
-Their performance heavily relies on the quality, depth and richness of the domain-specific knowledge encoded in its rules.
+Their performance heavily relies on the quality,
+depth and richness of the domain-specific knowledge encoded in its rules.
 Rules in a rule-based system have the following form:
 
 \[
@@ -14,25 +26,16 @@ Rules in a rule-based system have the following form:
 \]
 
 
-A rule consists of a \textbf{condition} and a \textbf{conclusion} and makes the rule-based system apply the conclusion if the condition holds.
+A rule consists of a \textbf{condition} and a \textbf{conclusion}
+and makes the rule-based system apply the conclusion if the condition holds.
 Its purely logical and declarative nature and makes them explicit, deterministic and predictable.
-For the sake of explainability, each rule has an identifier which makes it unique among the set of all rules in the system.
+Each rule has an identifier that makes it unique among the set of all rules in the system.
 
 However, due to their simplicity, they also come with some limitations.
 They lack the ability to learn from new data autonomously and new rules to be added manually.
 Domain knowledge can also change which requires domain experts to be responsible for maintenance and rule updates.
 Knowledge domains can also be highly complex.
 High complexities increase the number of rules that a rule-based system requires to work effectively in production.
-
-
-Components of a rule-based System:
-
-\begin{itemize}
-    \item Rule Base: A pool of known valid rules
-    \item Inference Engine
-    \item
-\end{itemize}
-
 
 
 \section{Rule Language Requirements}
@@ -42,8 +45,8 @@ Rule-based systems do not require
 
 \begin{itemize}
     \item Clearly defined syntax and semantics.
-    \item Satisfactory expressiveness for all concrete cases
     \item User-friendliness
+    \item Satisfactory expressiveness for all concrete cases
     \item Rule base should be easy to extend
     \item Rule language should be updatable
 \end{itemize}
@@ -54,10 +57,12 @@ As every domain-specific language, a rule language needs clearly defined semanti
 Finding the correct compromise between language expressiveness and user-friendliness\cite{https://doi.org/10.1002/widm.11} requires careful consideration.
 On one side,
 the language needs
-to be sufficiently powerful to articulate all conditional logics that may occur in the knowledge domain.
+to be sufficiently powerful to articulate all conditional logics and edge cases that may occur in the knowledge domain.
 On the other side, the language must remain accessible to domain experts that will finally implement rules.
+For the language to remain relevant and effective, it should adapt over time, incorporating feedback from its user base.
+This might involve introducing new constructs or syntactic sugar to simplify common tasks.
 
-The system must assure that
+
 
 
 
