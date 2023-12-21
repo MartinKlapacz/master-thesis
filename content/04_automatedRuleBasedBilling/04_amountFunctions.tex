@@ -40,18 +40,19 @@ However, \goa{255} is typically billed once for each injection the practitioner 
 Therefore, a spine infiltration can include multiple injections at different localizations.
 
 This is where a new requirement for the billing framework occurred.
-The system should not only be able to derive GOÄ 255 for a provided spine infiltration, but should also be able to derive the correct number of GOÄ 255.
+The system should not only be able to derive \goa{255} for a provided spine infiltration, but should also be able to derive the correct quantity of \goa{255}.
 
-Luckily, this information can be found in the procedure block of \code{SpineInfiltration}in the treatment data.
+To illustrate this example, it is worth mentioning that the human spine consists of three primary regions:
+\begin{itemize}
+    \item The cervical spine, the thoracic spine, and the lumbar spine.
+    The cervical spine comprises the uppermost part of the spine, which is the neck and head.
+    \item The thoracic spine, located in the middle, has twelve vertebrae attached to the rib cage, providing stability and structure to the upper body.
+    \item Lastly, the lumbar spine at the lower back is made up of five larger vertebrae, designed to bear the body's weight and provide flexibility and movement.
+\end{itemize}
+Each region has well-defined localizations that can be targets for injections.
+The \AVS stores the data of a spine infiltration in a \code{SpineInfiltrationMsg}procedure block.
 
-Firstly, it is worth mentioning that the human spine is divisible into three primary regions:
-The cervical spine, the thoracic spine, and the lumbar spine.
-The cervical spine comprises the uppermost part of the spine, which is the neck and head.
-The thoracic spine, located in the middle, has twelve vertebrae attached to the rib cage, providing stability and structure to the upper body.
-Lastly, the lumbar spine at the lower back is made up of five larger vertebrae, designed to bear the body's weight and provide flexibility and movement.
-Each region has specific localizations that are relevant for spine infiltrations.
-
-The following code snipped displays a simplified version of the \code{SpineInfiltrationMsg}procedure block.
+The following code snipped displays a simplified version of it.
 \lstinputlisting[
     language=protobuf3,
     style=protobuf,
@@ -63,11 +64,14 @@ The following code snipped displays a simplified version of the \code{SpineInfil
 \code{SpineInfiltrationMsg} has a nested message\code{NerveRootBlockMsg}.
 \code{NerveRootBlockMsg} contains the messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg}.
 These messages represent the before-mentioned sections of the human spine.
-Each variable in these nested messages is of type \code{repeated Laterality}and represents injections at the respective localization alongside the spine.
-Data type \code{repeated Laterality}is essentially a set of enum values.
-%The fields \code{c4}, \code{c4}, indicates whether the injection targets the left, right or on both sides of the vertebrae.
+Each variable in these nested messages is of type \code{Laterality}and represents injections at the respective localization alongside the spine.
+The laterality of an injection refers to the specific side or sides where the injection is administered in the spine localization.
+This can be either on the left side, the right side, or on both sides.
 
-To get the total number of injections, the system would need to peek into the nested messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg} count the .
+To get the total number of injections, the system would need to peek into the nested messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg} and read the total number of injections from the laterality values.
+Additionally, the framework needs to be able to understand that \code{LATERALITY\_NONE} refers to zero and \code{LATERALITY\_LEFT} as well as\code{LATERALITY\_RIGHT} refer to one injection.
+\code{LATERALITY\_BOTH} refers to two injections.
+It is important to assign quantities to enum values.
 
 \subsection{Amount Derivation From Durations}\label{subsec:amount-derivation-from-durations}
 

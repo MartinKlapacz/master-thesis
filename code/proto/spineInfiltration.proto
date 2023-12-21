@@ -21,38 +21,39 @@ enum Laterality {
   LATERALITY_NONE = 0;
   LATERALITY_RIGHT = 1;
   LATERALITY_LEFT = 2;
+  LATERALITY_BOTH = 3;
 }
 
 message CervicalSpineMsg {
-  repeated Laterality c4 = 1;
-  repeated Laterality c5 = 2;
-  repeated Laterality c6 = 3;
-  repeated Laterality c7 = 4;
-  repeated Laterality c8 = 5;
+  Laterality c4 = 1;
+  Laterality c5 = 2;
+  Laterality c6 = 3;
+  Laterality c7 = 4;
+  Laterality c8 = 5;
 }
 
 message ThoracicSpineMsg {
-  repeated Laterality th1 = 1;
-  repeated Laterality th2 = 2;
-  repeated Laterality th3 = 3;
-  repeated Laterality th4 = 4;
-  repeated Laterality th5 = 5;
-  repeated Laterality th6 = 6;
-  repeated Laterality th7 = 7;
-  repeated Laterality th8 = 8;
-  repeated Laterality th9 = 9;
-  repeated Laterality th10 = 10;
-  repeated Laterality th11 = 11;
-  repeated Laterality th12 = 12;
+  Laterality th1 = 1;
+  Laterality th2 = 2;
+  Laterality th3 = 3;
+  Laterality th4 = 4;
+  Laterality th5 = 5;
+  Laterality th6 = 6;
+  Laterality th7 = 7;
+  Laterality th8 = 8;
+  Laterality th9 = 9;
+  Laterality th10 = 10;
+  Laterality th11 = 11;
+  Laterality th12 = 12;
 }
 
 message LumbarSpineMsg {
-  repeated Laterality l1 = 1;
-  repeated Laterality l2 = 2;
-  repeated Laterality l3 = 3;
-  repeated Laterality l4 = 4;
-  repeated Laterality l5 = 5;
-  repeated Laterality s1 = 6;
+  Laterality l1 = 1;
+  Laterality l2 = 2;
+  Laterality l3 = 3;
+  Laterality l4 = 4;
+  Laterality l5 = 5;
+  Laterality s1 = 6;
 }
 
 
