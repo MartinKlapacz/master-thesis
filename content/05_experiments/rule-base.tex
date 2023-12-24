@@ -1,0 +1,99 @@
+\section{Experimental Rule base}
+In this section we introduce the rule base used for the experimental scenarios in this work.
+
+This section serves the following purpose.
+Firstly, this section illustrates real examples of
+
+\begin{itemize}
+    \item We firstly introduce real that
+    \item We illustrate the usage of language features
+\end{itemize}
+
+\subsection{GOÄ}
+\subsubsection{Base GOÄ rules}
+
+\subsubsubsection{GOÄ 8}
+The following rule defines \goa{8}, which is defined as an \mete{Examination to determine the whole body status, including documentation if necessary}.
+
+
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={GOÄ 6}
+label={lst:goae-8-rule}
+]{code/rules/experiments/goae-base-rules-8.json}
+
+
+\goa{8} is formally defined as an examination of the following organ systems:
+\begin{itemize}
+    \item the Skin
+    \item visible mocous membranes
+    \item abdominal organs
+    \item supporting and musculoskeletal system organs
+    \item orienting neurological examination
+\end{itemize}
+
+Note that we use the \code{requiredPhysicalBlocks} field to express conditions on physical examination blocks.
+The rule represents each of the mentioned organ systems as a child node of the root node.
+The root node applies an \code{AND} operation to all its sub-children.
+Each sub-child represents one of the organ systems required by \goa{8}.
+The \AVS does not directly define an organ systems examination
+However, we can flexibly define an organ system examination by a logical tree of required physical blocks.
+This rule defines a skin examination to be present if a \code{skinTurgor}, a \code{skinColor}, a \code{skinThickness} or a \code{skinChangeExamination} block is present.
+We can represent the rest of the organ systems in a similar way using the logical tree pattern.
+Additionally there is already a respective single block for the orienting neurological examination.
+
+Note that the rule just checks only for existence of examination blocks and does not impose any field conditions.
+Unlike \goa{6}, \goa{8} does not mention any additional examination details.
+%\goa{6} is very similar to \goa{8} but much larger as it
+
+\subsubsection{GOÄ Surcharges}
+
+The GOÄ defines surcharges that are easily missed out in praxis.
+Section \ref{sec:surcharges} introduces this type of GOÄ codes and mentions a few examples.
+The following rules are time related and cover inconveniences linked to service provision times.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{A: Surcharge for services provided outside of office hours}}
+label={lst:goae-A-rule}
+]{code/rules/experiments/goae-base-rules-A.json}
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{B: Surcharge for services provided outside of office hours between 8 p.m. and 10 p.m. or 6 a.m. and 8 a.m}}
+label={lst:goae-8-rule}
+]{code/rules/experiments/goae-base-rules-B.json}
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{C: Surcharge for services provided between 10 p.m. and 6 a.m}}
+label={lst:goae-C-rule}
+]{code/rules/experiments/goae-base-rules-C.json}
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{D: Surcharge for services provided on Saturdays, Sundays or public holidays}}
+label={lst:goae-D-rule}
+]{code/rules/experiments/goae-base-rules-D.json}
+
+The following surcharges are applicable for very young patients.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{K1: Surcharge to the benefits according to numbers 45, 46, 48, 50, 51, 55 or 56 for children up to the age of 4}}
+label={lst:goae-K1-rule}
+]{code/rules/experiments/goae-base-rules-K1.json}
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{K2: Surcharge for examinations according to numbers 5, 6, 7 or 8 for children up to the age of 4}}
+label={lst:goae-K2-rule}
+]{code/rules/experiments/goae-base-rules-K2.json}
