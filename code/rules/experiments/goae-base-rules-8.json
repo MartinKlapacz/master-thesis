@@ -1,0 +1,35 @@
+{
+  "code": "8",
+  "condition": {
+    "requiredPhysicalBlocks": {
+      "and": [
+        {
+          "or": [
+            "skinTurgor",
+            "skinColor",
+            "skinThickness",
+            "skinChangeExaminations"
+          ]
+        },
+        {
+
+        },
+        {
+          "or": [
+            "abdominalPercussion",
+            "abdominalInspectionGeneral",
+            "abdominalCirculationNoise"
+          ]
+        },
+        "orientingNeurologicalExamination",
+        {
+          "or": [
+            "mobilityTestHipJoint",
+            "functionTestsHipAndPelvic",
+            "palpationHipAndPelvic"
+          ]
+        }
+      ]
+    }
+  }
+}

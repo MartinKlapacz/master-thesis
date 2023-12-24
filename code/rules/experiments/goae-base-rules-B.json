@@ -1,0 +1,16 @@
+{
+  "code": "B",
+  "condition": {
+    "outsideOfOfficeHours": true,
+    "timeOfDayRestriction": [
+      {
+        "from": "20:00:00",
+        "to": "22:00:00"
+      },
+      {
+        "from": "06:00:00",
+        "to": "08:00:00"
+      }
+    ]
+  }
+}

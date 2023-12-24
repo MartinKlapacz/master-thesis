@@ -1,0 +1,10 @@
+{
+  "code": "D",
+  "condition": {
+    "outsideOfOfficeHours": true,
+    "daysOfWeek": [
+      "sunday",
+      "saturday"
+    ]
+  }
+}

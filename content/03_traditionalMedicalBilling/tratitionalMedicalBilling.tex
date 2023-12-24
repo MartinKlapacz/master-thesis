@@ -44,18 +44,25 @@ This experience highlights that billing optimization can also mean the automatio
 coding can be solved in a basic yet effective manner.
 
 \subsection{3M}
-
-
+%3M SmarteKI is primarily designed for use in both inpatient and outpatient settings, focusing on streamlining and automating various aspects of clinical billing. It aims to simplify the complex processes of DRG (Diagnosis-Related Group) and PEPP (Pauschalierendes Entgeltsystem Psychiatrie und Psychosomatik) coding, thereby assisting healthcare professionals in managing billing tasks more efficiently.
+%The system integrates seamlessly with a range of common healthcare information systems used in German clinics, facilitating the collection and processing of patient and treatment data crucial for billing. This includes data from diverse sources such as patient visits, diagnoses, laboratory results, and other relevant information.
+%3M SmarteKI employs advanced AI algorithms to conduct semantic analysis of various medical documents, including physician letters and consultation reports. This capability allows it to convert unstructured medical data into a structured format, essential for accurate billing and coding.
+%One of the key features of SmarteKI is its ability to automatically generate billing statements and perform plausibility checks on existing codes, ensuring accuracy and compliance with medical billing standards.
+%Furthermore, 3M has developed a robust machine learning network, trained on extensive clinical data, to enhance the system's capability in automated coding and billing case recognition. This network adheres to strict data privacy standards, ensuring that sensitive patient information remains secure.
+%In addition to its AI-driven functionalities, 3M SmarteKI also includes a rule-based coding system, constantly updated and refined through ongoing feedback from healthcare providers and insurers. This ensures that the system stays current with the latest billing regulations and practices.
 
 \subsection{ID clinical context coding}
 ID berlin is a german company that is specialized in creating systems that aid in medical documentation, coding and billing.
 ID Clinical Context Coding is a system to improve accuracy of medical coding within clinical documentation.
-It uses NLP algorithms to analyze medical documents and to derive appropriate codes matching their contents.
-This way
+
+
 
 ID Clinical Context Coding (ID CCC) is a digital coding solution that enhances the medical documentation and billing process in healthcare facilities.
 It focuses on analyzing both digital and digitized medical documents to identify billable services.
-This is achieved through a linguistic breakdown of the documentation, identifying relevant services.
+This is achieved through a linguistic breakdown of the documentation, identifying relevant services. \cite{Diekmann2008}
+
+ID DIACOS is a
+
 
 diacos \cite{10.1007/978-3-642-82852-2_111}
 
@@ -64,13 +71,28 @@ diacos \cite{10.1007/978-3-642-82852-2_111}
 
 \subsection{Common Issues}
 
+The previously presented approaches face common issues.
+Namely, automatically deriving billing codes from treatment and patient data requires structured data.
+This data typically lives as unstructured information scattered across multiple sources such as existing clinical systems or human-readable documents.
 
-%Sehr geehrte Damen und Herren,
-%mein Name ist Martin Klapacz. Ich bin Student der Informatik an der TU München und schreibe meine Masterarbeit über die automatisierte Abrechnung von medizinischen Behandlungen.
-%
-%Teil der Recherche ist es die unterschiedlichen Ansätze bewährter Softwarelösungen auf dem deutschen Markt zu verstehen und aus technischer Sicht zu beleuchten. Dabei würde ich gerne Ihr System in meiner Masterarbeit vorstellen.
-%
-%Dazu habe ich aber noch einige Fragen, die ich gerne in einem persöhnlichen Telefonat besprechen wollen würde.
-%
-%Liebe Grüße,
-%Martin Klapacz
+When comparing the previously presented applications, one might note their solutions share the following reoccurring pattern.
+\begin{enumerate}
+    \item The first step is to collect as much billing-related data as possible and map the unstructured information they find to their own structured data schema.
+    \item Given this structured dataset, the systems then apply their own technique to generate billing codes from the data in the schema.
+    This own technique is often either AI or rule based or a mixture of both.
+\end{enumerate}
+
+This pattern, however, has a set of issues.
+
+---
+Before this text I introduced multiple automatic medical billing products, including 3m,tiplu momo, id clinical context coding.
+This is what I have right now, i want to express that this pattern has some issues:
+- documents and legacy systems are not guaranteed to deliver all the information that the system needs, documents of miss small details
+- external systems track data not in a billing-oriented way. They are designed to track data in a patient documentation way but are designed with a different intention.
+
+do you have other ideas? Maybe papers that may help
+
+
+\begin{enumerate}
+    \item
+\end{enumerate}

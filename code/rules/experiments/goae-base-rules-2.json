@@ -1,0 +1,27 @@
+[
+  {
+    "code": "2",
+    "condition": {
+      "patientCounseling": false,
+      "performerIsDoctor": false,
+      "singleBillingPositionIfPractitionerIsDoctor": true
+    }
+  },
+  {
+    "code": "2",
+    "condition": {
+      "singleBillingPositionIfPractitionerIsDoctor": true,
+      "maxAmountAnamnesisBlocks": 2,
+      "performerIsDoctor": true,
+      "requiredProcedureBlocks": {
+        "or": [
+          "bodyMeasurements",
+          "appearance",
+          "generalCondition",
+          "generalFindings",
+          "bloodPressureAndPulse"
+        ]
+      }
+    }
+  }
+]

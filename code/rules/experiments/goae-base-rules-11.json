@@ -1,0 +1,9 @@
+{
+  "code": "1",
+  "condition": {
+    "maxDurationTreatment": 10,
+    "performerIsDoctor": true,
+    "onlyOncePerGoaeTreatmentCaseInCombinationWithSpecialServices": true,
+    "patientCounseling": true
+  }
+}

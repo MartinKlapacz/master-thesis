@@ -1,0 +1,44 @@
+[
+  {
+    "code": "460",
+    "condition": {
+      "requiredProcedureBlocks": {
+        "generalAnesthesia": {
+          "procedureType": "balancedAnesthesia"
+        }
+      },
+      "excludedProcedureBlocks": {
+        "generalAnesthesia": {
+          "airwayManagement": "Endobronchialtubus"
+        }
+      }
+    }
+  },
+  {
+    "code": "461",
+    "amount": {
+      "sum": [
+        {
+          "constant": -2
+        },
+        {
+          "procedure": "generalAnesthesia",
+          "perNMinutes": 30
+        }
+      ]
+    },
+    "condition": {
+      "requiredProcedureBlocks": {
+        "generalAnesthesia": {
+          "procedureType": "balancedAnesthesia",
+          "$minDuration": 60
+        }
+      },
+      "excludedProcedureBlocks": {
+        "generalAnesthesia": {
+          "airwayManagement": "Endobronchialtubus"
+        }
+      }
+    }
+  }
+]
