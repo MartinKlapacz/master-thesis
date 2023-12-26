@@ -1,0 +1,27 @@
+\section{Common Issues with Modern Billing Automation Products}\label{sec:common-issues-with-modern-billing-automation-products}
+
+The previously presented approaches face common issues.
+Namely, automatically deriving billing codes from treatment and patient data requires structured data.
+This data typically lives as unstructured information scattered across multiple sources such as existing clinical systems or human-readable documents.
+
+When comparing the previously presented applications, one might note their solutions share the following reoccurring pattern.
+\begin{enumerate}
+    \item The first step is to collect as much billing-related data as possible and map the unstructured information they find to their own structured data schema.
+    \item Given this structured dataset, the systems then apply their own technique to generate billing codes from the data in the schema.
+    This own technique is often either AI or rule based or a mixture of both.
+\end{enumerate}
+
+This pattern, however, has a set of issues.
+
+---
+Before this text I introduced multiple automatic medical billing products, including 3m,tiplu momo, id clinical context coding.
+This is what I have right now, i want to express that this pattern has some issues:
+- documents and legacy systems are not guaranteed to deliver all the information that the system needs, documents of miss small details
+- external systems track data not in a billing-oriented way. They are designed to track data in a patient documentation way but are designed with a different intention.
+
+do you have other ideas? Maybe papers that may help
+
+
+\begin{enumerate}
+    \item
+\end{enumerate}

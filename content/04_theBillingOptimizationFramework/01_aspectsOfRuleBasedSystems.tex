@@ -1,9 +1,7 @@
-\chapter{Aspects of Rule-Based Systems}\label{ch:aspects-of-rule-based-systems}
+\section{Aspects of Rule-Based Systems}\label{sec:aspects-of-rule-based-systems}
 
-Rule-based systems, often encountered in the fields of artificial intelligence and computer science,
-are systems that apply predefined rules to a given problem or dataset
+Rule-based systems are systems that apply predefined rules to a given problem or dataset
 and derive conclusions or make decisions based on the input data\cite{grosan2011rule}.
-
 Deriving conclusions requires expert knowledge in the respective domain.
 The main difference to an ordinary software system is that the system does not hard-cde the domain-specific knowledge.
 Instead, we have rules that encode domain knowledge in a predefined rule language.
@@ -38,10 +36,7 @@ Knowledge domains can also be highly complex.
 High complexities increase the number of rules that a rule-based system requires to work effectively in production.
 
 
-\section{Rule Language Requirements}
-
-Rule-based systems do not require
-
+\subsection{General Rule Language Requirements}\label{subsec:general-rule-language-requirements}
 
 \begin{itemize}
     \item Clearly defined syntax and semantics.
@@ -63,9 +58,6 @@ For the language to remain relevant and effective, it should adapt over time, in
 This might involve introducing new constructs or syntactic sugar to simplify common tasks.
 
 
-
-
-
 Possible rule strategies:
 
 <Rule-id>: IF <condition> THEN <conclusion>
@@ -80,7 +72,7 @@ A condition is essentially a function which the rule engine can.
     \text{conclusion holds} \Leftrightarrow f(\text{input1}, \text{input2}, \ldots, \text{input3}) = \text{true}
 \]
 
-\section{Inference Mechanism}
+\section{Inference Mechanism}\label{sec:inference-mechanism}
 
 Basically, there are two modes of inference mechanisms\cite{https://doi.org/10.1002/widm.11}
 
@@ -107,5 +99,5 @@ If the system cannot find further rules, we reject the initial hypothesis.
 This inference strategy is often used in diagnostics and decision support\cite{https://doi.org/10.1002/widm.11}
 
 Part of the design of the rule-based framework in this work is the decision between forward and backward chaining.
-Chapter \section{sec:rule-core} revisits this design decision
+Chapter \todo{add correct ref} revisits this design decision
 and provides a more detailed justification for the choice taken.

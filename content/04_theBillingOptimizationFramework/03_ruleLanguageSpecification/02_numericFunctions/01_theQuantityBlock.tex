@@ -1,19 +1,11 @@
-\section{Numeric Functions}\label{sec:numeric-functions}
+\section{Quantity Functions}\label{sec:numeric-functions}
 
-\subsection{Quantitiy Function}\label{sec:quantity-function-requirements}
+In the previous chapter we introduced the concept of a billing rule.
 
-How often a code is supposed to be billed in a billing is also highly relevant.
-
+Not only which codes are part of the billing but also their quantity is highly important information.
 In the previous section, we explained how the billing framework derives a set of applicable billing codes.
-
-However, the question of how often we want to bill a code is also highly relevant.
-
-In the previous section, the framework derived a set of billing codes for a treatment.
-The result type was a set of billing codes.
-
-In this section, we generalize the framework in such a way that
-it returns the code in combination with the number of times it should be billed.
-Now the framework returns a set of pairs, one entry being the code and the second entry an integer which indicates the code's quantity.
+The result data type was essentially a set of billing codes.
+In this section, we generalize the framework in such a way that it returns each code in combination with its quantity.
 
 We extend the general rule structure by introducing the concept of quantity functions.
 Similarly to rule conditions, quantity functions are evaluatable subcomponents of a rule.
@@ -25,7 +17,7 @@ The result is an integer that indicates how often it should be billed in the bil
     f_{quantity}: \code{RuleEvaluationInput} \longrightarrow \mathbb{N}
 \end{equation}
 
-Billing code quantitys typically rely on two types of billing information.
+Billing code quantities typically rely on two types of billing information.
 Subsection\ref{subsec:quantity-derivation-from-procedure-information} and\ref{subsec:quantity-derivation-from-durations} explain these sources.
 
 \subsection{Quantity Derivation From Procedure Information}\label{subsec:quantity-derivation-from-procedure-information}
