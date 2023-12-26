@@ -82,7 +82,7 @@ caption={\goa{D: Surcharge for services provided on Saturdays, Sundays or public
 label={lst:goae-D-rule}
 ]{code/rules/experiments/goae-base-rules-D.json}
 
-The following surcharges are applicable for very young patients.
+The following surcharges are applicable to patients younger than 4 years old if one of the required GOÄ codes are present.
 
 \lstinputlisting[
 language=json,
@@ -97,3 +97,38 @@ style=json,
 caption={\goa{K2: Surcharge for examinations according to numbers 5, 6, 7 or 8 for children up to the age of 4}}
 label={lst:goae-K2-rule}
 ]{code/rules/experiments/goae-base-rules-K2.json}
+
+
+\subsubsection{Multiplier Justification Rules}\label{subsec:multiplier-justification-rules}
+Section \ref{sec:billing-multipliers} and \ref{sec:multiplier-justifications} introduce the concept of billing multipliers in private treatments.
+Multipliers are applicable to existing GOÄ codes, however, require justifying and provable condition in the treatment data.
+As multiplier justifications are neither standardized nor pre-defined by any authority,
+part of this work was to collect commonly used multiplier justifications.
+Thanks to the medical experts at \AV, I received access to medical documents that contained real multiplier justifications used in the Dermato Oncology department of the LMU.
+Many of the following rules implement those justifications.
+Additionally, I took part in \todo{Explain PVC semianr}
+
+
+\subsubsubsection{Procedure-specific and duration-related multiplier justifications}
+Procedures often take longer than expected.
+This can be the case due to unforeseen complications and issues that appear during the procedure.
+
+The following rule list shows the generic pattern used for procedure-specific and duration-related multiplier justifications.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{generic procedure duration multiplier justification rule}}
+label={lst:goae-K2-rule}
+]{code/rules/experiments/goae-base-rules-K2.json}
+
+Note that the rule only checks for the existence of the respective procedure block.
+We use the special block condition \code{\$minDuration} to impose a condition on the duration of the provided procedure.
+\code{f\(N\)} inside the multiplier object is a linear and increasing function.
+The constant makes sure that the image of the function has the upper bound \code{C}, which should be the highest allowed multiplier value for \goa{<code>}.
+
+
+%As described in section \ref{sec:billing-multipliers} they are merely descriptive comments attached to GOÄ billing positions.
+
+
+Next, I
