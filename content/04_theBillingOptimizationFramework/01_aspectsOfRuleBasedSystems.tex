@@ -7,17 +7,16 @@ The main difference to an ordinary software system is that the system does not h
 Instead, we have rules that encode domain knowledge in a predefined rule language.
 The system treats these rules as an external resource and loads them into a rule-base.
 It directly uses the rule-encoded knowledge found in the rule-base to derive conclusions.
-A rule-based systems is therefore a framework for knowledge experts that do not need to have a technical background.
+A rule-based system is therefore a framework for knowledge experts that do not necessarily need a technical background.
 However, users must possess the requisite skill to translate their expert knowledge into rules,
 which requires them to have a profound understanding of the rule language.
-
 
 These rules are typically explicit,
 declarative and logical statements about specific conditions that must hold to make the system act in a specific way.
 Rule-based systems are inherently knowledge-intensive applications\cite{hayes1985rule}.
 Their performance heavily relies on the quality,
-depth and richness of the domain-specific knowledge encoded in its rules.
-Rules in a rule-based system have the following form:
+depth and richness of the knowledge encoded in its rules.
+Rules in a rule-based system have the following form \cite{hayes1985rule}:
 
 \[
     \text{<Rule-id>}: \text{IF} \text{<condition>} \text{THEN} \text{<conclusion>} \text{holds}
@@ -36,7 +35,7 @@ Knowledge domains can also be highly complex.
 High complexities increase the number of rules that a rule-based system requires to work effectively in production.
 
 
-\subsection{General Rule Language Requirements}\label{subsec:general-rule-language-requirements}
+\subsection{General Requirements for Rule Languages}\label{subsec:general-rule-language-requirements}
 
 \begin{itemize}
     \item Clearly defined syntax and semantics.
@@ -46,41 +45,33 @@ High complexities increase the number of rules that a rule-based system requires
     \item Rule language should be updatable
 \end{itemize}
 
-As every domain-specific language, a rule language needs clearly defined semantics and syntax.
-
-
-Finding the correct compromise between language expressiveness and user-friendliness\cite{https://doi.org/10.1002/widm.11} requires careful consideration.
-On one side,
-the language needs
+As every machine-readable language, a rule language needs clearly defined semantics and syntax.
+Depending on the target group, a domain-specific language should be user-friendly and easy to learn.
+Finding the correct compromise between language expressiveness and user-friendliness\cite{https://doi.org/10.1002/widm.11},
+however, requires careful consideration.
+On one side, the language needs
 to be sufficiently powerful to articulate all conditional logics and edge cases that may occur in the knowledge domain.
-On the other side, the language must remain accessible to domain experts that will finally implement rules.
-For the language to remain relevant and effective, it should adapt over time, incorporating feedback from its user base.
+On the other side, the language must remain accessible to domain experts,
+that may lack prior programming experience, and that will finally use it in production.
 This might involve introducing new constructs or syntactic sugar to simplify common tasks.
+For the language to remain relevant and effective, it should adapt over time and incorporate feedback from its user base.
+This may require a dedicated developer team that is able to quickly update the system.
 
-
-Possible rule strategies:
-
-<Rule-id>: IF <condition> THEN <conclusion>
-
-A rule-based system to work its rule base needs
-to contain a high number of valid rules that incorporate large parts of the respective knowledge domain.
-For the sake of transparency every rule needs an id that identifies holding rules in an evaluated result set.
-
-A condition is essentially a function which the rule engine can.
+The performance of a rule-based system is only as good as its rule-base. \todo{schöner machen}
+A rule-base requires a high number of valid rules that incorporate large parts of the respective knowledge domain.
 
 \[
-    \text{conclusion holds} \Leftrightarrow f(\text{input1}, \text{input2}, \ldots, \text{input3}) = \text{true}
+    \text{conclusion \code{f}h olds} \Leftrightarrow \code{f}(\text{input1}, \text{input2}, \ldots, \text{input3}) = \text{true}
 \]
 
 \section{Inference Mechanism}\label{sec:inference-mechanism}
 
-Basically, there are two modes of inference mechanisms\cite{https://doi.org/10.1002/widm.11}
+According to \cite{https://doi.org/10.1002/widm.11}, there are two modes of inference mechanisms:
 
 \begin{itemize}
     \item forward chaining
     \item backward chaining
 \end{itemize}
-
 
 Forward chaining is an inference strategy where reasoning begins with the existing facts.
 The inference engine simply applies the conditions of all rules in the rule base to the known data.
@@ -101,3 +92,20 @@ This inference strategy is often used in diagnostics and decision support\cite{h
 Part of the design of the rule-based framework in this work is the decision between forward and backward chaining.
 Chapter \todo{add correct ref} revisits this design decision
 and provides a more detailed justification for the choice taken.
+
+\subsection{Roles in the Implementation of Rule-based Systems}\label{subsec:roles-in-the-implementation-of-rule-based-systems} \todo{put this into results}
+Due to the clear separation between knowledge domain and application framework there are essentially two groups of people
+involved in the implementation of the rule-based system:
+The framework engineers and the knowledge engineers.
+
+During the implementation of the billing optimization framework, I took the role of a framework engineer.
+
+I have received support from billing experts at \AV.
+
+\begin{itemize}
+    \item The application engineer is responsible for implementing and maintaining the framework software.
+    Implementing a rule-based system does not only require advanced skills in software engineering and system design but also a basic understanding of the knowledge domain.
+    Framework engineers collaborate with knowledge engineers to design the rule language
+    and to get all the domain-specific information they need.
+    \item
+\end{itemize}
