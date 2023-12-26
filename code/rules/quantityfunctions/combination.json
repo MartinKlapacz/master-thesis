@@ -3,7 +3,7 @@
   "condition": {
     // condition body
   },
-  "amount": {
+  "quantity": {
     "mul": [
       {
         "blockName": "woundTreatment",

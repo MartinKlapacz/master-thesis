@@ -1,7 +1,6 @@
-\section{Amount Functions}\label{sec:amount-functions}
+\section{Numeric Functions}\label{sec:numeric-functions}
 
-
-\section{Amount Function Requirements}
+\subsection{Quantitiy Function}\label{sec:quantity-function-requirements}
 
 How often a code is supposed to be billed in a billing is also highly relevant.
 
@@ -14,22 +13,22 @@ The result type was a set of billing codes.
 
 In this section, we generalize the framework in such a way that
 it returns the code in combination with the number of times it should be billed.
-Now the framework returns a set of pairs, one entry being the code and the second entry an integer which indicates the code's amount.
+Now the framework returns a set of pairs, one entry being the code and the second entry an integer which indicates the code's quantity.
 
-We extend the general rule structure by introducing the concept of amount functions.
-Similarly to rule conditions, amount functions are evaluatable subcomponents of a rule.
-The framework evaluates amount functions of rules for a\code{RuleEvaluationInput}.
+We extend the general rule structure by introducing the concept of quantity functions.
+Similarly to rule conditions, quantity functions are evaluatable subcomponents of a rule.
+The framework evaluates quantity functions of rules for a\code{RuleEvaluationInput}.
 The result is an integer that indicates how often it should be billed in the billing.
 
 \begin{equation}
-    \label{eq:amount-function-natural}
-    f_{amount}: \code{RuleEvaluationInput} \longrightarrow \mathbb{N}
+    \label{eq:quantity-function-natural}
+    f_{quantity}: \code{RuleEvaluationInput} \longrightarrow \mathbb{N}
 \end{equation}
 
-Billing code amounts typically rely on two types of billing information.
-Subsection\ref{subsec:amount-derivation-from-procedure-information} and\ref{subsec:amount-derivation-from-durations} explain these sources.
+Billing code quantitys typically rely on two types of billing information.
+Subsection\ref{subsec:quantity-derivation-from-procedure-information} and\ref{subsec:quantity-derivation-from-durations} explain these sources.
 
-\subsection{Amount Derivation From Procedure Information}\label{subsec:amount-derivation-from-procedure-information}
+\subsection{Quantity Derivation From Procedure Information}\label{subsec:quantity-derivation-from-procedure-information}
 
 \goa{255: Injection, intra-articular or perineural}\cite{hermanns2013bemessung} is an example of a code that is likely to be billed multiple times in a single billing.
 
@@ -73,7 +72,7 @@ Additionally, the framework needs to be able to understand that \code{LATERALITY
 \code{LATERALITY\_BOTH} refers to two injections.
 It is important to assign quantities to enum values.
 
-\subsection{Amount Derivation From Durations}\label{subsec:amount-derivation-from-durations}
+\subsection{Quantity Derivation From Durations}\label{subsec:quantity-derivation-from-durations}
 
 Many GOÄ codes specify not only a service content but also a time range.
 If provided services exceed that time range the respective code can be billed more than once.
@@ -107,12 +106,12 @@ Equivalent examples are \goa{460/461}, \goa{476/477} and \goa{478/479}.
 They refer to an initiation and monitoring of a continuous subarachnoid spinal anesthesia, again distinguishing between durations.
 \goa{473} applies to durations shorter than five hours, \goa{474} to the subsequent five hours and \goa{475} applies once for the second and every subsequent day.
 
-These examples lead to concrete requirements for the billing framework and underline the importance of \"amount functions\".
+These examples lead to concrete requirements for the billing framework and underline the importance of \"quantity functions\".
 They must be expressive enough to represent and manage the nuances of these examples.
-Section\ref{sec:amount-function-specification} illustrates how users can express these cases using the rule language.
+Section\ref{sec:quantity-function-specification} illustrates how users can express these cases using the rule language.
 
-\subsection{Partial Billing Amounts}\label{subsec:partial-billing-amounts}
-In very special cases billing codes apply with a reduced amount of points.
+\subsection{Partial Billing Quantitys}\label{subsec:partial-billing-quantitys}
+In very special cases billing codes apply with a reduced quantity of points.
 
 There are at least two cases:
 \goa{D} is a surcharge for services provided on saturday, sunday and on holidays.
@@ -120,13 +119,13 @@ If service provision happens during an opening hour, \goa{D} only applies with h
 This is also the case for surcharges \goa{E}, \goa{F}, \goa{G} and \goa{H} if \goa{51} is part of the billing, as well.
 
 The framework must be able to express these edge cases but does not allow any point value manipulations of billing codes.
-It solves this issue using amount functions.
-In those cases the amount function must be able to evaluate to 0.5 which results in the same fee reduction as required by the GOÄ specification.
+It solves this issue using quantity functions.
+In those cases the quantity function must be able to evaluate to 0.5 which results in the same fee reduction as required by the GOÄ specification.
 
-This requirement changes the formal definition given in formula \ref{eq:amount-function-natural} to:
+This requirement changes the formal definition given in formula \ref{eq:quantity-function-natural} to:
 \begin{equation}
-    \label{eq:amount-function-real}
-    f_{amount}: \code{RuleEvaluationInput} \longrightarrow \mathbb{R}^{+} \\ \left{0\right}
+    \label{eq:quantity-function-real}
+    f_{quantity}: \code{RuleEvaluationInput} \longrightarrow \mathbb{R}^{+} \\ \left{0\right}
 \end{equation}
-Amount function now evaluate
+Quantity function now evaluate
 

@@ -3,7 +3,7 @@
   "condition": {
     // condition body
   },
-  "amount": {
+  "quantity": {
     "blockName": "<block content name>",
     "fieldPath": ["path", "to", "field"],
     "evaluationMode": "<evaluation type>"
