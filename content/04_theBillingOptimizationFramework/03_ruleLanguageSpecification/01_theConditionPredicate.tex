@@ -12,3 +12,25 @@
 
 \subsubsection{Service Performer related Conditions}
 
+\paragraph{performerIsDoctor}
+The \code{performerIsDoctor} condition is a boolean condition field that allows to impose conditions on the practitioner type.
+The current version of the \AVS supports the following practitioner types:
+
+
+\lstinputlisting[
+    language=protobuf2,
+    style=protobuf,
+    caption={\code{AbnormalitiesExaminationResult}},label={lst:AbnormalitiesExaminationResult}]{code/proto/roleTypes.proto}
+
+Given the rules in code snippet \ref{lst:performerIsDoctor}, \code{code1} would hold if the practitioner had the role \code{ROLE\_TYPE\_DOCTOR}
+or \code{ROLE\_TYPE\_HEAD\_DOCTOR}.
+Otherwise, \code{code2} would hold.
+This condition is relevant for \goa{1} and \goa{2}, which are only applicable by doctors.
+
+\lstinputlisting[
+    language=protobuf2,
+    style=protobuf,
+    caption={\code{AbnormalitiesExaminationResult}},
+    label={lst:performerIsDoctor}
+]{code/rules/specification/performerIsDoctor.json}
+
