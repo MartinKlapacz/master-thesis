@@ -8,7 +8,7 @@
 \usepackage[%
   backend=biber,
   url=false,
-  style=alphabetic,
+  style=numeric,
   maxnames=4,
   minnames=3,
   maxbibnames=99,
@@ -26,7 +26,15 @@
 \usepackage{caption}
 \usepackage[hidelinks]{hyperref} % hidelinks removes colored boxes around references and links
 
+% custom
+\usepackage{color}
+\usepackage{wasysym}
+\usepackage{amsmath}
+\usepackage{amsfonts} % one-sided
+
 \bibliography{bibliography}
+\bibliographystyle{plainnat}
+
 
 \setkomafont{disposition}{\normalfont\bfseries} % use serif font for headings
 \linespread{1.05} % adjust line spread for mathpazo font

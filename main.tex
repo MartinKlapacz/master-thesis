@@ -3,17 +3,13 @@
 % TODO: decide if one-sided/two-sided
 %\documentclass[headsepline,footsepline,footinclude=false,fontsize=11pt,paper=a4,listof=totoc,bibliography=totoc,BCOR=12mm,DIV=12]{scrbook} % two-sided
 \documentclass[headsepline,footsepline,footinclude=false,oneside,fontsize=11pt,paper=a4,listof=totoc,bibliography=totoc]{scrbook}
-\usepackage{color}
-\usepackage{wasysym}
-\usepackage{amsmath}
-\usepackage{amsfonts} % one-sided
+
 %\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 
-% TODO: change citation style in settings
 \input{settings}
 \input{proto}
+\input{json}
 
-% TODO: change thesis information
 \newcommand*{\getUniversity}{Technische Universität München}
 \newcommand*{\getFaculty}{Department of Informatics}
 \newcommand*{\getTitle}{Implementation of a Billing Optimization Framework}
@@ -38,7 +34,7 @@
 \newcommand{\mete}[1][]{\textbf{#1}}
 \newcommand{\goa}[1][]{\mete{GOÄ #1}}
 \newcommand{\BF}{billing framework}
-\newcommand{\RL}{MarBill }
+\newcommand{\RL}{BiRule}
 
 %\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
 %\newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
@@ -55,6 +51,8 @@
 %\newcommand{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
 %\newcommand{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
+\newcommand{\addref}[]{\todo{add ref}}
+\newcommand{\addcite}[]{\todo{add cite}}
 
 
 
