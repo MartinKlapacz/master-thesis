@@ -1,7 +1,15 @@
 {
   "code": "<code>",
   "description": "<description>",
+  "targetEbmCode": "<code>",
+  "targetGoaeCode": "<code>",
   "condition": {
-    // condition body
+    // condition predicate object
+  },
+  "quantity": {
+    // quantity function object
+  },
+  "multiplier": {
+    // multiplier function object
   }
 }

@@ -1,9 +1,6 @@
 \section{Billing Relevant Information Sources}\label{sec:billing-relevant-information-sources}
 
 
-Before introducing the rule language,
-we need to firstly define all sources of information that are relevant for billing.
-Its semantics and features were designed based on this knowledge.
 
 Additionally,
 it must be assured that the\AVS actually tracks and stores all information relevant for billing as structured data.
@@ -13,64 +10,8 @@ On one hand, the treatment documentation must contain all medically relevant dat
 but now it also needs to cover billing-related information as well.
 
 
-%The workflow is as follows:
-%\begin{enumerate}
-%    \item \Me
-%    at\AV use their knowledge to define formal specifications for the anamnesis,
-%    physical examination and procedures blocks.
-%    This is a continuous process where requests and feedback from customers are taken into consideration.
-%    \item \Se at\AV create new blocks or update existing ones according to changes in the medical specifications.
-%    \item \Be at\AV with medical background,
-%    an understanding of the block data models and the rule language implement formal billing rules
-%    using the rule language.
-%    \item At Back-End start-up the system loads the rule files into the Billing-Service
-%which are then available for automated billing code derivation.
-%\end{enumerate}
 
-Firstly, we need to specify the concrete use-cases for the rule language.
-The initial plan was to implement two separate languages, one for statutory billing and one for private billing.
-Section\ref{sec:billing-catalogs} introduces their billing catalogs and presents their differences and characteristics.
 
-However, collaboration with medical experts has revealed further requirements for the billing framework.
-This includes additional use-cases for the billing language.
-The following list contains all rule types that the framework currently supports:
-\begin{itemize}
-    \item GOÄ billing rules for deriving GOÄ billing codes from private treatments
-    \item EBM billing rules for deriving EBM billing codes from statutory treatments
-    \item OPS code rules for deriving procedure codes from treatment documentation.
-    OPS codes are relevant information for both GOÄ and EBM codes as well as multiplier justifications.
-    \item Multiplier Justification rules for detecting challenging conditions in private treatments
-    which serve as justifications for multipliers
-    \item Special Flat Rate rules
-    for detecting flat rates that can be applied to billing positions in the statutory treatment
-\end{itemize}
-
-The initial idea of having separate implementations for each rule type turned out to be not very scalable.
-Each rule type has a set of relevant information sources and therefore also ignores sources.
-But the key point is that there are many information sources shared by multiple rule types.
-
-For example, the patient age is highly relevant for GOÄ and EBM codes, Multiplier Justifications but not for OPS codes.
-Previous allergies are relevant for Multiplier Justifications but not necessarily for GOÄ codes.
-This is the reason I decided to use a single rule engine that implements all conditions used by any rule type.
-Each rule type defines its own interface and re-uses the rule engine.
-Therefore,
-we consider each information source illustrated in this section as primarily independent of any rule type or use case.
-
-\subsection{Information Scope}
-Part of this work was
-to identify billing-relevant information sources through and expert interviews and cooperation with medical experts.
-From a higher level perspective, all found information sources are part of the following domains:
-\begin{itemize}
-    \item
-    The treatment documentation that contains all medical information of the treatment whose services we want to bill
-    \item Patient characteristics that are independent of the current treatment
-    \item Information referring to the providing practitioner
-    \item Treatment history consisting of all billing codes in previous treatments aggregated by treatment,
-    visit and billing case
-\end{itemize}
-During the development of the billing framework, I placed great emphasis on extensibility.
-Adding new condition types to the core engine and making them available to all rule types is straightforward.
-The following subsections give further explanations for the most important information sources.
 
 \subsection{Block Contents}
 A medical treatment consists of multiple stages of patient care.
