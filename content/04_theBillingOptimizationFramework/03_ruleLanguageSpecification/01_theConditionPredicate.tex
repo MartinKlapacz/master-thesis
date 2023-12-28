@@ -174,10 +174,8 @@ This is why diagnoses are part of the treatment object and are straight-forward 
 
 The major difference here is how the system fetches OPS codes for this treatment.
 Unlike diagnoses, the practitioner does not manually select OPS codes for the conducted procedures.
-
 The billing experts at \AV have therefore requested that the billing framework should automatically derive OPS codes for treatments.
 I solved this by defining OPS rules as a new rule type.
-
 Any rule componenent that needs to derive OPS rules makes use of another rule component, namely \code{OpsRuleComponent}.
 It implements data fetching for \code{InformationSourceOpsCodes} by deriving OPS codes using OPS rules.
 Just as any rule type, billing experts are responsible for writing OPS rules, as well.
@@ -185,21 +183,15 @@ Just as any rule type, billing experts are responsible for writing OPS rules, as
 \paragraph{requiredTargetCode}
 
 \code{requiredTargetCode} is similar to \code{requiredOpsCodes} and \code{requiredIcdCodes}, but has a few differences.
-
 Firstly, it refers to the result set of the derivation.
 Using this condition, you can implement that a code can only be billed with another set of codes.
-
 Billing experts need this feature to implement \goa{K1} and \goa{K2} as well as other surcharge codes in the GOÄ.
-
 Secondly, it defines the term \"match\" as a direct string equality.
-
 \begin{equation}\label{eq:matching-string-equals}
 s_1 \text{ matches with } s_2 \iff s_1 = s_2
 \end{equation}
-
 GOÄ, EBM and other possible code systems do not offer a hierarchical prefix tree structure that would allow definition \ref{eq:matching}.
 Instead, \code{requiredTargetCode} uses definition \ref{eq:matching}.
-
 Section \addref offers a more detailed description of how the condition checking for \code{requiredTargetCode} actually works.
 
 \subsubsection{Patient Related Conditions}
@@ -272,6 +264,32 @@ This makes \code{minNumberOfAllergies} a useful condition for multiplier justifi
 It subscribes to the information source \code{@InformationSourcePatientAllergies}
 
 \subsubsection{Previous Occurrence related Conditions}
+
+The \AVS internally structures treatments as follows:
+A patient multiple billing cases, each one representing a quarter of the year.
+During a quarter, a patient may have multiple visits.
+Each visit has a reference to the respective billing case.
+During a visit, a patient can have one or more treatments.
+For example, a patient can have an operation followed by a medical round.
+A medical round is a part of hospital routine where healthcare professionals visit patients at their bedsides,
+assess the patient's medical condition and evaluate the treatment process.
+The \AVS considers the operation and the care round both as treatments linked to the same visit.
+A treatment is the smallest unit in this hierarchy.
+
+The previous usages of billings codes in the current treatment, visit, billing case can be relevant for further billing.
+This is why the billing framework supports the following patient history related conditions fields:
+
+\paragraph{maxAmountPerVisit}
+\paragraph{maxAmountPerDay/maxAmountPerMonth/maxAmountPerYear}
+
+\code{maxAmountPerDay}, \code{maxAmountPerMonth} and \code{maxAmountPerYear} are condition fields that restrict the number of code usages for different time spans.
+
+
+\paragraph{maxAmountPerYear}
+\paragraph{maxAmountPerTreatment}
+\paragraph{maxAmountPerTreatmentCase}
+\paragraph{onlyOncePerGoaeTreatmentCaseInCombinationWithSpecialServices}
+
 
 \subsubsection{Service Performer related Conditions}
 
