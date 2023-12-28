@@ -129,11 +129,11 @@ These medical conditions may be can be a chronic disease, biopsychosocial factor
 \code{minNumberOfDiagnosesInCurrentTreatment} is useful for implementing the multimorbidity multiplier justification rule.
 The information source for this condition is \code{@InformationSourceTreatmentDiagnoses}.
 
-\paragraph{requiredIcdCodes/requiredOpsCodes}
+\paragraph{requiredIcdCodes}
 
-Any types of rules can require ICD and OPS codes as conditions.
-
-To provide maximal flexibility I introduced the concept of a logical code matching trees.
+Icd codes are a highly important condition type.
+They play an important role for flatrates, GOÄ codes and EBM codes.
+To provide maximal flexibility, I implemented the concept of a logical code matching trees.
 
 \lstinputlisting[
     language=json,
@@ -142,23 +142,65 @@ To provide maximal flexibility I introduced the concept of a logical code matchi
     label={lst:logical-code-matching-tree}
 ]{code/rules/specification/codeMatchingTree.json}
 
-Code \mete{1} holds if the current treatment has an ICD10 diagnose that matches with \code{B20}.
-Rule \mete{2} makes use of the logical \code{OR} operator and holds if the current treatment has a diagnose that matches with \code{R07.0}, \code{R07.1} or \code{L}.
-
-We define term \"match\" as follows:
-Let \( s_1 \) and \( s_2 \) be strings. We say \( s_1 \) matches with \( s_2 \) if and only if \( s_1 \) is a prefix of \( s_2 \).
-\[
+Firstly, we define the term \"match\":
+Let \( s_1 \) and \( s_2 \) be strings.
+We say \( s_1 \) matches with \( s_2 \) if and only if \( s_2 \) is a prefix of \( s_1 \).
+\begin{equation}\label{eq:matching}
     s_1 \text{ matches with } s_2 \iff \exists k \in \mathbb{N} \cup \{0\} : s_1 = s_2[0:k]
-\]
+\end{equation}
 
-Note that \code{L} is not a single ICD10 code but an ICD10 chapter.
-According to definition \addref, \mete{L} matches with every single ICD10 code in the L chapter as all of them start with the character \"L\".
+Code \mete{1} holds if the current treatment has an ICD10 diagnose that matches with \mete{B20}.
+Rule \mete{2} makes use of the logical \code{OR} operator and holds if the current treatment has a diagnose that matches with \mete{R07.0}, \mete{R07.1} or \mete{L}.
+
+Note that \mete{L} is not a ICD code but chapter within the ICD catalog.
+According to the definition \ref{eq:matching}, \mete{L} matches with every single ICD10 code in the \mete{L} chapter as all of them have the prefix \"L\".
 This makes it easy to specify a large group of ICD10 codes in a logical code matching tree.
-The ICD10 catalog is structured as a tree with each node being a prefix of its child nodes.
+The ICD10 catalog has a tree structure that maintains the invariant that each node is a prefix of its child nodes.
+In other words, each node matches its parent node.
 Nested nodes are chapters, sections and subsections.
-Leaf nodes are the actual ICD10 codes.
+Leaf nodes are actual ICD10 codes.
 
+Note the code range \mete{R47..R49} used in rule \mete{3}.
+This indicates a discrete interval of codes between \mete{R47} and \mete{R49}, including both borders.
+\mete{R47..R49} includes all codes that match with \mete{R47}, \mete{R48} and \mete{R49}.
 
+Just as \code{minNumberOfDiagnosesInCurrentTreatment} it subscribes to the information source \code{@InformationSourceTreatmentDiagnoses}.
+The practitioner manually selects diagnoses for the treatment.
+This is why diagnoses are part of the treatment object and are straight-forward to fetch.
+
+\paragraph{requiredOpsCodes}
+
+\code{requiredOpsCodes} is equivalent to \code{requiredIcdCodes}, but applies to OPS codes.
+
+The major difference here is how the system fetches OPS codes for this treatment.
+Unlike diagnoses, the practitioner does not manually select OPS codes for the conducted procedures.
+
+The billing experts at \AV have therefore requested that the billing framework should automatically derive OPS codes for treatments.
+I solved this by defining OPS rules as a new rule type.
+
+Any rule componenent that needs to derive OPS rules makes use of another rule component, namely \code{OpsRuleComponent}.
+It implements data fetching for \code{InformationSourceOpsCodes} by deriving OPS codes using OPS rules.
+Just as any rule type, billing experts are responsible for writing OPS rules, as well.
+
+\paragraph{requiredTargetCode}
+
+\code{requiredTargetCode} is similar to \code{requiredOpsCodes} and \code{requiredIcdCodes}, but has a few differences.
+
+Firstly, it refers to the result set of the derivation.
+Using this condition, you can implement that a code can only be billed with another set of codes.
+
+Billing experts need this feature to implement \goa{K1} and \goa{K2} as well as other surcharge codes in the GOÄ.
+
+Secondly, it defines the term \"match\" as a direct string equality.
+
+\begin{equation}\label{eq:matching-string-equals}
+s_1 \text{ matches with } s_2 \iff s_1 = s_2
+\end{equation}
+
+GOÄ, EBM and other possible code systems do not offer a hierarchical prefix tree structure that would allow definition \ref{eq:matching}.
+Instead, \code{requiredTargetCode} uses definition \ref{eq:matching}.
+
+Section \addref offers a more detailed description of how the condition checking for \code{requiredTargetCode} actually works.
 
 \subsubsection{Patient Related Conditions}
 
