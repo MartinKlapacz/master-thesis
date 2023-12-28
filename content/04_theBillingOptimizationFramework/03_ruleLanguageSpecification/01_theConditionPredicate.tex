@@ -157,6 +157,36 @@ Similarly to patient age, gender conditions are already a structured part of the
 \goa{27}, \goa{28},  GOÄ codes in section \mete{H}, Obstetrics and Gynecology, and GOÄ codes in \mete{Urology} are gender-specific.
 Rules implementing these codes can use the \code{gender} condition.
 It supports the string values \code{\"female\"}, \code{\"male\"} and \code{\"diverse\"}.
+\code{gender} subscribes to the information source \code{@InformationSourcePatientGender}.
+
+
+\paragraph{isPregnant}
+The \code{isPregnant} condition is syntactic sugar for a specific case of the \code{requiredAnamnesisBlocks}
+The following rules are equivalent.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\code{isPregnant} rule},
+    label={lst:is-pregnant}
+]{code/rules/specification/performerIsDoctor.json}
+
+A pregnancy can be reason for additionally required care or services during a treatment that is not related to the patient's pregnancy.
+This is why it can be useful in multiplier justification rules.
+It is also useful for \goa{23} which is applicable for an initial pregnancy-related examination.
+\code{isPregnant} subscribes to the information source \code{@InformationSourceAnamnesisBlocks}.
+
+\paragraph{minNumberOfAllergies}
+\code{minNumberOfAllergies} is a field that specifies the minimal number of allergies a patient requires.
+From medical experts at \AV I have learned that a high number of allergies can make treatments more challenging for several reasons:
+\begin{itemize}
+    \item It may reduce the number of medical options as medications contain allergens or can produce them in specific environments.
+    \item It can increase the complexity of the diagnostic process, as allergy reactions can mimic symptoms of other diagnoses.
+    \item Patients with a high number of allergies require increased caution and care.
+    Practitioners need to spend more time for history review and patient monitoring.
+\end{itemize}
+This makes \code{minNumberOfAllergies} a useful condition for multiplier justifications.
+It subscribes to the information source \code{@InformationSourcePatientAllergies}
 
 \subsubsection{Previous Occurrence related Conditions}
 
