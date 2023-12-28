@@ -123,7 +123,19 @@ physical examination and procedures.
 \subsubsection{Patient Related Conditions}
 
 \paragraph{minPatientAge/maxPatientAge}
-\code{minPatientAge} and \code{maxPatientAge} are both integer fields that enable restrictions on the patient age.
+\code{minPatientAge} and \code{maxPatientAge} are integer fields that enable restrictions on the patient age.
+Both fields store a number of years.
+You can combine both to require the patient age to be within a certain age interval.
+
+In medical practice, the age of a patient can significantly influence the complexity of a treatment.
+In cases involving very young or very elderly patients, practitioners may encounter patient age specific challenges.
+Due to these challenges, treatments may require more time, special care or other additional resources.
+As a result, practitioners may apply billing multipliers to compensate for the additional effort.
+This is why you can use the \code{minPatientAge} and \code{maxPatientAge} fields implement these types of multiplier justification rules.
+There are also concrete GOÄ codes such as \goa{K1} and \goa{K2} that require the patient age.
+The information source for these two conditions is \code{@InformationSourcePatientAge}.
+
+
 
 
 \subsubsection{Previous Occurrence related Conditions}
