@@ -135,6 +135,17 @@ This is why you can use the \code{minPatientAge} and \code{maxPatientAge} fields
 There are also concrete GOÄ codes such as \goa{K1} and \goa{K2} that require the patient age.
 The information source for these two conditions is \code{@InformationSourcePatientAge}.
 
+\paragraph{newBorn}
+\code{newBorn} is syntactic sugar and a special case of the \code{maxPatientAge} condition.
+According to the GOÄ, babies that are at most 28 days old are newborns \addcite.
+It is relevant for \goa{25: Initial newborn examination – if necessary including advice from the caregiver(s) –}, which is essentially a provision of a physical examination for newborns.
+It can also be interesting for multiplier justifications.
+The information source for these two conditions is \code{@InformationSourcePatientAge}.
+
+\paragraph{patientSpeaksGerman/patientSpeaksEnglish}
+\code{patientSpeaksGerman} and \code{patientSpeaksEnglish} are both boolean fields that denote whether the patients are able to communicate in the respective language.
+Communication problems can increase the effort and time a treatment may require and are often used as justifications for multipliers which compensate for that.
+\goa{4: taking a third-party medical history} covers an anemnesis that
 
 
 
