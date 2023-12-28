@@ -120,6 +120,46 @@ physical examination and procedures.
 
 \subsubsection{Medical Coding Related Conditions}
 
+\paragraph{minNumberOfDiagnosesInCurrentTreatment}
+This field specifies the minimal number of diagnoses specified in this treatment.
+One of the commonly used
+In my research, I have learned that multimorbidity is a commonly used multiplier justification in the LMU dermatology.
+Multimorbidity in medical terms defines the combination of two or more chronic medical conditions in an individual \cite{Reste2013The}.
+These medical conditions may be can be a chronic disease, biopsychosocial factor or a somatic risk factor.
+\code{minNumberOfDiagnosesInCurrentTreatment} is useful for implementing the multimorbidity multiplier justification rule.
+The information source for this condition is \code{@InformationSourceTreatmentDiagnoses}.
+
+\paragraph{requiredIcdCodes/requiredOpsCodes}
+
+Any types of rules can require ICD and OPS codes as conditions.
+
+To provide maximal flexibility I introduced the concept of a logical code matching trees.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Logical Code matching tree rules},
+    label={lst:logical-code-matching-tree}
+]{code/rules/specification/codeMatchingTree.json}
+
+Code \mete{1} holds if the current treatment has an ICD10 diagnose that matches with \code{B20}.
+Rule \mete{2} makes use of the logical \code{OR} operator and holds if the current treatment has a diagnose that matches with \code{R07.0}, \code{R07.1} or \code{L}.
+
+We define term \"match\" as follows:
+Let \( s_1 \) and \( s_2 \) be strings. We say \( s_1 \) matches with \( s_2 \) if and only if \( s_1 \) is a prefix of \( s_2 \).
+\[
+    s_1 \text{ matches with } s_2 \iff \exists k \in \mathbb{N} \cup \{0\} : s_1 = s_2[0:k]
+\]
+
+Note that \code{L} is not a single ICD10 code but an ICD10 chapter.
+According to definition \addref, \mete{L} matches with every single ICD10 code in the L chapter as all of them start with the character \"L\".
+This makes it easy to specify a large group of ICD10 codes in a logical code matching tree.
+The ICD10 catalog is structured as a tree with each node being a prefix of its child nodes.
+Nested nodes are chapters, sections and subsections.
+Leaf nodes are the actual ICD10 codes.
+
+
+
 \subsubsection{Patient Related Conditions}
 
 \paragraph{minPatientAge/maxPatientAge}
@@ -148,7 +188,8 @@ The information source for these two conditions is \code{@InformationSourcePatie
 \paragraph{patientSpeaksGerman/patientSpeaksEnglish}
 \code{patientSpeaksGerman} and \code{patientSpeaksEnglish} are both boolean fields that denote whether the patients are able to communicate in the respective language.
 Communication problems can increase the effort and time a treatment may require and are often used as justifications for multipliers which compensate for that.
-\goa{4: taking a third-party medical history} covers an anemnesis that
+\goa{4: taking a third-party medical history} covers an anemnesis that \todo{finish}
+\code{patientSpeaksGerman} and \code{patientSpeaksEnglish} subscribe to the information source \code{@InformationSourcePatientLanguages}.
 
 \paragraph{gender}
 The \code{gender} condition is one of the most important condition types.
