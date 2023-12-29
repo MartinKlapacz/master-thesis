@@ -276,19 +276,36 @@ assess the patient's medical condition and evaluate the treatment process.
 The \AVS considers the operation and the care round both as treatments linked to the same visit.
 A treatment is the smallest unit in this hierarchy.
 
-The previous usages of billings codes in the current treatment, visit, billing case can be relevant for further billing.
-This is why the billing framework supports the following patient history related conditions fields:
+Another important context within the private billing is the so-called treatment case.
+A treatment case refers to the month following an initial treatment for a new medical condition \cite{bruck1998kommentar}.
+Treatment cases can run in parallel if a patient has two unrelated medical conditions.
+For example, if a patient visits the doctor for a knee injury on the 4th of May, a new treatment case starts for this knee injury and lasts until the 5th of June.
+Every treatment related to this knee injury between the 4th of May and the 5th of June belongs to this treatment case.
+If the patient visits the same doctor for a viral infection on the 10th of May, a second treatment case begins, lasting until the 11th of June.
+Two treatment cases run in parallel because both medical conditions, the knee injury and the viral infection, are independent.
+A treatment case always spans one month.
+This is why if the patient receives treatment related to the knee one month after the initial treatment, a separate treatment case starts, even though both treatments are related to the same diagnosis.
 
-\paragraph{maxAmountPerVisit}
-\paragraph{maxAmountPerDay/maxAmountPerMonth/maxAmountPerYear}
+\paragraph{maxAmountPerBillingCase / maxAmountPerTreatmentCase / maxAmountPerVisit / maxAmountPerTreatment}
+These condition fields set a limit for the number of codes that where billed in the respective context.
+The code is always the conclusion of the rule the condition is part of.
+\todo{add example}
 
-\code{maxAmountPerDay}, \code{maxAmountPerMonth} and \code{maxAmountPerYear} are condition fields that restrict the number of code usages for different time spans.
+
+\paragraph{maxAmountPerDay / maxAmountPerMonth / maxAmountPerYear}
+Similarly to the previous condition fields, \RL also allows setting limits for code usages in specific time spans.
+\todo{add example}
 
 
-\paragraph{maxAmountPerYear}
-\paragraph{maxAmountPerTreatment}
-\paragraph{maxAmountPerTreatmentCase}
 \paragraph{onlyOncePerGoaeTreatmentCaseInCombinationWithSpecialServices}
+This boolean condition field handles a highly specific but important edge-case involving \goa{1} and \goa{5}.
+From the \PVC seminar, I have learned that within the same treatment case, both codes can be billed in combination with a special GOä code at most once.
+A special GOÄ code is a code whose numeric number is higher or equal to 200.
+This means within the same treatment case \goa{1} can be billed as often as possible, but only once in combination with any code larger than 200.
+The same holds for \goa{5}.
+
+
+
 
 
 \subsubsection{Service Performer related Conditions}
