@@ -1,5 +1,74 @@
 \subsection{The Condition Predicate}\label{subsec:the-condition-predicate}
 
+\subsubsection{Patient Related Conditions}
+
+\paragraph{minPatientAge/maxPatientAge}
+\code{minPatientAge} and \code{maxPatientAge} are integer fields that enable restrictions on the patient age.
+Both fields store a number of years.
+You can combine both to require the patient age to be within a certain age interval.
+
+In medical practice, the age of a patient can significantly influence the complexity of a treatment.
+In cases involving very young or very elderly patients, practitioners may encounter patient age specific challenges.
+Due to these challenges, treatments may require more time, special care or other additional resources.
+As a result, practitioners may apply billing multipliers to compensate for the additional effort.
+This is why you can use the \code{minPatientAge} and \code{maxPatientAge} fields implement these types of multiplier justification rules.
+There are also concrete GOÄ codes such as \goa{K1} and \goa{K2} that require the patient age.
+The patient age is also highly relevant for various EBM codes, but already exists as structured conditions in the EBM catalog.
+This is why using patient age conditions in EBM rules is redundant.
+The information source for these two conditions is \code{@InformationSourcePatientAge}.
+
+\paragraph{newBorn}
+\code{newBorn} is syntactic sugar and a special case of the \code{maxPatientAge} condition.
+It is a bool field that denotes whether a patient is a newborn or not.
+According to the GOÄ, babies that are at most 28 days old are newborns\addcite.
+It is relevant for \goa{25: Initial newborn examination – if necessary including advice from the caregiver(s) –}, which is essentially a provision of a physical examination for newborns.
+It can also be interesting for multiplier justifications.
+The information source for these two conditions is \code{@InformationSourcePatientAge}.
+
+\paragraph{patientSpeaksGerman/patientSpeaksEnglish}
+\code{patientSpeaksGerman} and \code{patientSpeaksEnglish} are both boolean fields that denote whether the patients are able to communicate in the respective language.
+Communication problems can increase the effort and time a treatment may require and are often used as justifications for multipliers which compensate for that.
+\goa{4: taking a third-party medical history} covers an anemnesis that \todo{finish}
+\code{patientSpeaksGerman} and \code{patientSpeaksEnglish} subscribe to the information source \code{@InformationSourcePatientLanguages}.
+
+\paragraph{gender}
+The \code{gender} condition is one of the most important condition types.
+It is relevant for various EBM and GOÄ codes.
+Similarly to patient age, gender conditions are already a structured part of the EBM catalog and do not need to be used in EBM rules.
+\goa{27}, \goa{28},  GOÄ codes in section \mete{H}, Obstetrics and Gynecology, and GOÄ codes in \mete{Urology} are gender-specific.
+Rules implementing these codes can use the \code{gender} condition.
+It supports the string values \code{\"female\"}, \code{\"male\"} and \code{\"diverse\"}.
+\code{gender} subscribes to the information source \code{@InformationSourcePatientGender}.
+
+
+\paragraph{isPregnant}
+The \code{isPregnant} condition is syntactic sugar for a specific case of the \code{requiredAnamnesisBlocks}
+The following rules are equivalent.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\code{isPregnant} rule},
+    label={lst:is-pregnant}
+]{code/rules/specification/performerIsDoctor.json}
+
+A pregnancy can be reason for additionally required care or services during a treatment that is not related to the patient's pregnancy.
+This is why it can be useful in multiplier justification rules.
+It is also useful for \goa{23} which is applicable for an initial pregnancy-related examination.
+\code{isPregnant} subscribes to the information source \code{@InformationSourceAnamnesisBlocks}.
+
+\paragraph{minNumberOfAllergies}
+\code{minNumberOfAllergies} is a field that specifies the minimal number of allergies a patient requires.
+From medical experts at \AV I have learned that a high number of allergies can make treatments more challenging for several reasons:
+\begin{itemize}
+    \item It may reduce the number of medical options as medications contain allergens or can produce them in specific environments.
+    \item It can increase the complexity of the diagnostic process, as allergy reactions can mimic symptoms of other diagnoses.
+    \item Patients with a high number of allergies require increased caution and care.
+    Practitioners need to spend more time for history review and patient monitoring.
+\end{itemize}
+This makes \code{minNumberOfAllergies} a useful condition for multiplier justifications.
+It subscribes to the information source \code{@InformationSourcePatientAllergies}
+
 \subsubsection{Block Content Related Sub-rules}
 
 A medical treatment consists of multiple stages of patient care.
@@ -249,76 +318,7 @@ GOÄ, EBM and other possible code systems do not offer a hierarchical prefix tre
 Instead, \code{requiredTargetCode} uses definition \ref{eq:matching}.
 Section \addref offers a more detailed description of how the condition checking for \code{requiredTargetCode} actually works.
 
-\subsubsection{Patient Related Conditions}
-
-\paragraph{minPatientAge/maxPatientAge}
-\code{minPatientAge} and \code{maxPatientAge} are integer fields that enable restrictions on the patient age.
-Both fields store a number of years.
-You can combine both to require the patient age to be within a certain age interval.
-
-In medical practice, the age of a patient can significantly influence the complexity of a treatment.
-In cases involving very young or very elderly patients, practitioners may encounter patient age specific challenges.
-Due to these challenges, treatments may require more time, special care or other additional resources.
-As a result, practitioners may apply billing multipliers to compensate for the additional effort.
-This is why you can use the \code{minPatientAge} and \code{maxPatientAge} fields implement these types of multiplier justification rules.
-There are also concrete GOÄ codes such as \goa{K1} and \goa{K2} that require the patient age.
-The patient age is also highly relevant for various EBM codes, but already exists as structured conditions in the EBM catalog.
-This is why using patient age conditions in EBM rules is redundant.
-The information source for these two conditions is \code{@InformationSourcePatientAge}.
-
-\paragraph{newBorn}
-\code{newBorn} is syntactic sugar and a special case of the \code{maxPatientAge} condition.
-It is a bool field that denotes whether a patient is a newborn or not.
-According to the GOÄ, babies that are at most 28 days old are newborns\addcite.
-It is relevant for \goa{25: Initial newborn examination – if necessary including advice from the caregiver(s) –}, which is essentially a provision of a physical examination for newborns.
-It can also be interesting for multiplier justifications.
-The information source for these two conditions is \code{@InformationSourcePatientAge}.
-
-\paragraph{patientSpeaksGerman/patientSpeaksEnglish}
-\code{patientSpeaksGerman} and \code{patientSpeaksEnglish} are both boolean fields that denote whether the patients are able to communicate in the respective language.
-Communication problems can increase the effort and time a treatment may require and are often used as justifications for multipliers which compensate for that.
-\goa{4: taking a third-party medical history} covers an anemnesis that \todo{finish}
-\code{patientSpeaksGerman} and \code{patientSpeaksEnglish} subscribe to the information source \code{@InformationSourcePatientLanguages}.
-
-\paragraph{gender}
-The \code{gender} condition is one of the most important condition types.
-It is relevant for various EBM and GOÄ codes.
-Similarly to patient age, gender conditions are already a structured part of the EBM catalog and do not need to be used in EBM rules.
-\goa{27}, \goa{28},  GOÄ codes in section \mete{H}, Obstetrics and Gynecology, and GOÄ codes in \mete{Urology} are gender-specific.
-Rules implementing these codes can use the \code{gender} condition.
-It supports the string values \code{\"female\"}, \code{\"male\"} and \code{\"diverse\"}.
-\code{gender} subscribes to the information source \code{@InformationSourcePatientGender}.
-
-
-\paragraph{isPregnant}
-The \code{isPregnant} condition is syntactic sugar for a specific case of the \code{requiredAnamnesisBlocks}
-The following rules are equivalent.
-
-\lstinputlisting[
-    language=json,
-    style=json,
-    caption={\code{isPregnant} rule},
-    label={lst:is-pregnant}
-]{code/rules/specification/performerIsDoctor.json}
-
-A pregnancy can be reason for additionally required care or services during a treatment that is not related to the patient's pregnancy.
-This is why it can be useful in multiplier justification rules.
-It is also useful for \goa{23} which is applicable for an initial pregnancy-related examination.
-\code{isPregnant} subscribes to the information source \code{@InformationSourceAnamnesisBlocks}.
-
-\paragraph{minNumberOfAllergies}
-\code{minNumberOfAllergies} is a field that specifies the minimal number of allergies a patient requires.
-From medical experts at \AV I have learned that a high number of allergies can make treatments more challenging for several reasons:
-\begin{itemize}
-    \item It may reduce the number of medical options as medications contain allergens or can produce them in specific environments.
-    \item It can increase the complexity of the diagnostic process, as allergy reactions can mimic symptoms of other diagnoses.
-    \item Patients with a high number of allergies require increased caution and care.
-    Practitioners need to spend more time for history review and patient monitoring.
-\end{itemize}
-This makes \code{minNumberOfAllergies} a useful condition for multiplier justifications.
-It subscribes to the information source \code{@InformationSourcePatientAllergies}
-
-\subsubsection{Previous Occurrence related Conditions}
+\subsubsection{Previous Occurrence related Conditions}\label{subsubsec:previous-occurrence-related}
 
 The \AVS internally structures treatments as follows:
 A patient multiple billing cases, each one representing a quarter of the year.
@@ -328,8 +328,8 @@ During a visit, a patient can have one or more treatments.
 For example, a patient can have an operation followed by a medical round.
 A medical round is a part of hospital routine where healthcare professionals visit patients at their bedsides,
 assess the patient's medical condition and evaluate the treatment process.
-The \AVS considers the operation and the care round both as treatments linked to the same visit.
-A treatment is the smallest unit in this hierarchy.
+The \AVS considers the operation and the medical round both as treatments linked to the same visit.
+The smallest units in the hierarchy are the billing positions that are attached to a treatment.
 
 Another important context within the private billing is the so-called treatment case.
 A treatment case refers to the month following an initial treatment for a new medical condition \cite{bruck1998kommentar}.
@@ -341,8 +341,13 @@ Two treatment cases run in parallel because both medical conditions, the knee in
 A treatment case always spans one month.
 This is why if the patient receives treatment related to the knee one month after the initial treatment, a separate treatment case starts, even though both treatments are related to the same diagnosis.
 
+Occurrence related condition types do not subscribe to any information source.
+They do not require information from an external service but rely on the billing history of the patient.
+The billing service stores billing positions in the local database.
+Evaluating each of the following conditions includes a query on the
+
 \paragraph{maxAmountPerBillingCase / maxAmountPerTreatmentCase / maxAmountPerVisit / maxAmountPerTreatment}
-These condition fields set a limit for the number of codes that where billed in the respective context.
+These condition fields set a limit on the code occurrences in the respective context.
 The code is always the conclusion of the rule the condition is part of.
 \todo{add example}
 
@@ -381,3 +386,10 @@ This condition is relevant for \goa{1} and \goa{2}, which are only applicable by
     caption={\code{AbnormalitiesExaminationResult}},
     label={lst:performerIsDoctor}
 ]{code/rules/specification/performerIsDoctor.json}
+
+\subsubsection{Miscellaneous Conditions}
+
+\paragraph{isCareRound / isMedicalRound}
+\code{isCareRound} and \code{isMedicalRound} are boolean conditions that enable you to check if the treatment is a care / medical rounds.
+\goa{46}, \goa{48} and \goa{50} are a few examples for services that require that information.
+Both fields subscribe to the information source \code{@InformationSourceTreatmentType}.
