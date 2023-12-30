@@ -95,22 +95,16 @@ Common examinations are checking of vital sings like blood pressure, pulse and t
 The procedure stage contains the actual patient-specific interventions that \todo
 
 \paragraph{Block Contents}
-During Anamnesis,
-Physical Examination and Procedures the practitioner enters medical treatment specific information into the \AVS.
-The data is part of the treatment documentation and critical for billing.
-
-The documentations of all three stages are filled out by the practitioner and are structured in sections,
-cards and blocks.
-
-For example, inside the physical examination there is the section \mete{abdomen},
-which contains the\mete{liver} section.
+As part of the Anamnesis, Physical Examination and Procedures stage,
+the practitioner enters medical treatment specific information into the \AVS.
+All three stages have separate documentation with a tree-like structure consisting of sections, cards and blocks.
+Blocks are topic-related medical questionnaires that, depending on the patient's condition, the practitioner selects and fills out.
+For example, the physical examination contains the section \mete{abdomen} that contains the \mete{liver} card.
+The \mete{liver} card contains the blocks \mete{liverPalpation} and \mete{liverSize}.
 Blocks are essentially small questionnaires for the practitioner with input fields to be filled out by the practitioner.
-They play a huge role in the treatment documentation
-and contain all relevant medical information specific to this conducted examination,
-procedure anamnesis.
-One example for a physical block in the \code{liver}section is\code{LiverPalpation}.
-A liver palpation involves investigating the following questions
-
+They play a huge role in treatment documentation and contain relevant medical information specific to this provided examination, procedure or anamnesis.
+\code{LiverPalpation} is an example for an example for a physical block in the \code{liver} section.
+A classic liver palpation examination involves answering the following questions \cite{wolf1990evaluation}:
 \begin{itemize}
     \item Is the liver palpable?
     \item Is the liver texture soft or tender?
@@ -119,34 +113,34 @@ A liver palpation involves investigating the following questions
     \item Are pulsations present?
     \item Is a hepato jugular reflux present?
 \end{itemize}
-
-Each of the more than 100 block contents in the \AVS are represented by a dedicated Hibernate entity classes.
+Within the \AVS each block consists of meta-data such as timestamps, ids as well as a block content sub-object.
+The \AVS defines several hundreds block contents for physical examination, anamnesis and procedures blocks.
+It uses the object-relationship-mapping Hibernate to map all block content class definitions to database tables.
 Each attribute of that class stores a questionnaire input entered by the practitioner.
-Additionally, for each entity, there is a protobuf message enabling transmission of block content data from one service
+Additionally, for each entity, there is a protobuf message definition enabling transmission of block content data from one service
 to another one.
-
+The protobuf messages of the block contents are the most important part of the structured data provided by \AV which the billing framework heavily relies on.
 The protobuf message of \code{LiverPalpationMsg} looks like this:
-
 \lstinputlisting[
     language=protobuf2,
     style=protobuf,
     caption={LiverPalpation protobuf messages}
 ]{code/proto/liverPalpation.proto}
 
-The exact principle is applied throughout all the procedures and anamnesis as well.
-A crucial part of the rule language is not only to check for block content availabilities in the treatment
-but also to look inside the blocks and check for conditions on fields.
+
+The exact principle applies throughout the procedure and anamnesis stage as well.
+A crucial part of the rule language is not only to check for present blocks in the treatment
+but also to look inside the blocks and check for field values.
 A GOÄ code might have as a condition that a liver palpation examination is part of the treatment and
 the liver turned out to be palpable.
-Or an OPS code should only be derived if a \code{ECG}procedure was provided and the
-input field\code{telemetricExamination} inside its block has the value\code{true}.
+Or an OPS code should only be derived if a \code{ECG} procedure was provided and the
+input field \code{telemetricExamination} inside its block has the value\code{true}.
 Logical combinations of such single field conditions may also occur.
 Expressing such conditions in a well-defined and user-friendly way is an important requirement for the rule language.
 
 \paragraph{Block Content Field Types}
 A block content can contain information of different input types.
 The billing framework must handle and validate each input type differently.
-
 The most basic field types are boolean flags and numeric inputs.
 The \AVS uses the following scalar wrapper protobuf messages for them:
 
@@ -162,10 +156,8 @@ The default value for \code{int32} is 0.
 If a gRPC server receives a protobuf message with an \code{int32} field set to 0, it does not know if the field was purposely initialized with 0 or not set at all.
 Wrapping integers in \code{Int32W} messages makes this distinguishable.
 
-
-Liver tenderness can either be present or not.
-This information is thus entered in a \code{BoolW]} field.
-We use enumeration fields for inputs that have a limited number of predefined values
+Liver tenderness can either be present or not, which makes it a \code{BoolW} field.
+The \AVS uses enumeration fields for inputs that have a limited number of predefined values
 For example, the most frequently used enum type is \code{AbnormalitiesExaminationResult}.
 It denotes the result of a specific examination, which can be either conspicuous or inconspicuous.
 
@@ -178,11 +170,10 @@ It denotes the result of a specific examination, which can be either conspicuous
 Knowledge inputs are another important input type.
 They serve similar purposes as enum types but are not hard-coded into the code base.
 The system fetches them from a dedicated microservice that stores them in a MeiliSearch database.
-
-The \AVS reuses the concept auf storing medical data as protobuf message questionnaires accross the anamnesis, physical examination and procedure stages.
-
 Block content conditions are a powerful tool to make codes dependent on concrete medical information from anamnesis,
 physical examination and procedures.
+
+\todo{introduce nested objects, list objects}
 
 \subsubsection{Time Related conditions}
 
@@ -393,3 +384,5 @@ This condition is relevant for \goa{1} and \goa{2}, which are only applicable by
 \code{isCareRound} and \code{isMedicalRound} are boolean conditions that enable you to check if the treatment is a care / medical rounds.
 \goa{46}, \goa{48} and \goa{50} are a few examples for services that require that information.
 Both fields subscribe to the information source \code{@InformationSourceTreatmentType}.
+
+
