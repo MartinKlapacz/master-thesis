@@ -1,0 +1,16 @@
+[
+  {
+    "code": 1,
+    "condition": {
+      "isPregnant": true
+    }
+  },
+  {
+    "code": 2,
+    "condition": {
+      "requiredAnamnesisBlocks": {
+        "currentPregnancy": {}
+      }
+    }
+  }
+]

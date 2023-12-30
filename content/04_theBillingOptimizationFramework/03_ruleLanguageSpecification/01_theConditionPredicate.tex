@@ -1,5 +1,74 @@
 \subsection{The Condition Predicate}\label{subsec:the-condition-predicate}
 
+\subsubsection{Patient Related Conditions}
+
+\paragraph{minPatientAge/maxPatientAge}
+\code{minPatientAge} and \code{maxPatientAge} are integer fields that enable restrictions on the patient age.
+Both fields store a number of years.
+You can combine both to require the patient age to be within a certain age interval.
+
+In medical practice, the age of a patient can significantly influence the complexity of a treatment.
+In cases involving very young or very elderly patients, practitioners may encounter patient age specific challenges.
+Due to these challenges, treatments may require more time, special care or other additional resources.
+As a result, practitioners may apply billing multipliers to compensate for the additional effort.
+This is why you can use the \code{minPatientAge} and \code{maxPatientAge} fields implement these types of multiplier justification rules.
+There are also concrete GOÄ codes such as \goa{K1} and \goa{K2} that require the patient age.
+The patient age is also highly relevant for various EBM codes, but already exists as structured conditions in the EBM catalog.
+This is why using patient age conditions in EBM rules is redundant.
+The information source for these two conditions is \code{@InformationSourcePatientAge}.
+
+\paragraph{newBorn}
+\code{newBorn} is syntactic sugar and a special case of the \code{maxPatientAge} condition.
+It is a bool field that denotes whether a patient is a newborn or not.
+According to the GOÄ, babies that are at most 28 days old are newborns\addcite.
+It is relevant for \goa{25: Initial newborn examination – if necessary including advice from the caregiver(s) –}, which is essentially a provision of a physical examination for newborns.
+It can also be interesting for multiplier justifications.
+The information source for these two conditions is \code{@InformationSourcePatientAge}.
+
+\paragraph{patientSpeaksGerman/patientSpeaksEnglish}
+\code{patientSpeaksGerman} and \code{patientSpeaksEnglish} are both boolean fields that denote whether the patients are able to communicate in the respective language.
+Communication problems can increase the effort and time a treatment may require and are often used as justifications for multipliers which compensate for that.
+\goa{4: taking a third-party medical history} covers an anemnesis that \todo{finish}
+\code{patientSpeaksGerman} and \code{patientSpeaksEnglish} subscribe to the information source \code{@InformationSourcePatientLanguages}.
+
+\paragraph{gender}
+The \code{gender} condition is one of the most important condition types.
+It is relevant for various EBM and GOÄ codes.
+Similarly to patient age, gender conditions are already a structured part of the EBM catalog and do not need to be used in EBM rules.
+\goa{27}, \goa{28},  GOÄ codes in section \mete{H}, Obstetrics and Gynecology, and GOÄ codes in \mete{Urology} are gender-specific.
+Rules implementing these codes can use the \code{gender} condition.
+It supports the string values \code{\"female\"}, \code{\"male\"} and \code{\"diverse\"}.
+\code{gender} subscribes to the information source \code{@InformationSourcePatientGender}.
+
+
+\paragraph{isPregnant}
+The \code{isPregnant} condition is syntactic sugar for a specific case of the \code{requiredAnamnesisBlocks}
+The following rules are equivalent.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\code{isPregnant} rule},
+    label={lst:is-pregnant}
+]{code/rules/specification/performerIsDoctor.json}
+
+A pregnancy can be reason for additionally required care or services during a treatment that is not related to the patient's pregnancy.
+This is why it can be useful in multiplier justification rules.
+It is also useful for \goa{23} which is applicable for an initial pregnancy-related examination.
+\code{isPregnant} subscribes to the information source \code{@InformationSourceAnamnesisBlocks}.
+
+\paragraph{minNumberOfAllergies}
+\code{minNumberOfAllergies} is a field that specifies the minimal number of allergies a patient requires.
+From medical experts at \AV I have learned that a high number of allergies can make treatments more challenging for several reasons:
+\begin{itemize}
+    \item It may reduce the number of medical options as medications contain allergens or can produce them in specific environments.
+    \item It can increase the complexity of the diagnostic process, as allergy reactions can mimic symptoms of other diagnoses.
+    \item Patients with a high number of allergies require increased caution and care.
+    Practitioners need to spend more time for history review and patient monitoring.
+\end{itemize}
+This makes \code{minNumberOfAllergies} a useful condition for multiplier justifications.
+It subscribes to the information source \code{@InformationSourcePatientAllergies}
+
 \subsubsection{Block Content Related Sub-rules}
 
 A medical treatment consists of multiple stages of patient care.
@@ -26,22 +95,16 @@ Common examinations are checking of vital sings like blood pressure, pulse and t
 The procedure stage contains the actual patient-specific interventions that \todo
 
 \paragraph{Block Contents}
-During Anamnesis,
-Physical Examination and Procedures the practitioner enters medical treatment specific information into the \AVS.
-The data is part of the treatment documentation and critical for billing.
-
-The documentations of all three stages are filled out by the practitioner and are structured in sections,
-cards and blocks.
-
-For example, inside the physical examination there is the section \mete{abdomen},
-which contains the\mete{liver} section.
+As part of the Anamnesis, Physical Examination and Procedures stage,
+the practitioner enters medical treatment specific information into the \AVS.
+All three stages have separate documentation with a tree-like structure consisting of sections, cards and blocks.
+Blocks are topic-related medical questionnaires that, depending on the patient's condition, the practitioner selects and fills out.
+For example, the physical examination contains the section \mete{abdomen} that contains the \mete{liver} card.
+The \mete{liver} card contains the blocks \mete{liverPalpation} and \mete{liverSize}.
 Blocks are essentially small questionnaires for the practitioner with input fields to be filled out by the practitioner.
-They play a huge role in the treatment documentation
-and contain all relevant medical information specific to this conducted examination,
-procedure anamnesis.
-One example for a physical block in the \code{liver}section is\code{LiverPalpation}.
-A liver palpation involves investigating the following questions
-
+They play a huge role in treatment documentation and contain relevant medical information specific to this provided examination, procedure or anamnesis.
+\code{LiverPalpation} is an example for an example for a physical block in the \code{liver} section.
+A classic liver palpation examination involves answering the following questions \cite{wolf1990evaluation}:
 \begin{itemize}
     \item Is the liver palpable?
     \item Is the liver texture soft or tender?
@@ -50,34 +113,34 @@ A liver palpation involves investigating the following questions
     \item Are pulsations present?
     \item Is a hepato jugular reflux present?
 \end{itemize}
-
-Each of the more than 100 block contents in the \AVS are represented by a dedicated Hibernate entity classes.
+Within the \AVS each block consists of meta-data such as timestamps, ids as well as a block content sub-object.
+The \AVS defines several hundreds block contents for physical examination, anamnesis and procedures blocks.
+It uses the object-relationship-mapping Hibernate to map all block content class definitions to database tables.
 Each attribute of that class stores a questionnaire input entered by the practitioner.
-Additionally, for each entity, there is a protobuf message enabling transmission of block content data from one service
+Additionally, for each entity, there is a protobuf message definition enabling transmission of block content data from one service
 to another one.
-
+The protobuf messages of the block contents are the most important part of the structured data provided by \AV which the billing framework heavily relies on.
 The protobuf message of \code{LiverPalpationMsg} looks like this:
-
 \lstinputlisting[
     language=protobuf2,
     style=protobuf,
     caption={LiverPalpation protobuf messages}
 ]{code/proto/liverPalpation.proto}
 
-The exact principle is applied throughout all the procedures and anamnesis as well.
-A crucial part of the rule language is not only to check for block content availabilities in the treatment
-but also to look inside the blocks and check for conditions on fields.
+
+The exact principle applies throughout the procedure and anamnesis stage as well.
+A crucial part of the rule language is not only to check for present blocks in the treatment
+but also to look inside the blocks and check for field values.
 A GOÄ code might have as a condition that a liver palpation examination is part of the treatment and
 the liver turned out to be palpable.
-Or an OPS code should only be derived if a \code{ECG}procedure was provided and the
-input field\code{telemetricExamination} inside its block has the value\code{true}.
+Or an OPS code should only be derived if a \code{ECG} procedure was provided and the
+input field \code{telemetricExamination} inside its block has the value\code{true}.
 Logical combinations of such single field conditions may also occur.
 Expressing such conditions in a well-defined and user-friendly way is an important requirement for the rule language.
 
 \paragraph{Block Content Field Types}
 A block content can contain information of different input types.
 The billing framework must handle and validate each input type differently.
-
 The most basic field types are boolean flags and numeric inputs.
 The \AVS uses the following scalar wrapper protobuf messages for them:
 
@@ -93,10 +156,8 @@ The default value for \code{int32} is 0.
 If a gRPC server receives a protobuf message with an \code{int32} field set to 0, it does not know if the field was purposely initialized with 0 or not set at all.
 Wrapping integers in \code{Int32W} messages makes this distinguishable.
 
-
-Liver tenderness can either be present or not.
-This information is thus entered in a \code{BoolW]} field.
-We use enumeration fields for inputs that have a limited number of predefined values
+Liver tenderness can either be present or not, which makes it a \code{BoolW} field.
+The \AVS uses enumeration fields for inputs that have a limited number of predefined values
 For example, the most frequently used enum type is \code{AbnormalitiesExaminationResult}.
 It denotes the result of a specific examination, which can be either conspicuous or inconspicuous.
 
@@ -109,24 +170,190 @@ It denotes the result of a specific examination, which can be either conspicuous
 Knowledge inputs are another important input type.
 They serve similar purposes as enum types but are not hard-coded into the code base.
 The system fetches them from a dedicated microservice that stores them in a MeiliSearch database.
-
-The \AVS reuses the concept auf storing medical data as protobuf message questionnaires accross the anamnesis, physical examination and procedure stages.
-
 Block content conditions are a powerful tool to make codes dependent on concrete medical information from anamnesis,
 physical examination and procedures.
 
+\todo{introduce nested objects, list objects}
 
 \subsubsection{Time Related conditions}
 
+\paragraph{procedureDurations}
+Procedure durations are a crucial information source on which GOÄ codes as well as multiplier justifications rely on.
+Anesthesia services such as \goa{460}, \goa{462}, \goa{473} and \goa{476} have a duration condition.
+Procedures that took longer than expected are an important justification for billing multipliers.
+
+\RL implements procedure duration conditions in a slightly different way compared to other condition fields.
+Figure \ref{lst:min-max-duration} illustrates example usages of this feature.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\code{minDuration} and \code{maxDuration}},
+    label={lst:min-max-duration}
+]{code/rules/specification/minDuration.json}
+
+Code \code{1} holds if the laryngoscopy takes at most 10 minutes.
+Code \code{2} holds if the laryngoscopy takes between 10 and 20 minutes.
+Code \code{3} holds if the laryngoscopy takes at least 20 minutes.
+
+Both \code{\$minDuration} and \code{\$maxDuration} are fields that belong inside the procedure block object of the \code{requiredProcedureBlocks} field.
+They start with a \"$\" sign character to mark them as special fields distinguishing them from ordinary procedure block content fields.
+They are integer fields that denote a number of minutes.
+A duration condition always refers to an existing procedure, which is why we write it directly into the respective procedure block condition.
+
+\paragraph{isOutsideOfOfficeHours}
+\code{isOutsideOfOfficeHours} is a boolean field that, if set to true, only evaluates to true if the treatment starts outside an official office hour.
+Office hours are official time slots where practitioners provide medical services.
+However, unanticipated urgencies and scheduling issues can be the reason for treatments provided outside of official office hours.
+\goa{A}, \goa{B} and \goa{C} are a few examples for surcharges that apply in those cases.
+This condition subscribes to \code{@InformationSourceTreatmentDate} and \code{@InformationSourceOfficeHours}.
+
+\paragraph{daysOfWeek}
+\code{daysOfWeek} is a list type condition that allows to set conditions on the week day.
+Possible values inside the list are \code{\"monday\"}, \code{\"tuesday\"}, \code{\"wednesday\"}, \code{\"thursday\"}, \code{\"friday\"}, \code{\"saturday\"} and \code{\"sunday\"}.
+Using any value outside of the weekdays leads to an error.
+This condition is relevant for multiple GOÄ surcharges.
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\code{minDuration} and \code{maxDuration}},
+    label={lst:days-of-week}
+]{code/rules/specification/daysOfWeek.json}
+Code \code{1} holds if the treatment takes place on Sunday or Saturday.
+The \code{daysOfWeek} condition subscribes to \code{@InformationSourceTreatmentDate}
+This condition subscribes to \code{@InformationSourceTreatmentDate}.
+
+\paragraph{timeOfDayRestrictions}
+Using the \code{timeOfDayRestrictions} condition allows you to specify that the treatment should commence within any specified timeslot from a provided list of daily timeslots.
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Code \code{1} holds if the treatment starts between 8 pm and 10 pm or between 6 am and 8 am},
+    label={lst:time-of-day-restriction}
+]{code/rules/specification/time-of-day-restrictions.json}
+This condition subscribes to \code{@InformationSourceTreatmentDate}.
+
 \subsubsection{Medical Coding Related Conditions}
 
-\subsubsection{Patient Related Conditions}
+\paragraph{minNumberOfDiagnosesInCurrentTreatment}
+This field specifies the minimal number of diagnoses specified in this treatment.
+One of the commonly used
+In my research, I have learned that multimorbidity is a commonly used multiplier justification in the LMU dermatology.
+Multimorbidity in medical terms defines the combination of two or more chronic medical conditions in an individual \cite{Reste2013The}.
+These medical conditions may be can be a chronic disease, biopsychosocial factor or a somatic risk factor.
+\code{minNumberOfDiagnosesInCurrentTreatment} is useful for implementing the multimorbidity multiplier justification rule.
+The information source for this condition is \code{@InformationSourceTreatmentDiagnoses}.
 
-\paragraph{minPatientAge/maxPatientAge}
-\code{minPatientAge} and \code{maxPatientAge} are both integer fields that enable restrictions on the patient age.
+\paragraph{requiredIcdCodes}
+
+Icd codes are a highly important condition type.
+They play an important role for flatrates, GOÄ codes and EBM codes.
+To provide maximal flexibility, I implemented the concept of a logical code matching trees.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Logical Code matching tree rules},
+    label={lst:logical-code-matching-tree}
+]{code/rules/specification/codeMatchingTree.json}
+
+Firstly, we define the term \"match\":
+Let \( s_1 \) and \( s_2 \) be strings.
+We say \( s_1 \) matches with \( s_2 \) if and only if \( s_2 \) is a prefix of \( s_1 \).
+\begin{equation}\label{eq:matching}
+    s_1 \text{ matches with } s_2 \iff \exists k \in \mathbb{N} \cup \{0\} : s_1 = s_2[0:k]
+\end{equation}
+
+Code \mete{1} holds if the current treatment has an ICD10 diagnose that matches with \mete{B20}.
+Rule \mete{2} makes use of the logical \code{OR} operator and holds if the current treatment has a diagnose that matches with \mete{R07.0}, \mete{R07.1} or \mete{L}.
+
+Note that \mete{L} is not a ICD code but chapter within the ICD catalog.
+According to the definition \ref{eq:matching}, \mete{L} matches with every single ICD10 code in the \mete{L} chapter as all of them have the prefix \"L\".
+This makes it easy to specify a large group of ICD10 codes in a logical code matching tree.
+The ICD10 catalog has a tree structure that maintains the invariant that each node is a prefix of its child nodes.
+In other words, each node matches its parent node.
+Nested nodes are chapters, sections and subsections.
+Leaf nodes are actual ICD10 codes.
+
+Note the code range \mete{R47..R49} used in rule \mete{3}.
+This indicates a discrete interval of codes between \mete{R47} and \mete{R49}, including both borders.
+\mete{R47..R49} includes all codes that match with \mete{R47}, \mete{R48} and \mete{R49}.
+
+Just as \code{minNumberOfDiagnosesInCurrentTreatment} it subscribes to the information source \code{@InformationSourceTreatmentDiagnoses}.
+The practitioner manually selects diagnoses for the treatment.
+This is why diagnoses are part of the treatment object and are straight-forward to fetch.
+
+\paragraph{requiredOpsCodes}
+
+\code{requiredOpsCodes} is equivalent to \code{requiredIcdCodes}, but applies to OPS codes.
+
+The major difference here is how the system fetches OPS codes for this treatment.
+Unlike diagnoses, the practitioner does not manually select OPS codes for the conducted procedures.
+The billing experts at \AV have therefore requested that the billing framework should automatically derive OPS codes for treatments.
+I solved this by defining OPS rules as a new rule type.
+Any rule componenent that needs to derive OPS rules makes use of another rule component, namely \code{OpsRuleComponent}.
+It implements data fetching for \code{InformationSourceOpsCodes} by deriving OPS codes using OPS rules.
+Just as any rule type, billing experts are responsible for writing OPS rules, as well.
+
+\paragraph{requiredTargetCode}
+
+\code{requiredTargetCode} is similar to \code{requiredOpsCodes} and \code{requiredIcdCodes}, but has a few differences.
+Firstly, it refers to the result set of the derivation.
+Using this condition, you can implement that a code can only be billed with another set of codes.
+Billing experts need this feature to implement \goa{K1} and \goa{K2} as well as other surcharge codes in the GOÄ.
+Secondly, it defines the term \"match\" as a direct string equality.
+\begin{equation}\label{eq:matching-string-equals}
+s_1 \text{ matches with } s_2 \iff s_1 = s_2
+\end{equation}
+GOÄ, EBM and other possible code systems do not offer a hierarchical prefix tree structure that would allow definition \ref{eq:matching}.
+Instead, \code{requiredTargetCode} uses definition \ref{eq:matching}.
+Section \addref offers a more detailed description of how the condition checking for \code{requiredTargetCode} actually works.
+
+\subsubsection{Previous Occurrence related Conditions}\label{subsubsec:previous-occurrence-related}
+
+The \AVS internally structures treatments as follows:
+A patient multiple billing cases, each one representing a quarter of the year.
+During a quarter, a patient may have multiple visits.
+Each visit has a reference to the respective billing case.
+During a visit, a patient can have one or more treatments.
+For example, a patient can have an operation followed by a medical round.
+A medical round is a part of hospital routine where healthcare professionals visit patients at their bedsides,
+assess the patient's medical condition and evaluate the treatment process.
+The \AVS considers the operation and the medical round both as treatments linked to the same visit.
+The smallest units in the hierarchy are the billing positions that are attached to a treatment.
+
+Another important context within the private billing is the so-called treatment case.
+A treatment case refers to the month following an initial treatment for a new medical condition \cite{bruck1998kommentar}.
+Treatment cases can run in parallel if a patient has two unrelated medical conditions.
+For example, if a patient visits the doctor for a knee injury on the 4th of May, a new treatment case starts for this knee injury and lasts until the 5th of June.
+Every treatment related to this knee injury between the 4th of May and the 5th of June belongs to this treatment case.
+If the patient visits the same doctor for a viral infection on the 10th of May, a second treatment case begins, lasting until the 11th of June.
+Two treatment cases run in parallel because both medical conditions, the knee injury and the viral infection, are independent.
+A treatment case always spans one month.
+This is why if the patient receives treatment related to the knee one month after the initial treatment, a separate treatment case starts, even though both treatments are related to the same diagnosis.
+
+Occurrence related condition types do not subscribe to any information source.
+They do not require information from an external service but rely on the billing history of the patient.
+The billing service stores billing positions in the local database.
+Evaluating each of the following conditions includes a query on the
+
+\paragraph{maxAmountPerBillingCase / maxAmountPerTreatmentCase / maxAmountPerVisit / maxAmountPerTreatment}
+These condition fields set a limit on the code occurrences in the respective context.
+The code is always the conclusion of the rule the condition is part of.
+\todo{add example}
 
 
-\subsubsection{Previous Occurrence related Conditions}
+\paragraph{maxAmountPerDay / maxAmountPerMonth / maxAmountPerYear}
+Similarly to the previous condition fields, \RL also allows setting limits for code usages in specific time spans.
+\todo{add example}
+
+
+\paragraph{onlyOncePerGoaeTreatmentCaseInCombinationWithSpecialServices}
+This boolean condition field handles a highly specific but important edge-case involving \goa{1} and \goa{5}.
+From the \PVC seminar, I have learned that within the same treatment case, both codes can be billed in combination with a special GOä code at most once.
+A special GOÄ code is a code whose numeric number is higher or equal to 200.
+This means within the same treatment case \goa{1} can be billed as often as possible, but only once in combination with any code larger than 200.
+The same holds for \goa{5}.
 
 \subsubsection{Service Performer related Conditions}
 
@@ -150,4 +377,12 @@ This condition is relevant for \goa{1} and \goa{2}, which are only applicable by
     caption={\code{AbnormalitiesExaminationResult}},
     label={lst:performerIsDoctor}
 ]{code/rules/specification/performerIsDoctor.json}
+
+\subsubsection{Miscellaneous Conditions}
+
+\paragraph{isCareRound / isMedicalRound}
+\code{isCareRound} and \code{isMedicalRound} are boolean conditions that enable you to check if the treatment is a care / medical rounds.
+\goa{46}, \goa{48} and \goa{50} are a few examples for services that require that information.
+Both fields subscribe to the information source \code{@InformationSourceTreatmentType}.
+
 

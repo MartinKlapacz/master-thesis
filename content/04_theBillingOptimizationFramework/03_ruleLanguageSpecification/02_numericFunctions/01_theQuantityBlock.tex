@@ -1,4 +1,4 @@
-\subsubsection{Quantity Functions}\label{subsubsec:numeric-functions}
+\subsection{Quantity Functions}\label{subsubsec:numeric-functions}
 
 In the previous chapter we introduced the concept of a billing rule.
 
@@ -18,22 +18,21 @@ The result is an integer that indicates how often it should be billed in the bil
 \end{equation}
 
 Billing code quantities typically rely on two types of billing information.
-Subsection\ref{subsec:quantity-derivation-from-procedure-information} and\ref{subsec:quantity-derivation-from-durations} explain these sources.
+Subsection\ref{subsubsec:quantity-derivation-from-procedure-information} and\ref{subsec:quantity-derivation-from-durations} explain these sources.
 
-\subsection{Quantity Derivation From Procedure Information}\label{subsec:quantity-derivation-from-procedure-information}
+\subsubsection{Quantity Derivation From Procedure Information}\label{subsubsec:quantity-derivation-from-procedure-information}
 
-\goa{255: Injection, intra-articular or perineural}\cite{hermanns2013bemessung} is an example of a code that is likely to be billed multiple times in a single billing.
+I derived the requirement for quantity functions from \goa{255: Injection, intra-articular or perineural}.
+It is an example of a code, that is likely to appear in a billing with a quantity larger than one.
 
 The so-called Spine Infiltration is a procedure, that includes injections into spine nerves.
 Billing experts use \goa{255} for this medical service.
 Procedure block \code{SpineInfiltrationMsg} represents this procedure.
-However, \goa{255} is typically billed once for each injection the practitioner actually provided.
+However, \goa{255} typically applies once for each spine injection the practitioner actually provided.
 Therefore, a spine infiltration can include multiple injections at different localizations.
+The system should not only be able to derive \goa{255} for a provided spine infiltration, but should also be able to derive the correct quantity of \goa{255} codes.
 
-This is where a new requirement for the billing framework occurred.
-The system should not only be able to derive \goa{255} for a provided spine infiltration, but should also be able to derive the correct quantity of \goa{255}.
-
-To illustrate this example, it is worth mentioning that the human spine consists of three primary regions:
+To illustrate this example, it is worth mentioning that the human spine consists of three primary regions \cite{BOGDUK2016675}:
 \begin{itemize}
     \item The cervical spine, the thoracic spine, and the lumbar spine.
     The cervical spine comprises the uppermost part of the spine, which is the neck and head.
@@ -59,10 +58,11 @@ Each variable in these nested messages is of type \code{Laterality}and represent
 The laterality of an injection refers to the specific side or sides where the injection is administered in the spine localization.
 This can be either on the left side, the right side, or on both sides.
 
-To get the total number of injections, the system would need to peek into the nested messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg} and read the total number of injections from the laterality values.
+To get the total number of injections, the system would need to peek into the nested messages \code{CervicalSpineMsg}, \code{ThoracicSpineMsg} and\ code{LumbarSpineMsg} and compute the total number of injections from the laterality values.
 Additionally, the framework needs to be able to understand that \code{LATERALITY\_NONE} refers to zero and \code{LATERALITY\_LEFT} as well as\code{LATERALITY\_RIGHT} refer to one injection.
 \code{LATERALITY\_BOTH} refers to two injections.
 It is important to assign quantities to enum values.
+
 
 \subsection{Quantity Derivation From Durations}\label{subsec:quantity-derivation-from-durations}
 
