@@ -115,8 +115,63 @@ The \AVS reuses the concept auf storing medical data as protobuf message questio
 Block content conditions are a powerful tool to make codes dependent on concrete medical information from anamnesis,
 physical examination and procedures.
 
-
 \subsubsection{Time Related conditions}
+
+\paragraph{procedureDurations}
+Procedure durations are a crucial information source on which GOÄ codes as well as multiplier justifications rely on.
+Anesthesia services such as \goa{460}, \goa{462}, \goa{473} and \goa{476} have a duration condition.
+Procedures that took longer than expected are an important justification for billing multipliers.
+
+\RL implements procedure duration conditions in a slightly different way compared to other condition fields.
+Figure \ref{lst:min-max-duration} illustrates example usages of this feature.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\code{minDuration} and \code{maxDuration}},
+    label={lst:min-max-duration}
+]{code/rules/specification/minDuration.json}
+
+Code \code{1} holds if the laryngoscopy takes at most 10 minutes.
+Code \code{2} holds if the laryngoscopy takes between 10 and 20 minutes.
+Code \code{3} holds if the laryngoscopy takes at least 20 minutes.
+
+Both \code{\$minDuration} and \code{\$maxDuration} are fields that belong inside the procedure block object of the \code{requiredProcedureBlocks} field.
+They start with a \"$\" sign character to mark them as special fields distinguishing them from ordinary procedure block content fields.
+They are integer fields that denote a number of minutes.
+A duration condition always refers to an existing procedure, which is why we write it directly into the respective procedure block condition.
+
+\paragraph{isOutsideOfOfficeHours}
+\code{isOutsideOfOfficeHours} is a boolean field that, if set to true, only evaluates to true if the treatment starts outside an official office hour.
+Office hours are official time slots where practitioners provide medical services.
+However, unanticipated urgencies and scheduling issues can be the reason for treatments provided outside of official office hours.
+\goa{A}, \goa{B} and \goa{C} are a few examples for surcharges that apply in those cases.
+This condition subscribes to \code{@InformationSourceTreatmentDate} and \code{@InformationSourceOfficeHours}.
+
+\paragraph{daysOfWeek}
+\code{daysOfWeek} is a list type condition that allows to set conditions on the week day.
+Possible values inside the list are \code{\"monday\"}, \code{\"tuesday\"}, \code{\"wednesday\"}, \code{\"thursday\"}, \code{\"friday\"}, \code{\"saturday\"} and \code{\"sunday\"}.
+Using any value outside of the weekdays leads to an error.
+This condition is relevant for multiple GOÄ surcharges.
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\code{minDuration} and \code{maxDuration}},
+    label={lst:days-of-week}
+]{code/rules/specification/daysOfWeek.json}
+Code \code{1} holds if the treatment takes place on Sunday or Saturday.
+The \code{daysOfWeek} condition subscribes to \code{@InformationSourceTreatmentDate}
+This condition subscribes to \code{@InformationSourceTreatmentDate}.
+
+\paragraph{timeOfDayRestrictions}
+Using the \code{timeOfDayRestrictions} condition allows you to specify that the treatment should commence within any specified timeslot from a provided list of daily timeslots.
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Code \code{1} holds if the treatment starts between 8 pm and 10 pm or between 6 am and 8 am},
+    label={lst:time-of-day-restriction}
+]{code/rules/specification/time-of-day-restrictions.json}
+This condition subscribes to \code{@InformationSourceTreatmentDate}.
 
 \subsubsection{Medical Coding Related Conditions}
 
@@ -304,10 +359,6 @@ A special GOÄ code is a code whose numeric number is higher or equal to 200.
 This means within the same treatment case \goa{1} can be billed as often as possible, but only once in combination with any code larger than 200.
 The same holds for \goa{5}.
 
-
-
-
-
 \subsubsection{Service Performer related Conditions}
 
 \paragraph{performerIsDoctor}
@@ -330,4 +381,3 @@ This condition is relevant for \goa{1} and \goa{2}, which are only applicable by
     caption={\code{AbnormalitiesExaminationResult}},
     label={lst:performerIsDoctor}
 ]{code/rules/specification/performerIsDoctor.json}
-

@@ -1,0 +1,33 @@
+[
+  {
+    "code": "1",
+    "condition": {
+      "requiredProcedureBlocks": {
+        "laryngoscopy": {
+          "$maxDuration": 10
+        }
+      }
+    }
+  },
+  {
+    "code": "2",
+    "condition": {
+      "requiredProcedureBlocks": {
+        "laryngoscopy": {
+          "$minDuration": 10,
+          "$maxDuration": 20
+        }
+      }
+    }
+  },
+  {
+    "code": "3",
+    "condition": {
+      "requiredProcedureBlocks": {
+        "laryngoscopy": {
+          "$minDuration": 20
+        }
+      }
+    }
+  }
+]
