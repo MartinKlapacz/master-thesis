@@ -1,0 +1,50 @@
+\section{The Code Derivation Pipeline}
+
+
+
+
+
+The following condition fields cause post-derivation code conflicts:
+\begin{itemize}
+    \item \code{excludedTargetCodes}: This condition causes conflicts the conclusion code of the rule and all codes
+    \item \code{isSingleBillingPosition}: this condition causes conflicts between the respective code and the rest of the codes causing a star-topology conflict graph
+    \item \code{isSingleBillingPositionIfPractitionerIsDoctor}: This condition also causes conflicts between the respective code and the rest of the codes causing a star-topology conflict graph
+\end{itemize}
+
+\subsection{Rule Evaluation Stage}
+
+The system distinguished between rule types.
+Section \addref lists the currently supported rule types.
+
+
+
+\subsection{Rule Evaluation Rounds}
+
+A fundamental framework characteristic is that it evaluates each rule independently of any other rule.
+It happens completely isolated from the rest of all rules.
+The only dynamic environment for rule evaluations is the \REI object.
+
+Section \addref, however, introduces the \code{requiredTargetCodes} condition type.
+To evaluate this condition, the system needs the final result set.
+At this initial stage, this information is not available, because the final result set is yet currently being computed.
+
+To solve this issue, I modified the derivation process by introducing multiple rounds where we evaluate all rules of that rule type.
+After each round, we manually update the \code{currentTargetCodes} field with the recently computed result.
+The \code{requiredTargetCodes} condition uses the codes in \code{currentTargetCodes} to evaluate itself.
+We interrupt the loop when there are no further changes in \code{currentTargetCodes}.
+This way we always have at least two rule evaluation rounds, but are able to derive codes with arbitrarily long \code{requiredTargetCodes} dependency chains.
+
+
+
+\subsection{Conflict Resolution}
+
+The following condition fields cause post-derivation code conflicts:
+\begin{itemize}
+    \item \code{excludedTargetCodes}: This condition causes conflicts the conclusion code of the rule and all codes
+    \item \code{isSingleBillingPosition}: this condition causes conflicts between the respective code and the rest of the codes causing a star-topology conflict graph
+    \item \code{isSingleBillingPositionIfPractitionerIsDoctor}: This condition also causes conflicts between the respective code and the rest of the codes causing a star-topology conflict graph
+\end{itemize}
+
+The issue is that the framework evaluates each rule independently.
+Each rule evaluation happens isolated from the rest of all rules.
+
