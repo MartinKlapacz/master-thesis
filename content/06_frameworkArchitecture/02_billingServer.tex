@@ -25,7 +25,6 @@ It exposes APIs for basic CRUD operations on billing positions, billing cases, c
     caption={BillingService gRPC service}
 ]{code/proto/architecture/code-chains.proto}
 
-The code derivation part is the most inte
 
 \lstinputlisting[
     language=protobuf2,
@@ -35,16 +34,21 @@ The code derivation part is the most inte
 
 It exposes an API for basic CRUD operations on code chains and code chain folder.
 
-\subsubsection{Rule Component}
 
-\subsubsection{Rule Evaluation Input Fetcher}
-A \code{RuleEvaluationInputFetcher} is a rule-type specific component responsible for fetching billing-relevant information from other services with the \AV microservice architecture.
+\subsection{Rule Evaluation Input Fetcher}\label{subsec:rule-evaluation-input-fetcher}
+A \code{RuleEvaluationInputFetcher} is a rule-type specific component responsible for fetching billing-relevant information from other \AV microservices.
 They are auto-programmable components that hide fetching details from the rest of the system.
 The term \"auto-programmable\" means that they configure themselves automatically upon rule loading.
 This works as follows: The \code{Rule} entity class has as described before multiple condition fields.
 The condition field names are equal to their corresponding condition keys in the rule language.
-For each information source \todo{define information source}
+As described in \addref Each condition field subscribes to one or more information sources.
+Each information source lives as a custom java annotation in the billing server.
+To distinguish those custom annotation types from unrelated annotations, they are again annotated with \code{@InformationSource}.
+Condition fields inside the \code{Rule} entity class are decorated with annotations for the information sources they subscribe to.
+Upon receiving all rules of a rule type, a rule type specific \code{RuleEvaluationFetcher} scans those rules.
+It collects all \code{@InformationSource} annotated annotations of any non-null condition field in any received rule of that rule type in a hashset.
+For each derivation call, the respective \code{RuleEvaluationFetcher} instance executes the fetch implementations of its collected information source annotations.
+Finally, it populates a \code{RuleEvaluationInput} instance with its received data and returns it.
 
+\subsection{Rule Component}\label{subsec:rule-component}
 
-
-It has access to the mi
