@@ -1,0 +1,12 @@
+\section{Post-Derivation Code Conflict Resolution}
+
+The following condition fields cause post-derivation code conflicts:
+\begin{itemize}
+    \item \code{excludedTargetCodes}: This condition causes conflicts the conclusion code of the rule and all codes
+    \item \code{isSingleBillingPosition}: this condition causes conflicts between the respective code and the rest of the codes causing a star-topology conflict graph
+    \item \code{isSingleBillingPositionIfPractitionerIsDoctor}: This condition also causes conflicts between the respective code and the rest of the codes causing a star-topology conflict graph
+\end{itemize}
+
+The issue is that the framework evaluates each rule independently.
+Each rule evaluation happens isolated from the rest of all rules.
+
