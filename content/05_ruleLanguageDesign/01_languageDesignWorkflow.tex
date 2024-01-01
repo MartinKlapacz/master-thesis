@@ -1,19 +1,22 @@
-\section{Rule Language Specification}\label{sec:rule-language-specification}
-
+\section{Language Design Workflow}\label{sec:language-design-workflow}
 Traditionally, billing experts create bills for treatments using their knowledge in this field.
 They need to know the conditions which must hold and which make a billing code applicable.
-This work introduces a new JSON-based domain specific rule language billing experts can use to encode this kind of knowledge.
+This work introduces \RL, a new JSON-based domain specific rule language for medical billing experts.
 The billing optimization framework loads and understands those rule files and uses their encoded knowledge to automatically derive billing codes for finalized treatments.
 Section \todo{add section} describes this procedure in more detail.
 
 As a computer scientist, I initially lacked important knowledge about medical billing.
 This is why I conducted several expert interviews with Dr. Lorenz Thumann and Dr. Sahra Bojko, both Medical Managers at \AV.
 In these interviews, I gained crucial knowledge in medical billing and collected formal requirements for the billing framework.
-Other important sources of knowledge were the GOÄ as well as the EBM catalog.
 Dr. Thumann provided me with more general insights on medical billing in Germany.
 Dr. Bojko gave me useful feedback on my rule language designs while I supported her in writing first billing rules.
+Other important sources of knowledge I made use of are the publicly available GOÄ and EBM catalog.
+I also took part in an online GOÄ seminar provided by the PVS Forum.
+The PVS Forum offers a wide range of seminars and training programs for medical professionals.
+The GOÄ seminar, held by Dr. med. Markus Molitor,
+consisted of three distinct sessions and covering GOÄ basics such as GOÄ paragraphs, services types and concrete GOÄ case studies.
 
-The development workflow of the rule language during my time at \AV worked was structured as follows:
+The development workflow of the rule language during my time at \AV had the following structure:
 
 \begin{enumerate}
     \item I regularly found previously unknown edge cases, either as the result of an expert interview or own research in one of the billing catalogs, that the billing framework but be able to handle.
@@ -51,46 +54,12 @@ The following list contains all rule types that the framework currently supports
 \end{itemize}
 
 
-
 The initial idea of having separate implementations for each rule type turned out to be not very scalable.
 Each rule type has a set of relevant information sources that billing codes rely on.
 Important information sources are patient age, the diagnoses, physical examination results and many more.
 This does also mean that some information sources are relevant for multiple rule types.
 This effectively indicates an n-to-m relationship between information sources and rule types.
-
 For example, the patient age is highly relevant for GOÄ and EBM codes, Multiplier Justifications but not for OPS codes.
 Previous allergies are relevant for Multiplier Justifications but not necessarily for GOÄ codes.
 This is the reason, I decided to implement a rule type independent rule engine that provides all conditions used by any rule type.
-
-This is why in the design of the billing framework information sources and condition types are primarily independent of any rule type.
-
-\subsection{Information Scope}
-Part of this work was
-to identify billing-relevant information sources through expert interviews and research in the billing catalogs \addcite.
-From a higher level perspective, all found information sources are part of the following domains:
-\begin{itemize}
-    \item The treatment documentation that contains all medical information of the treatment
-    \item Treatment-independent patient information
-    \item Information referring to the providing practitioner
-    \item Treatment history containing all previous billing positions
-\end{itemize}
-
-In the following sections, we formally define the rule language and introduce its language features.
-Additionally, we back up each language feature with use cases that lead to their implementation.
-These requirements are the result of either conducted expert interviews or research in medical billing documents and catalogs.
-
-The following code snipped \addref shows all upper level fields in the rule object.
-
-\lstinputlisting[
-language=json,
-style=json,
-caption={Rule root}
-label={lst:rule-root}
-]{code/rules/rule-root.json}
-
-Subsection \ref{subsec:the-condition-predicate} introduces the \code{condition} and \code{code}  field.
-Subsection \addref introduces the \code{quantity} field.
-Subsection \addref introduces the \code{multiplier}, \code{targetEbmCode} and \code{targetGoaeCode} fields.
-
-\input{content/04_theBillingOptimizationFramework/03_ruleLanguageSpecification/01_theConditionPredicate}
-\input{content/04_theBillingOptimizationFramework/03_ruleLanguageSpecification/02_numericFunctions/numericFunctions}
+This is why in the design of the billing framework, information sources and condition types are primarily independent of any rule type.

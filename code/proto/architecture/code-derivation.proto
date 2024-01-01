@@ -1,0 +1,11 @@
+service CodeDerivationService {
+  rpc deriveStatutoryBillingCodes(DeriveCodesRequest) returns (DeriveCodesResponse) {};
+  rpc derivePrivateBillingCodes(DeriveCodesRequest) returns (DeriveCodesResponse) {};
+
+  rpc validateEbmCodes(ValidateCodesRequest) returns (CodeValidationResponse) {};
+  rpc validateGoaeCodes(ValidateCodesRequest) returns (CodeValidationResponse) {};
+
+  rpc deriveOpsCodes(DeriveCodesRequest) returns (DeriveCodesResponse) {};
+  rpc deriveFlatRates(DeriveCodesRequest) returns (DeriveCodesResponse) {};
+  rpc deriveMultiplierJustifications(DeriveCodesRequest) returns (DeriveCodesResponse) {};
+}
