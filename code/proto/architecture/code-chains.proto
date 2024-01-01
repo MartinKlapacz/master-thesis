@@ -1,0 +1,13 @@
+service CodeChainService {
+  // code chain
+  rpc createCodeChain(CreateCodeChainRequest) returns (CreateCodeChainResponse) {};
+  rpc updateCodeChain(UpdateCodeChainRequest) returns (UpdateCodeChainResponse) {};
+  rpc deleteCodeChain(DeleteCodeChainRequest) returns (DeleteCodeChainResponse) {};
+  // code chain folder
+  rpc createCodeChainFolder(CreateCodeChainFolderRequest) returns (CreateCodeChainFolderResponse) {};
+  rpc updateCodeChainFolder(UpdateCodeChainFolderRequest) returns (UpdateCodeChainFolderResponse) {};
+  rpc deleteCodeChainFolder(DeleteCodeChainFolderRequest) returns (DeleteCodeChainFolderResponse) {};
+  // getters
+  rpc getCodeChainFolder(GetCodeChainFolderRequest) returns (CodeChainFolderMsg) {};
+  rpc getCodeChain(GetCodeChainRequest) returns (CodeChainMsg) {};
+}

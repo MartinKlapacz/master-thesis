@@ -1,0 +1,28 @@
+\section{Rule Language Specification}\label{sec:rule-language-specification}
+
+The following code snipped \addref shows all upper level fields in the rule object.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={Rule root}
+label={lst:rule-root}
+]{code/rules/rule-root.json}
+
+\section{Information Scope}\label{sec:information-scope}
+Part of this work was
+to identify billing-relevant information sources through expert interviews and research in the billing catalogs \addcite.
+From a higher level perspective, all found information sources are part of the following domains:
+\begin{itemize}
+    \item The treatment documentation that contains all medical information of the treatment
+    \item Treatment-independent patient information
+    \item Treatment-independent practitioner information
+    \item Patient history containing all previous billing positions
+\end{itemize}
+
+
+
+
+\input{content/05_ruleLanguageDesign/02_languageSpecification/02_theQuantityBlock}
+\input{content/05_ruleLanguageDesign/02_languageSpecification/01_theConditionPredicate}
+\input{content/05_ruleLanguageDesign/02_languageSpecification/03_theMultiplierBlock}
