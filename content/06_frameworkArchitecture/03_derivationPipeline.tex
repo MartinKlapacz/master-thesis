@@ -1,4 +1,4 @@
-\section{The Code Derivation Pipeline}
+\section{The Code Derivation Pipeline}\label{sec:the-code-derivation-pipeline}
 
 
 
@@ -11,14 +11,14 @@ The following condition fields cause post-derivation code conflicts:
     \item \code{isSingleBillingPositionIfPractitionerIsDoctor}: This condition also causes conflicts between the respective code and the rest of the codes causing a star-topology conflict graph
 \end{itemize}
 
-\subsection{Rule Evaluation Stage}
+\subsection{Rule Evaluation Stage}\label{subsec:rule-evaluation-stage}
 
 The system distinguished between rule types.
 Section \addref lists the currently supported rule types.
 
 
 
-\subsection{Rule Evaluation Rounds}
+\subsection{Rule Evaluation Rounds}\label{subsec:rule-evaluation-rounds}
 
 A fundamental framework characteristic is that it evaluates each rule independently of any other rule.
 It happens completely isolated from the rest of all rules.
@@ -47,4 +47,21 @@ The following condition fields cause post-derivation code conflicts:
 
 The issue is that the framework evaluates each rule independently.
 Each rule evaluation happens isolated from the rest of all rules.
+
+
+\section*{Maximum Weight Independent Set Problem}
+
+Given a graph $G = (V, E)$ with vertex set $V$ and edge set $E$, and a weight function $w: V \rightarrow \mathbb{R}$ that assigns a weight to each vertex, the Maximum Weight Independent Set problem seeks to find an independent set $S \subseteq V$ that maximizes the total weight. An independent set is a set of vertices in the graph, no two of which are adjacent. Formally, the problem can be stated as:
+
+\begin{equation}
+    \begin{aligned}
+        & \text{Maximize}
+        & & \sum_{v \in S} w(v) \\
+        & \text{subject to}
+        & & S \subseteq V, \\
+        &&& \forall (u, v) \in E, \; u \notin S \text{ or } v \notin S.
+    \end{aligned}
+\end{equation}
+
+
 
