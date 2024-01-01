@@ -1,0 +1,17 @@
+service CodeCatalogService {
+  // code records
+  rpc getCodeRecord(BillingCodeReferenceMsg) returns (EbmCodeRecordMsg) {};
+
+  rpc createEbmRecord(EbmCodeRecordMsg) returns (EbmCodeRecordMsg) {};
+  rpc updateEbmRecord(UpdateEbmRecordRequest) returns (EbmCodeRecordMsg) {};
+  rpc deleteEbmRecord(DeleteEbmRecordRequest) returns (DeleteEbmRecordResponse) {};
+
+  rpc createGoaeRecord(GoaeCodeRecordMsg) returns (GoaeCodeRecordMsg) {};
+  rpc updateGoaeRecord(UpdateGoaeCodeRecordRequest) returns (GoaeCodeRecordMsg) {};
+  rpc deleteGoaeRecord(DeleteGoaeCodeRecordRequest) returns (DeleteGoaeCodeRecordResponse) {};
+
+  // keytabs
+  rpc saveEbmKeytab(EbmKeytabMsg) returns (EbmKeytabMsg) {};
+  rpc getEbmKeytab(KeytabIdMsg) returns (EbmKeytabMsg) {};
+}
+

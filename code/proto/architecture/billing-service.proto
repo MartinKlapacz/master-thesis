@@ -1,0 +1,11 @@
+service BillingService {
+  rpc createBillingCase(BillingMsg) returns (BillingMsg) {};
+  rpc updateBillingCase(UpdateBillingCaseRequest) returns (BillingMsg) {};
+  rpc deleteBillingCase(DeleteBillingCaseRequest) returns (BillingMsg) {};
+
+  rpc createBillingPosition(CreateBillingPositionRequest) returns (BillingPositionMsg) {};
+  rpc updateBillingPosition(UpdateBillingPositionRequest) returns (BillingPositionMsg) {};
+  rpc deleteBillingPosition(DeleteBillingPositionRequest) returns (BillingPositionMsg) {};
+
+  rpc applyCodeChainToBillingCase(ApplyCodeChainToBillingCaseRequest) returns (BillingMsg) {};
+}
