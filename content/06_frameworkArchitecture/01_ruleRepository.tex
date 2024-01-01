@@ -1,0 +1,20 @@
+\section{Rule File Repository}\label{sec:rule-file-repository}
+One component of the billing framework is the rule file repository.
+This is the space where billing experts can work on the rule base, make changes and update existing rules.
+To ensure semantic correctness, I use a schema validation library called Pydantic to validate rules loaded as python dictionaries.
+It is extremely important that the system detects all issues at loading time.
+Otherwise, the system will experience runtime issues due to invalid rules when deriving codes in production.
+
+The rule loading procedure consists of the following steps:
+
+A Python script is responsible for executing the following steps:
+\begin{enumerate}
+    \item Parse the rule file into a python dictionary
+    \item Validate all dictionaries against the Pydantic rule schema.
+    \item If all rules are valid, build a \code{RuleMsg} protobuf message from the validated dictionary
+    \item Send all rules to the billing service using client-side gRPC streaming
+    \item The billing service saves all received rule objects as a bulk transaction
+\end{enumerate}
+
+The rule file repository also stores the EBM and GOÄ datasets and provides client scripts for sending them to the billing service.
+The billing service, requires both the rule and the catalogs to work properly.

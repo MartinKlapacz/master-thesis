@@ -1,0 +1,50 @@
+\section{Billing server}\label{sec:billing-server}
+The billing server is a new microservice added to the microservice architecture of \AV.
+It contains the full billing framework and implements the rule language specified in section \addref.
+
+It exposes APIs for basic CRUD operations on billing positions, billing cases, code chains, code chain folder.
+\code{applyCodeChainToBillingCase} merges all billing positions from the code chain into the current billing.
+
+\lstinputlisting[
+    language=protobuf2,
+    style=protobuf,
+    caption={BillingService gRPC service}
+]{code/proto/architecture/billing-service.proto}
+
+
+\lstinputlisting[
+    language=protobuf2,
+    style=protobuf,
+    caption={BillingService gRPC service}
+]{code/proto/architecture/catalog-service.proto}
+
+
+\lstinputlisting[
+    language=protobuf2,
+    style=protobuf,
+    caption={BillingService gRPC service}
+]{code/proto/architecture/code-chains.proto}
+
+The code derivation part is the most inte
+
+\lstinputlisting[
+    language=protobuf2,
+    style=protobuf,
+    caption={BillingService gRPC service}
+]{code/proto/architecture/code-derivation.proto}
+
+It exposes an API for basic CRUD operations on code chains and code chain folder.
+
+\subsubsection{Rule Component}
+
+\subsubsection{Rule Evaluation Input Fetcher}
+A \code{RuleEvaluationInputFetcher} is a rule-type specific component responsible for fetching billing-relevant information from other services with the \AV microservice architecture.
+They are auto-programmable components that hide fetching details from the rest of the system.
+The term \"auto-programmable\" means that they configure themselves automatically upon rule loading.
+This works as follows: The \code{Rule} entity class has as described before multiple condition fields.
+The condition field names are equal to their corresponding condition keys in the rule language.
+For each information source \todo{define information source}
+
+
+
+It has access to the mi

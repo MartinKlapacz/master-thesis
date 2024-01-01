@@ -1,6 +1,17 @@
 \subsection{The Condition Predicate}\label{subsec:the-condition-predicate}
 
-\subsubsection{Patient Related Conditions}
+In the following sections, we formally define the semantics of \RL and introduce its language features.
+Its syntax is purely JSON-based.
+Additionally, we back up each language feature with use cases that lead to their implementation.
+These requirements are the result of either conducted expert interviews or research in medical billing documents and catalogs.
+
+
+%The condition object implements a condition in the rule definition mentioned in section \ref{sec:aspects-of-rule-based-systems}.
+%The billing framework can evaluate a condition object for a so-called \code{RuleEvaluationInput} instance.
+%It is essentially a data class that contains all information required by any of the following conditions to be evaluated.
+
+
+\subsection{Patient Related Conditions}\label{subsec:patient-related-conditions}
 
 \paragraph{minPatientAge/maxPatientAge}
 \code{minPatientAge} and \code{maxPatientAge} are integer fields that enable restrictions on the patient age.
@@ -233,7 +244,7 @@ Using the \code{timeOfDayRestrictions} condition allows you to specify that the 
 ]{code/rules/specification/time-of-day-restrictions.json}
 This condition subscribes to \code{@InformationSourceTreatmentDate}.
 
-\subsubsection{Medical Coding Related Conditions}
+\subsection{Medical Coding Related Conditions}
 
 \paragraph{minNumberOfDiagnosesInCurrentTreatment}
 This field specifies the minimal number of diagnoses specified in this treatment.
@@ -309,7 +320,7 @@ GOÄ, EBM and other possible code systems do not offer a hierarchical prefix tre
 Instead, \code{requiredTargetCode} uses definition \ref{eq:matching}.
 Section \addref offers a more detailed description of how the condition checking for \code{requiredTargetCode} actually works.
 
-\subsubsection{Previous Occurrence related Conditions}\label{subsubsec:previous-occurrence-related}
+\subsection{Previous Occurrence related Conditions}\label{subsubsec:previous-occurrence-related}
 
 The \AVS internally structures treatments as follows:
 A patient multiple billing cases, each one representing a quarter of the year.
@@ -355,7 +366,7 @@ A special GOÄ code is a code whose numeric number is higher or equal to 200.
 This means within the same treatment case \goa{1} can be billed as often as possible, but only once in combination with any code larger than 200.
 The same holds for \goa{5}.
 
-\subsubsection{Service Performer related Conditions}
+\subsection{Service Performer related Conditions}
 
 \paragraph{performerIsDoctor}
 The \code{performerIsDoctor} condition is a boolean condition field that allows to impose conditions on the practitioner type.
@@ -378,7 +389,7 @@ This condition is relevant for \goa{1} and \goa{2}, which are only applicable by
     label={lst:performerIsDoctor}
 ]{code/rules/specification/performerIsDoctor.json}
 
-\subsubsection{Miscellaneous Conditions}
+\subsection{Miscellaneous Conditions}\label{subsec:miscellaneous-conditions}
 
 \paragraph{isCareRound / isMedicalRound}
 \code{isCareRound} and \code{isMedicalRound} are boolean conditions that enable you to check if the treatment is a care / medical rounds.
