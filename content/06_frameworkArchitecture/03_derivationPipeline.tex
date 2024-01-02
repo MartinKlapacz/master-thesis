@@ -16,8 +16,6 @@ The following condition fields cause post-derivation code conflicts:
 The system distinguished between rule types.
 Section \addref lists the currently supported rule types.
 
-
-
 \subsection{Rule Evaluation Rounds}\label{subsec:rule-evaluation-rounds}
 
 A fundamental framework characteristic is that it evaluates each rule independently of any other rule.
@@ -34,24 +32,26 @@ The \code{requiredTargetCodes} condition uses the codes in \code{currentTargetCo
 We interrupt the loop when there are no further changes in \code{currentTargetCodes}.
 This way we always have at least two rule evaluation rounds, but are able to derive codes with arbitrarily long \code{requiredTargetCodes} dependency chains.
 
-
-
 \subsection{Conflict Resolution}
 
-The following condition fields cause post-derivation code conflicts:
-\begin{itemize}
-    \item \code{excludedTargetCodes}: This condition causes conflicts the conclusion code of the rule and all codes
-    \item \code{isSingleBillingPosition}: this condition causes conflicts between the respective code and the rest of the codes causing a star-topology conflict graph
-    \item \code{isSingleBillingPositionIfPractitionerIsDoctor}: This condition also causes conflicts between the respective code and the rest of the codes causing a star-topology conflict graph
-\end{itemize}
+\code{requiredTargetCodes} is not the only condition type that requires special handling.
+The following condition fields also require the full derivation result for their evaluation.
+\begin{enumerate}
+    \item \code{excludedCodes: List<String>}: This condition causes conflicts between the conclusion code and all nodes inside the list value of \code{excludedCodes}
+    \item \code{isSingleBillingCondition: Boolean}: this condition causes conflicts between the respective code and all other codes in the result set
+    \item \code{isSingleBillingConditionIfPractitionerIsDoctor: Boolean}: This condition also causes conflicts between the respective code and all other codes in the result set
+\end{enumerate}
+Unlike \code{requiredTargetCodes} they cause post-derivation code conflicts within the derivation set.
+This has a fundamental impact on the derivation pipeline.
 
-The issue is that the framework evaluates each rule independently.
-Each rule evaluation happens isolated from the rest of all rules.
+Instead of a set of applicable codes, the rule evaluation result is more a graph where nodes are the derived rule codes and edges represent conflicts between them.
+In the PVS seminar, I have learned that resolving these conflicts manually by hand is common practice for medical staff.
+Billing experts typically eliminate those nodes that have a lower fee.
+From a mathematical point of view, this is graph optimization problem called the Maximum Weight Independent Set problem (MWIS) which is defined as follows \cite{SAKAI2003313}:
 
-
-\section*{Maximum Weight Independent Set Problem}
-
-Given a graph $G = (V, E)$ with vertex set $V$ and edge set $E$, and a weight function $w: V \rightarrow \mathbb{R}$ that assigns a weight to each vertex, the Maximum Weight Independent Set problem seeks to find an independent set $S \subseteq V$ that maximizes the total weight. An independent set is a set of vertices in the graph, no two of which are adjacent. Formally, the problem can be stated as:
+Given a graph $G = (V, E)$ with node set $V$ and edge set $E$, and a weight function $w: V \rightarrow \mathbb{R}$ that assigns a weight to each node, the Maximum Weight Independent Set problem seeks to find an independent set $S \subseteq V$ that maximizes the total weight.
+An independent set is a set of vertices in the graph, no two of which are adjacent.
+Formally, the problem can be stated as:
 
 \begin{equation}
     \begin{aligned}
@@ -60,8 +60,90 @@ Given a graph $G = (V, E)$ with vertex set $V$ and edge set $E$, and a weight fu
         & \text{subject to}
         & & S \subseteq V, \\
         &&& \forall (u, v) \in E, \; u \notin S \text{ or } v \notin S.
-    \end{aligned}
+    \end{aligned}\label{eq:mwis}
 \end{equation}
+
+The weight function $w$ assigns the fee to the billing code.
+
+For private billing $w$ is defined as follows:
+\begin{equation}
+    w\left(c\right) = p\left(c\right) \times \text{multiplier} + \text{flatrate}\label{eq:fee-function}
+\end{equation}
+
+
+The MWIS problem is a well known
+
+\subsubsection{Heuristic Greedy Algorithms}
+
+\paragraph{GWMin}
+GWMin starts up from an empty node set and iteratively adds the node $v_i$ with the currently optimal relation between weight $w(v_i)$ and degree $d(v_i)$ \cite{SAKAI2003313}.
+The node selection can be formulated as the following optimization problem:
+Given a graph $G = (V, E)$ with a weight function $W: V \to \mathbb{R}_{\geq 0}$ it selects the next node as follows :
+\[
+    v' = \max_{v \in V'} \frac{W(v)}{\deg(v) + 1}
+\]
+where $V'$ is the set of nodes not yet included in the independent set and not adjacent to any node in the current independent set.
+
+
+\begin{algorithm}
+    \caption{GWMIN Algorithm}
+    \begin{algorithmic}[1]
+        \Procedure{GWMIN}{$G(V, E, W)$}
+            \State $I \gets \emptyset$ \Comment{Initialize independent set}
+            \State $V' \gets V$ \Comment{Copy of the node set}
+            \While{$V' \neq \emptyset$}
+                \State $u \gets$ \Call{Selectnode}{$V', G, W$}
+                \State $I \gets I \cup \{u\}$ \Comment{Add selected node to independent set}
+                \State $V' \gets V' \setminus \{u\}$ \Comment{Remove selected node}
+                \State $V' \gets V' \setminus$ Neighbors$(u, G)$ \Comment{Remove neighbors}
+            \EndWhile
+            \State \textbf{return} $I$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+    \caption{GWMIN Algorithm}
+    \begin{algorithmic}[1]
+        \Procedure{Selectnode}{$V', G, W$}
+            \State $selected \gets$ null
+            \State $maxScore \gets -\infty$
+            \For{$v \in V'$}
+                \State $score \gets W(v) / (\text{Degree}(v, G) + 1)$
+                \If{$score > maxScore$}
+                    \State $maxScore \gets score$
+                    \State $selected \gets v$
+                \EndIf
+            \EndFor
+            \State \textbf{return} $selected$
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+
+\paragraph{GWMin2}
+GWMin2 is a modified version of the GWMin algorithm with another node selection strategy \cite{SAKAI2003313}.
+It selects the next node as follows:
+\[
+    v' = \max_{v \in V'} \frac{W(v)^2}{\sum_{u \in N_G^+(v)} W(u)}
+\]
+It focuses on maximizing the ratio of the square of a node's weight $w\left(v\right)^2$ to the sum of the weights of all vertices in its neighborhood $N\left(v\right)$.
+
+
+
+
+In this setting we can make a few assumptions about the actual problem that will appear.
+\begin{itemize}
+    \item The MWIS problems are comparably simple.
+    This is inherently the case because in traditional medical billing, medical staff resolves those conflict issues by hand.
+    The number of codes in a result set is very unlikely to exceed 10 codes.
+    \item Star topology sub-graphs are very likely to appear.
+    The actual implementation in the framework should be able to handle those types of graphs very well
+    \item The number of edge conflicts will be very low.
+    This is due to the reason that codes that exclude themselves using the \code{excludedTargetCodes} condition type also logically exclude themselves.
+    This means that
+\end{itemize}
 
 
 
