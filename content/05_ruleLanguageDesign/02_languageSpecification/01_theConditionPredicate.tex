@@ -47,8 +47,6 @@ Figure \ref{fig:condition-triplet-pattern-instance-1} and \ref{fig:condition-tri
 for the condition fields \code{newBorn} and \code{minPatientAge}.
 Both subscribe to the \code{@InformationSourcePatientAge} information source but have different condition check implementations.
 
-
-
 \begin{figure}
     \centering
     \begin{subfigure}[b]{0.45\linewidth}
@@ -138,7 +136,6 @@ The following rules are equivalent
     caption={\code{is sober} rule},
     label={lst:is-sober}
 ]{code/rules/specification/isSober.json}
-
 
 
 \paragraph{minNumberOfAllergies}
@@ -462,11 +459,42 @@ This condition is relevant for \goa{1} and \goa{2}, which are only applicable by
     label={lst:performerIsDoctor}
 ]{code/rules/specification/performerIsDoctor.json}
 
+\subsection{Conflict Conditions}\label{subsec:conflict-conditions}
+Conflict conditions are fields which the framework cannot evaluate during the ordinary rule evaluation phase.
+The reason for that is the these fields require the final evaluation set to be evaluated, which is not known at this point.
+The final evaluation result is not an ordinary information source.
+Instead, this is these field receive special handling in a separate derivation stage described in section \addref.
+
+\paragraph{singleBillingPosition}
+\code{singleBillingPosition} is a special condition type that if set to true only evaluates to \code{true} if it is the only code in the derivation result.
+It is relevant for \goa{3}.
+This condition field requires special handling and does not subscribe to any information sources.
+
+\paragraph{singleBillingPositionIfPractitionerIsDoctor}
+\code{singleBillingPositionIfPractitionerIsDoctor} is an extension of of \code{singleBillingPosition}
+
+%\code{\{singleBillingPositionIfPractitionerIsDoctor : true\} = \code{true}} \leftrightarrow
+\todo{finish this}
+\[
+     \leftrightarrow \text{type}\left(  \right)
+\]
+
+Even though this condition  condition field is admittedly very specific
+
+that if set to true only evaluates to \code{true} if it is the code in the derivation result.
+It evaluates to true if the practitioner is not a doctor or the conclusion code is the only code in the derivation result.
+This condition field requires special handling but also subscribes to information source \code{@InformationSourcePractitionerType}.
+
+\paragraph{excludedCodes}
+This condition field expects a list of conclusions as a value.
+A rule using the \code{excludedCodes} field evaluates to false if any code in the \code{excludedCodes} list is a derivation result.
+This
+
+
 \subsection{Miscellaneous Conditions}\label{subsec:miscellaneous-conditions}
 
 \paragraph{isCareRound / isMedicalRound}
 \code{isCareRound} and \code{isMedicalRound} are boolean conditions that enable you to check if the treatment is a care / medical rounds.
 \goa{46}, \goa{48} and \goa{50} are a few examples for services that require that information.
 Both fields subscribe to the information source \code{@InformationSourceTreatmentType}
-
 
