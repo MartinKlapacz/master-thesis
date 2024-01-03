@@ -1,0 +1,23 @@
+[
+  {
+    "code": 1,
+    "condition": {
+      "isSober": false
+    }
+  },
+  {
+    "code": 2,
+    "condition": {
+      "requiredAnamnesisBlocks": {
+        "or": {
+          "otherDrugsAndAddictiveSubstances": {
+            "currentConsumption": true
+          },
+          "alcohol": {
+            "currentConsumption": true
+          }
+        }
+      }
+    }
+  }
+]
