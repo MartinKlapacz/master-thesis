@@ -70,7 +70,7 @@ Its value is a condition object with the following fields.
 
 \subsection{Patient Related Conditions}\label{subsec:patient-related-conditions}
 
-\paragraph{minPatientAge/maxPatientAge}
+\paragraph{minPatientAge / maxPatientAge}
 \code{minPatientAge} and \code{maxPatientAge} are integer fields that enable restrictions on the patient age.
 Both fields store a number of years.
 You can combine both to require the patient age to be within a certain age interval.
@@ -118,7 +118,7 @@ The following rules are equivalent.
     style=json,
     caption={\code{isPregnant} rule},
     label={lst:is-pregnant}
-]{code/rules/specification/performerIsDoctor.json}
+]{code/rules/specification/isPregnant.json}
 
 A pregnancy can be reason for additionally required care or services during a treatment that is not related to the patient's pregnancy.
 This is why it can be useful in multiplier justification rules.
@@ -215,7 +215,7 @@ but also to look inside the blocks and check for field values.
 A GOÄ code might have as a condition that a liver palpation examination is part of the treatment and
 the liver turned out to be palpable.
 Or an OPS code should only be derived if a \code{ECG} procedure was provided and the
-input field \code{telemetricExamination} inside its block has the value\code{true}.
+input field \code{telemetricExamination} inside its block has the value\true.
 Logical combinations of such single field conditions may also occur.
 Expressing such conditions in a well-defined and user-friendly way is an important requirement for the rule language.
 
@@ -460,28 +460,33 @@ This condition is relevant for \goa{1} and \goa{2}, which are only applicable by
 ]{code/rules/specification/performerIsDoctor.json}
 
 \subsection{Conflict Conditions}\label{subsec:conflict-conditions}
-Conflict conditions are fields which the framework cannot evaluate during the ordinary rule evaluation phase.
-The reason for that is the these fields require the final evaluation set to be evaluated, which is not known at this point.
-The final evaluation result is not an ordinary information source.
-Instead, this is these field receive special handling in a separate derivation stage described in section \addref.
+Conflict conditions are special fields that the framework cannot evaluate during the ordinary rule evaluation phase.
+The reason for that is the these fields require the final rule evaluation set as an input, which is obviously not known during the rule evaluation phase.
+The framework does not define a information source for this type of information.
+Instead, these fields receive a special handling in a separate derivation stage described in section \addref.
 
 \paragraph{singleBillingPosition}
-\code{singleBillingPosition} is a special condition type that if set to true only evaluates to \code{true} if it is the only code in the derivation result.
+\code{singleBillingPosition} is a special condition type that if set to \true only evaluates to \true if it is the only code in the derivation result.
 It is relevant for \goa{3}.
-This condition field requires special handling and does not subscribe to any information sources.
+This condition does not subscribe to any information sources.
 
 \paragraph{singleBillingPositionIfPractitionerIsDoctor}
 \code{singleBillingPositionIfPractitionerIsDoctor} is an extension of of \code{singleBillingPosition}
+This admittedly highly specific boolean condition field behaves as follows:
 
-%\code{\{singleBillingPositionIfPractitionerIsDoctor : true\} = \code{true}} \leftrightarrow
-\todo{finish this}
 \[
-     \leftrightarrow \text{type}\left(  \right)
+    \code{\{singleBillingPositionIfPractitionerIsDoctor : true\} = \true} \leftrightarrow \code{\{practitionerIsDoctor : true\} = \false} \land \code{\{singleBillingPosition : true\} = \true}
 \]
+
+
+This condition subscribes to \code{@InformationSourcePractitionerType}.
+
+
+\todo{finish this}
 
 Even though this condition  condition field is admittedly very specific
 
-that if set to true only evaluates to \code{true} if it is the code in the derivation result.
+that if set to true only evaluates to \true if it is the code in the derivation result.
 It evaluates to true if the practitioner is not a doctor or the conclusion code is the only code in the derivation result.
 This condition field requires special handling but also subscribes to information source \code{@InformationSourcePractitionerType}.
 
