@@ -1,0 +1,6 @@
+{
+  "code": "Multimorbidität",
+  "condition": {
+    "minNumberOfDiagnoses": 5
+  }
+}
