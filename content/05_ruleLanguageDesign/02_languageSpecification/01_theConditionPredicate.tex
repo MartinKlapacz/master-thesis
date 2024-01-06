@@ -1,21 +1,20 @@
 \subsection{The Condition Predicate}\label{subsec:the-condition-predicate}
 
 In the following sections, we formally define the semantics of \RL and introduce its language features.
-Its syntax is purely JSON-based.
+The syntax is pure JSON.
 Additionally, we back up each language feature with use cases that lead to their implementation.
 These requirements are the result of either conducted expert interviews or research in medical billing documents and catalogs.
-
 
 %The condition object implements a condition in the rule definition mentioned in section \ref{sec:aspects-of-rule-based-systems}.
 %The billing framework can evaluate a condition object for a so-called \code{RuleEvaluationInput} instance.
 %It is essentially a data class that contains all information required by any of the following conditions to be evaluated.
 
 \subsection{The Condition Triplet pattern}\label{subsec:the-condition-triplet-pattern}
-As mentioned in section \addref rule-based systems require constant maintenance and rule updates.
+As mentioned in section \addref rule-based systems require regular maintenance and rule updates.
 
-As denoted in \addref one of the requirements for a rule-based system is extendability.
+As denoted in \addref one of the requirements for a rule-based system is extendability. \addcite
 This does not only refer to the rules in the rule-base but also to the framework itself.
-I put great emphasis on extendability during the design of the Billing Framework
+During the design of the Billing Framework I put great emphasis on extendability
 by making use of the pattern illustrated in figure \ref{fig:condition-triplet-pattern}.
 
 \begin{figure}
@@ -26,6 +25,7 @@ by making use of the pattern illustrated in figure \ref{fig:condition-triplet-pa
 \end{figure}
 
 Adding a new condition type to the condition predicate of \RL requires the implementation of what I call the condition triplet pattern.
+
 \paragraph{Condition Field}
 Each condition type requires a meaningful keyword with a proper data type in the rule language schema.
 Generally speaking, complicated condition features tremendously reduce user-friendliness.
@@ -38,7 +38,6 @@ An information source is a type of medical or administrative information that, a
 Billing-relevant information is information upon which the codes we want to derive depend.
 Each Information source requires a fetch implementation, that fetches the data from other \AV services and makes sure the condition check implementation has access to it.
 
-
 \paragraph{Condition Check Implementation}
 Each condition field requires an actual condition implementation that expects a \code{RuleEvaluationInput} object as an input and returns the condition result.
 \code{RuleEvaluationInput} objects are data classes that conveniently provide the data that represents fetched information sources required by the existing condition fields.
@@ -47,8 +46,6 @@ Section \addref describes them in more detail.
 Figure \ref{fig:condition-triplet-pattern-instance-1} and \ref{fig:condition-triplet-pattern-instance-2} illustrate concrete implementations of the condition triplet pattern
 for the condition fields \code{newBorn} and \code{minPatientAge}.
 Both subscribe to the \code{@InformationSourcePatientAge} information source but have different condition check implementations.
-
-
 
 \begin{figure}
     \centering
@@ -68,14 +65,12 @@ Both subscribe to the \code{@InformationSourcePatientAge} information source but
     \end{subfigure}
     \label{fig:coffee}
 \end{figure}
-Both
-
-
-
+This section discusses the \code{condition} field of a rule.
+Its value is a condition object with the following fields.
 
 \subsection{Patient Related Conditions}\label{subsec:patient-related-conditions}
 
-\paragraph{minPatientAge/maxPatientAge}
+\paragraph{minPatientAge / maxPatientAge}
 \code{minPatientAge} and \code{maxPatientAge} are integer fields that enable restrictions on the patient age.
 Both fields store a number of years.
 You can combine both to require the patient age to be within a certain age interval.
@@ -90,10 +85,10 @@ The patient age is also highly relevant for various EBM codes, but already exist
 This is why using patient age conditions in EBM rules is redundant.
 The information source for these two conditions is \code{@InformationSourcePatientAge}.
 
-\paragraph{newBorn}
-\code{newBorn} is syntactic sugar and a special case of the \code{maxPatientAge} condition.
-It is a bool field that denotes whether a patient is a newborn or not.
-According to the GOÄ, babies that are at most 28 days old are newborns\addcite.
+\paragraph{isNewBorn}
+\code{isNewBorn} is syntactic sugar and a special case of the \code{maxPatientAge} condition.
+It is a bool field that denotes whether a patient must be a newborn or not.
+According to the GOÄ, babies that are at most 28 days old are newborns \cite{bruck1998kommentar}.
 It is relevant for \goa{25: Initial newborn examination – if necessary including advice from the caregiver(s) –}, which is essentially a provision of a physical examination for newborns.
 It can also be interesting for multiplier justifications.
 The information source for these two conditions is \code{@InformationSourcePatientAge}.
@@ -123,12 +118,25 @@ The following rules are equivalent.
     style=json,
     caption={\code{isPregnant} rule},
     label={lst:is-pregnant}
-]{code/rules/specification/performerIsDoctor.json}
+]{code/rules/specification/isPregnant.json}
 
 A pregnancy can be reason for additionally required care or services during a treatment that is not related to the patient's pregnancy.
 This is why it can be useful in multiplier justification rules.
 It is also useful for \goa{23} which is applicable for an initial pregnancy-related examination.
 \code{isPregnant} subscribes to the information source \code{@InformationSourceAnamnesisBlocks}.
+
+\paragraph{isSober}
+The \code{isSober} boolean condition describes the current state of the patient during the treatment.
+A patient is considered non-sober when under the influence of alcohol or addictive substances.
+\code{isSober} is effectively syntactic sugar for a specific use case of the \code{requiredAnamnesisBlocks} condition.
+The following rules are equivalent
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\code{is sober} rule},
+    label={lst:is-sober}
+]{code/rules/specification/isSober.json}
+
 
 \paragraph{minNumberOfAllergies}
 \code{minNumberOfAllergies} is a field that specifies the minimal number of allergies a patient requires.
@@ -207,7 +215,7 @@ but also to look inside the blocks and check for field values.
 A GOÄ code might have as a condition that a liver palpation examination is part of the treatment and
 the liver turned out to be palpable.
 Or an OPS code should only be derived if a \code{ECG} procedure was provided and the
-input field \code{telemetricExamination} inside its block has the value\code{true}.
+input field \code{telemetricExamination} inside its block has the value\true.
 Logical combinations of such single field conditions may also occur.
 Expressing such conditions in a well-defined and user-friendly way is an important requirement for the rule language.
 
@@ -451,11 +459,47 @@ This condition is relevant for \goa{1} and \goa{2}, which are only applicable by
     label={lst:performerIsDoctor}
 ]{code/rules/specification/performerIsDoctor.json}
 
+\subsection{Conflict Conditions}\label{subsec:conflict-conditions}
+Conflict conditions are special fields that the framework cannot evaluate during the ordinary rule evaluation phase.
+The reason for that is the these fields require the final rule evaluation set as an input, which is obviously not known during the rule evaluation phase.
+The framework does not define a information source for this type of information.
+Instead, these fields receive a special handling in a separate derivation stage described in section \addref.
+
+\paragraph{singleBillingPosition}
+\code{singleBillingPosition} is a special condition type that if set to \true only evaluates to \true if it is the only code in the derivation result.
+It is relevant for \goa{3}.
+This condition does not subscribe to any information sources.
+
+\paragraph{singleBillingPositionIfPractitionerIsDoctor}
+\code{singleBillingPositionIfPractitionerIsDoctor} is an extension of of \code{singleBillingPosition}
+This admittedly highly specific boolean condition field behaves as follows:
+
+\[
+    \code{\{singleBillingPositionIfPractitionerIsDoctor : true\} = \true} \leftrightarrow \code{\{practitionerIsDoctor : true\} = \false} \land \code{\{singleBillingPosition : true\} = \true}
+\]
+
+
+This condition subscribes to \code{@InformationSourcePractitionerType}.
+
+
+\todo{finish this}
+
+Even though this condition  condition field is admittedly very specific
+
+that if set to true only evaluates to \true if it is the code in the derivation result.
+It evaluates to true if the practitioner is not a doctor or the conclusion code is the only code in the derivation result.
+This condition field requires special handling but also subscribes to information source \code{@InformationSourcePractitionerType}.
+
+\paragraph{excludedCodes}
+This condition field expects a list of conclusions as a value.
+A rule using the \code{excludedCodes} field evaluates to false if any code in the \code{excludedCodes} list is a derivation result.
+This
+
+
 \subsection{Miscellaneous Conditions}\label{subsec:miscellaneous-conditions}
 
 \paragraph{isCareRound / isMedicalRound}
 \code{isCareRound} and \code{isMedicalRound} are boolean conditions that enable you to check if the treatment is a care / medical rounds.
 \goa{46}, \goa{48} and \goa{50} are a few examples for services that require that information.
 Both fields subscribe to the information source \code{@InformationSourceTreatmentType}
-
 
