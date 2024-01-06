@@ -1,8 +1,9 @@
 \section{The Code Derivation Pipeline for Private Treatments}\label{sec:the-code-derivation-pipeline-for-private-treatments}
 
-The derivation pipeline for private treatments consists of three stages.
+The derivation pipeline for private treatments is structured into multiple stages.
+In this section, we desecribe all derivation stages
 
-\subsection{Initial Rule Evaluation}\label{subsec:rule-evaluation-stage}
+\subsection{Initial GOÄ Rule Evaluation}\label{subsec:initial-goä-rule-evalutation}
 
 The first step is to use the \REIF for the GOÄ rule type to fetch the data required for GOÄ rule evaluation.
 At this point,
@@ -14,7 +15,7 @@ Next, we use the \code{GoaeRuleComponent} to retrieve all GOÄ rules from the da
 Each rule evaluate happens isolated from any other rule.
 For each rule, we accept the value of the \code{code} field for which the \code{condition} field has evaluated to true.
 
-\subsection{Subsequent Rule Evaluation Rounds}\label{subsec:rule-evaluation-rounds}
+\subsection{Subsequent GOÄ Rule Evaluation Rounds}\label{subsec:susequent-goä-rule-evaluation-rounds}
 
 Section \addref, introduces the \code{requiredTargetCodes} condition type.
 To evaluate this condition, the system needs to know the final result set.
@@ -30,11 +31,11 @@ This way we always have at least two rule evaluation rounds,
 but are able to derive codes with arbitrarily long \code{requiredTargetCodes} dependency chains.
 
 \subsection{Multiplier Justification Derivation Stage}\label{subsec:multiplier-justification-derivation-stage}
-This stage is equivalent to the initial rule evaluation in subsection \ref{subsec:rule-evaluation-stage}.
+This stage is equivalent to the initial rule evaluation in subsection \ref{subsec:initial-goä-rule-evalutation}.
 But now we use the \REIF for the multiplier justification rule type to fetch a \REI.
 We use this \REI and the \code{MultiplierRuleComponent} to derive applicable multiplier justifications.
 Dependencies between multiplier justifications typically do not exist.
-We do not need to employ subsequent rule evaluation rounds as described in subsection \ref{subsec:rule-evaluation-rounds}.
+We do not need to employ subsequent rule evaluation rounds as described in subsection \ref{subsec:susequent-goä-rule-evaluation-rounds}.
 
 \subsection{Billing Points Computation}\label{subsec:fee-computation}
 At this point we have applicable GOÄ code candidates and their quantities and
@@ -52,7 +53,7 @@ Later, we can compute the actual fee.
 The final user should manually match general multiplier justifications with codes that didn't receive a multiplier.
 
 
-\subsection{Conflict Resolution}\label{subsec:conflict-resolution}
+\subsection{GOÄ Conflict Resolution}\label{subsec:goä-conflict-resolution}
 At this point, we have GOÄ billing code candidates and their fees.
 However, there is one last problem to solve.
 

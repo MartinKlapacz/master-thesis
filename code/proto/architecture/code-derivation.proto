@@ -1,3 +1,22 @@
+
+message DeriveCodesRequest {
+  string treatmentId = 1;
+}
+
+message ValidateCodesRequest {
+  string treatmentId = 1;
+  repeated string codes = 4;
+}
+
+message DeriveCodesResponse {
+  map<string, int32> codes = 1;
+}
+
+message CodeValidationResponse {
+  repeated BillingConflictMsg conflicts = 1;
+}
+
+
 service CodeDerivationService {
   rpc deriveStatutoryBillingCodes(DeriveCodesRequest) returns (DeriveCodesResponse) {};
   rpc derivePrivateBillingCodes(DeriveCodesRequest) returns (DeriveCodesResponse) {};
