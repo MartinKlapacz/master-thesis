@@ -1,38 +1,26 @@
 \section{Billing server}\label{sec:billing-server}
 The billing server is a new microservice added to the microservice architecture of \AV.
-It contains the full billing framework and implements the rule language specified in section \addref.
-
-It exposes APIs for basic CRUD operations on billing positions, billing cases, code chains, code chain folder.
-\code{applyCodeChainToBillingCase} merges all billing positions from the code chain into the current billing.
-
-\lstinputlisting[
-    language=protobuf2,
-    style=protobuf,
-    caption={BillingService gRPC service}
-]{code/proto/architecture/billing-service.proto}
-
+It contains most parts of the billing framework implemented in this work.
+It implements the derivation pipelines described in section \ref{sec:the-code-derivation-pipeline-for-statutory-treatments}
+and \ref{sec:the-code-derivation-pipeline-for-private-treatments}
+as well as the rule language as specified in section \ref{sec:rule-language-specification}.
 
 \lstinputlisting[
     language=protobuf2,
     style=protobuf,
-    caption={BillingService gRPC service}
-]{code/proto/architecture/catalog-service.proto}
-
-
-\lstinputlisting[
-    language=protobuf2,
-    style=protobuf,
-    caption={BillingService gRPC service}
-]{code/proto/architecture/code-chains.proto}
-
-
-\lstinputlisting[
-    language=protobuf2,
-    style=protobuf,
-    caption={BillingService gRPC service}
+    caption={Code Derivation API of the Billing Server}
 ]{code/proto/architecture/code-derivation.proto}
 
-It exposes an API for basic CRUD operations on code chains and code chain folder.
+The \code{CodeDerivationService} gRPC service of the billing server exposes endpoints for code derivation and validation for specific treatments.
+It also allows deriving OPS codes, EBM flatrates and multiplier justifications.
+
+A \code{DeriveCodesResponse} contains actual billing codes mapped to their quantity.
+Other services can use \code{validateEbmCodes} and \code{validateGoaeCodes} to check if a set of codes are applicable for a specific treatment.
+They respond with a \code{CodeValidationResponse} which, if present, contains explanatory information about existing conflicts.
+
+Besides automatic rule derivation, it exposes gRPC endpoints for CRUD operations on billing positions, billing cases, code chains and code chain folders.
+These endpoints are necessary for manual and conventional billing creation.
+It exposes endpoints for receiving and storing rules and catalogs used by the clients described in section \ref{sec:rule-file-repository}.
 
 
 \subsection{Rule Evaluation Input Fetcher}\label{subsec:rule-evaluation-input-fetcher}
