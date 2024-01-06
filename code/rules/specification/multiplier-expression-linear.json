@@ -1,0 +1,22 @@
+{
+  "code": "Erheblicher Zeitaufwand - bei einer Laryngoskopie",
+  "condition": {
+    "procedureBlocks": { "laryngoscopy": { "$minDuration": 20 } },
+    "multiplier": {
+      "min": [
+        { "constant": 3.5 },
+        {
+          "sum": [
+            {
+              "mul": [
+                { "constant": 0.125 },
+                { "procedureDuration": "laryngoscopy" }
+              ]
+            },
+            { "constant": -1.5 }
+          ]
+        }
+      ]
+    }
+  }
+}

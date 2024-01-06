@@ -1,0 +1,29 @@
+[
+  {
+    "code": "Erheblicher Zeitaufwand - bei einer Laryngoskopie",
+    "condition": {
+      "procedureBlocks": { "laryngoscopy": {
+        "$minDuration": 20,
+        "$maxDuration": 30
+      } },
+      "multiplier": { "constant": 1.5 }
+    }
+  },
+  {
+    "code": "Erheblicher Zeitaufwand - bei einer Laryngoskopie",
+    "condition": {
+      "procedureBlocks": { "laryngoscopy": {
+        "$minDuration": 31,
+        "$maxDuration": 40
+      } },
+      "multiplier": { "constant": 2.5 }
+    }
+  },
+  {
+    "code": "Erheblicher Zeitaufwand - bei einer Laryngoskopie",
+    "condition": {
+      "procedureBlocks": { "laryngoscopy": { "$minDuration": 40 } }
+    },
+    "multiplier": { "constant": 3.5 }
+  }
+]
