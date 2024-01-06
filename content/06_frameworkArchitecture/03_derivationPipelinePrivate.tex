@@ -92,7 +92,7 @@ It turns out that from a theoretical point of view, this is a NP-Hard graph opti
 Solving such problems automatically is the last step in the derivation pipeline
 and required the selection and implementation of an appropriate solver algorithm.
 Before formalizing the problem and presenting the selected solver we firstly state
-and justify assumptions about the problems that will occurr in practice.
+and justify assumptions about the problems that will occur in practice.
 
 \begin{itemize}
     \item The occurring MWIS problems are comparably simple.
@@ -111,17 +111,19 @@ and justify assumptions about the problems that will occurr in practice.
     This means that
 \end{itemize}
 
+In the following, we formalize the problem and present the solver used in the implementation.
+
 \subsection{Maximum Weight Independent Set problem}\label{subsec:maximum-weight-independent-set-problem}
 
 The Maximum Weight Independent Set problem (MWIS)
-is a well studied and highly important problem in the field of graph optimization.
+is a well-studied and highly important problem in the field of graph optimization.
 Its formal definition is as follows \cite{SAKAI2003313}:
 Given a graph $G = (V, E)$ with node set $V$ and edge set $E$,
 and a weight function $w: V \rightarrow \mathbb{R}$ that assigns a weight to each node,
 the Maximum Weight Independent Set problem seeks
 to find an independent set $S \subseteq V$ that maximizes the total weight.
-An independent set is a set of vertices in the graph, no two of which are adjacent.
-Formally, the problem can be stated as:
+The weight function $w$ for our use case is defined in equation \ref{eq:fee-function}.
+An independent set is a set of nodes in the graph, no two of which are adjacent.
 
 \begin{equation}
     \begin{aligned}
@@ -133,14 +135,18 @@ Formally, the problem can be stated as:
     \end{aligned}\label{eq:mwis}
 \end{equation}
 
-The weight function $w$ assigns the fee to the billing code.
-
-
-
+It is a well-studied optimization problem and plays an important role in the field of graph optimization.
+Nogueira, Pinheiro, and Subramanian \cite{Nogueira2018A} introduced a hybrid iterated local search algorithm for MWIS, showing significant efficiency on well-known benchmarks.
+Dong et al. \cite{Dong2022A} developed a new local search algorithm based on the greedy randomized adaptive search framework for large-scale instances of MWIS.
+they were also able to demonstrate competitive performance on well-known benchmarks.
+Those approaches are highly sophisticated algorithm suited to large problem settings.
+Given my assumptions and the fact that my use case is comparably simple, I have decided to use one of the heuristic greedy algorithms presented by Sakai, Togasaki, and Yamazaki in 2003 \cite{SAKAI2003313}.
+In the following paragraph present the algorithm in a formal way.
 
 \paragraph{GWMin}
-GWMin starts up from an empty node set
-and iteratively adds the node $v_i$ with the currently optimal relation between weight $w(v_i)$ and degree $d(v_i)$ \cite{SAKAI2003313}.
+GWMin is a simple heuristic solver that works as follows:
+It starts up from an empty node set
+and iteratively adds the node $v_i$ with the currently optimal relation between weight $w(v_i)$ and degree $d(v_i)$ to the result set.
 The node selection can be formulated as the following optimization problem:
 Given a graph $G = (V, E)$ with a weight function $W: V \to \mathbb{R}_{\geq 0}$ it selects the next node as follows :
 \[
@@ -197,3 +203,4 @@ It focuses
 on maximizing the ratio of the square of a node's weight $w\left(v\right)^2$ to the sum of the weights of all vertices in its neighborhood $N\left(v\right)$.
 
 
+Finally, the derivation pipeline returns a set of applicable GOÄ codes and multiplier objects with target codes, multiplier value and justification.
