@@ -1,21 +1,19 @@
 \section{Common Issues with Modern Billing Automation Products}\label{sec:common-issues-with-modern-billing-automation-products}
-
-When comparing the approaches modern billing automation solutions take their is a noticeable pattern.
-
-The previously presented approaches face common issues.
-Namely, automatically deriving billing codes from treatment and patient data requires structured data.
-This data typically lives as unstructured information scattered across multiple sources such as existing clinical systems or human-readable documents.
-
-When comparing the previously presented applications, one might note their solutions share the following reoccurring pattern.
+When comparing the approaches of the previously presented billing automation solutions one might notice a common pattern.
+All those billing automation solutions employ a three step-procedure:
 \begin{enumerate}
-    \item The first step is to collect as much billing-related data as possible and map the unstructured information they find to their own structured data schema.
-    \item Given this structured dataset, the systems then apply their own technique to generate billing codes from the data in the schema.
-    This own technique is often either AI or rule based or a mixture of both.
+    \item The first step is to scrape multiple information sources to collect as much billing-relevant data as possible.
+    \item Next, the systems transform and map the collected unstructured information to their own structured data schema.
+    \item Given this now structured dataset, the systems then apply their own technique to generate billing codes from the data in the schema.
+    Those techniques are often AI- or rule-based or a hybrid of both.
 \end{enumerate}
 
+This pattern tries to solve the issue that automatic billing code generation from treatment and patient data requires structured data.
+This data typically lives as unstructured information scattered across multiple sources such as existing clinical systems or human-readable documents.
+The systems do their best to optimize this data collection step and to reduce the information lost to a minimum.
 This pattern, however, has a set of issues.
 
----
+
 Before this text I introduced multiple automatic medical billing products, including 3m,tiplu momo, id clinical context coding.
 This is what I have right now, i want to express that this pattern has some issues:
 - documents and legacy systems are not guaranteed to deliver all the information that the system needs, documents of miss small details
