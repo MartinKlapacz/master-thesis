@@ -1,31 +1,53 @@
-Patient C - Anesthesie unter Geburt
+\subsection{Patient Case 2: Anesthesia for birth}\label{subsec:patient-case-2:-anesthesia-for-birth}
+The patient is a 32-year-old woman and is currently giving birth on a wednesday night at 3 a.m.
+It is common practice to create two distinct bills for a birth.
+There is usually one for the anesthesia and another one for the gynecology.
+This scenario covers the billing for the anesthesia.
+The current version of the \AVS does not cover birth treatments.
+The patient is not a native German speaker, making it necessary to communicate in english.
 
-Abrechnung von Anästhesie seite
+\paragraph{Anamnese}:
+The treatment starts with a short introductory conversation between the patient and the anesthetist.
+This involves details about the anesthesia and the patient's current and previous pregnancies.
 
-- weiblich
-- pregnant
+\paragraph{Physical Examination}
+Monitoring the blood oxygen is part of an anesthesia procedure and assures the patient's safety during the anesthesia.
+This happens in the stage of the physical examination.
+This is why the doctor measures a pulse oximetry of 95 and documents the results (\code{RespirationBlock}).
+Additionally, the doctor documents the patient's scale of pain, setting a NRS score of 7 (\code{PainBlock}).
 
-Anamnese:
-pregnancy
+\paragraph{Procedures}
+Finally, the anesthetist performs a so-called spinal anesthesia with catheter technology.
+The practitioner documents the details in the corresponding procedure block (\code{NeurexialAnesthesiaBlock}).
+The anesthesia takes 7.5 hours.
+
+\paragraph{Difficult Conditions}
+The requirement to communicate in english during a critical treatment is considerable as a challenging condition for the practitioners.
+
+\subsubsection{Expected Results}
+
+The introductory conversation in the anamnesis stage took longer than 10 minutes, making \goa{1} applicable.
+The system should derive \goa{614: Transcutaneous measurement(s) of oxygen partial pressure} for the measurement of the pulse oxymetry during the anesthesia.
+Additionally, the framework should suggest
+\goa{474: Induction and monitoring of continuous subarachnoid spinal anesthesia (lumbar anesthesia) or epidural (epidural) anesthesia with catheter, lasting more than five hours}
+for the actual anesthesia performed before the birth.
+The framework must not confuse it with \goa{473} which applies to the same anesthesia service that, however, takes less than 5 hours.
+Due to the critical nature of a birth and the pain experienced by the patient, this anesthesia treatment can be considered highly urgent.
+This justifies the application of \goa{E: Surcharge for urgently requested and immediate execution}.
+Additionally, the treatment happens at an inconvenient time at 3am during the week,
+making \goa{D: Surcharge for services provided between 10 p.m. and 6 a.m} applicable.
+Additionally, the framework should suggest an appropriate multiplier justification that compensates for the requirement to communicate in english.
+
+\subsubsection{Actual Results}
+
+%Codes:
+%1 x GOÄ 1
+%1 x GOÄ 5
+%1 x GOÄ 614 (due to respiration)
+%1 x GOÄ 473 (anesthesia)
+%1 x GOÄ E (pain)
+%
+%zuschläge D/C/G
 
 
-examination:
-...
--> respiration block mit pulseOximetry > 94
-
-procedure:
-neurexal anesthesia
-
-multipliers:
-
-
-Codes:
-1 x GOÄ 1
-1 x GOÄ 5
-1 x GOÄ 614
-4 x GOÄ 473 (due to respiration)
-1 x GOÄ E (pain)
-
-zuschläge D/C/G/E
-
-
+%-> respiration block mit pulseOximetry > 94
