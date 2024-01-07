@@ -1,53 +1,130 @@
 \section{The Code Derivation Pipeline for Private Treatments}\label{sec:the-code-derivation-pipeline-for-private-treatments}
 
-The following condition fields cause post-derivation code conflicts:
+The derivation pipeline for private treatments is structured into multiple stages.
+In this section, we desecribe all derivation stages
+
+\subsection{Initial GOÄ Rule Evaluation}\label{subsec:initial-goä-rule-evalutation}
+
+The first step is to use the \REIF for the GOÄ rule type to fetch the data required for GOÄ rule evaluation.
+At this point,
+we assume that the fetcher has correctly configured itself at system startup or after rule loading
+and fetches the data for all information sources any of the GOÄ rules has subscribed to.
+The \REIF returns a \REI that we can further use.
+
+Next, we use the \code{GoaeRuleComponent} to retrieve all GOÄ rules from the database and evaluate them for the previously fetched \REI.
+Each rule evaluate happens isolated from any other rule.
+For each rule, we accept the value of the \code{code} field for which the \code{condition} field has evaluated to true.
+
+\subsection{Subsequent GOÄ Rule Evaluation Rounds}\label{subsec:susequent-goä-rule-evaluation-rounds}
+
+Section \addref, introduces the \code{requiredTargetCodes} condition type.
+To evaluate this condition, the system needs to know the final result set.
+At this initial rule evaluation stage, this information is not available, because the final result set is yet currently being computed.
+Therefore, any rule that specifies a set of required target codes will not match as the set of current target codes is empty.
+To solve this issue,
+I modified the derivation process by introducing subsequent rounds where we evaluate all rules of that rule type.
+After each round, we manually update the \code{currentTargetCodes} field in the \REI with the recently computed result.
+In these subsequent rounds, we again derive the codes from the previous round including those whose \code{requiredTargetCodes} condition finally match.
+We repeat that process until there are no new changes in the result set.
+
+This way we always have at least two rule evaluation rounds,
+but are able to derive codes with arbitrarily long \code{requiredTargetCodes} dependency chains.
+
+\subsection{Multiplier Justification Derivation Stage}\label{subsec:multiplier-justification-derivation-stage}
+This stage is equivalent to the initial rule evaluation in subsection \ref{subsec:initial-goä-rule-evalutation}.
+But now we use the \REIF for the multiplier justification rule type to fetch a \REI.
+We use this \REI and the \code{MultiplierRuleComponent} to derive applicable multiplier justifications.
+Dependencies between multiplier justifications typically do not exist.
+We do not need to employ subsequent rule evaluation rounds as described in subsection \ref{subsec:susequent-goä-rule-evaluation-rounds}.
+
+\subsection{Billing Points Computation}\label{subsec:fee-computation}
+At this point we have applicable GOÄ code candidates and their quantities and
 \begin{itemize}
-    \item \code{excludedTargetCodes}: This condition causes conflicts the conclusion code of the rule and all codes
-    \item \code{isSingleBillingPosition}: this condition causes conflicts between the respective code and the rest of the codes causing a star-topology conflict graph
-    \item \code{isSingleBillingPositionIfPractitionerIsDoctor}: This condition also causes conflicts between the respective code and the rest of the codes causing a star-topology conflict graph
+    \item GOÄ code candidates and their quantities
+    \item code-specific multiplier justifications with their suggested multiplier values.
+    \item general multiplier justifications with their suggested multiplier values.
+\end{itemize}
+Next, we match code-specific multiplier justifications with their corresponding GOÄ codes and compute the points for each GOÄ code using formula \ref{eq:fee-function}.
+\begin{equation}\label{eq:fee-function}
+    \text{points}\left(\text{code}\right) = \text{points}\left(\text{code}\right) \times \text{quantity}\left(\text{code}\right) \times \text{multiplier}
+\end{equation}
+
+Later, we can compute the actual fee.
+The final user should manually match general multiplier justifications with codes that didn't receive a multiplier.
+
+
+\subsection{GOÄ Conflict Resolution}\label{subsec:goä-conflict-resolution}
+At this point, we have GOÄ billing code candidates and their fees.
+However, there is one last problem to solve.
+
+
+Most of the condition fields in the \code{condition} block are effectively predicate functions we can evaluate for a \REI instance.
+If any of those predicate functions inside a \code{condition} block returns false, we reject the conclusion of the rule.
+However, this simple concept does not apply to all field types.
+
+Some fields are fundamentally different and can be described as follows.
+$c$ is the conclusion code of their rule they are part of.
+$R$ is the set of the current evaluation results which are the conclusions of the matching rules.
+This is the conceptual schema of these condition fields.
+\[
+    f: \left( c, R \right) \mapsto \left\{ \left( c, c_i \right) \lvert c \text{ conflicts with } c_i \right\}
+\]
+They require the conclusion code of their rule, and the current evaluation results to derive a set of conflicts.
+A conflict is a tuple of two matching codes.
+This condition schema does not determine if a rule matches or not, but rather derives conflicts between matching ones.
+It does not tell the system how to resolve them.
+The following list enumerates all known code conflict fields.
+\begin{enumerate}
+    \item The condition field \code{excludedCodes: List<String>} causes conflicts between the conclusion code and all nodes inside the list value of \code{excludedCodes}
+    \item The GOÄ catalog specifies code exclusions in a structured way.
+    This is equivalent to the \code{excludedCodes} condition field.
+    \item The condition field \code{isSingleBillingCondition: Boolean} causes conflicts between the respective code and all other codes in the result set
+    \item The condition field \code{isSingleBillingConditionIfPractitionerIsDoctor: Boolean} causes conflicts between the respective code and all other codes in the result set
+\end{enumerate}
+
+This has a fundamental impact on the derivation pipeline.
+Instead of a set of applicable codes, the result type of the initial and subsequent rule evaluation rounds is a graph.
+Each node in this graph is a derived code.
+A conflict between two codes is an edge between the corresponding two nodes.
+In the PVS seminar, I have learned that resolving these conflicts manually by hand is common practice for medical staff.
+Billing experts typically eliminate conflicting nodes while trying to keep the fee loss as small as possible.
+It turns out that from a theoretical point of view, this is a NP-Hard graph optimization problem called the Maximum Weight Independent Set problem
+(MWIS) \cite{SAKAI2003313}.
+Solving such problems automatically is the last step in the derivation pipeline
+and required the selection and implementation of an appropriate solver algorithm.
+Before formalizing the problem and presenting the selected solver we firstly state
+and justify assumptions about the problems that will occur in practice.
+
+\begin{itemize}
+    \item The occurring MWIS problems are comparably simple.
+    This is inherently the case because in traditional medical billing,
+    medical staff resolves those conflict issues by hand.
+    The majority of the nodes are unlikely to be involved in conflict at all.
+    This means that most nodes in an average result graph are remote nodes the solver can effectively ignore.
+    \item Star topology sub-graphs are comparably likely.
+    A code
+    being the conclusion of a rule with a condition \code{\{ isSingleBillingCondition: true \}} introduces conflicts with all other nodes in the graph.
+    The actual implementation in the framework should be able to handle those types of graphs very well.
+    \item The number of edge conflicts will be very low.
+    This is due to the reason
+    that codes that explicetly exclude themselves
+    using the \code{excludedTargetCodes} condition type also logically exclude themselves.
+    This means that
 \end{itemize}
 
-\subsection{Rule Evaluation Stage}\label{subsec:rule-evaluation-stage}
+In the following, we formalize the problem and present the solver used in the implementation.
 
-The system distinguished between rule types.
-Section \addref lists the currently supported rule types.
+\subsection{Maximum Weight Independent Set problem}\label{subsec:maximum-weight-independent-set-problem}
 
-\subsection{Rule Evaluation Rounds}\label{subsec:rule-evaluation-rounds}
-
-A fundamental framework characteristic is that it evaluates each rule independently of any other rule.
-It happens completely isolated from the rest of all rules.
-The only dynamic environment for rule evaluations is the \REI object.
-
-Section \addref, however, introduces the \code{requiredTargetCodes} condition type.
-To evaluate this condition, the system needs the final result set.
-At this initial stage, this information is not available, because the final result set is yet currently being computed.
-
-To solve this issue, I modified the derivation process by introducing multiple rounds where we evaluate all rules of that rule type.
-After each round, we manually update the \code{currentTargetCodes} field with the recently computed result.
-The \code{requiredTargetCodes} condition uses the codes in \code{currentTargetCodes} to evaluate itself.
-We interrupt the loop when there are no further changes in \code{currentTargetCodes}.
-This way we always have at least two rule evaluation rounds, but are able to derive codes with arbitrarily long \code{requiredTargetCodes} dependency chains.
-
-\subsection{Conflict Resolution}
-
-\code{requiredTargetCodes} is not the only condition type that requires special handling.
-The following condition fields also require the full derivation result for their evaluation.
-\begin{enumerate}
-    \item \code{excludedCodes: List<String>}: This condition causes conflicts between the conclusion code and all nodes inside the list value of \code{excludedCodes}
-    \item \code{isSingleBillingCondition: Boolean}: this condition causes conflicts between the respective code and all other codes in the result set
-    \item \code{isSingleBillingConditionIfPractitionerIsDoctor: Boolean}: This condition also causes conflicts between the respective code and all other codes in the result set
-\end{enumerate}
-Unlike \code{requiredTargetCodes} they cause post-derivation code conflicts within the derivation set.
-This has a fundamental impact on the derivation pipeline.
-
-Instead of a set of applicable codes, the rule evaluation result is more a graph where nodes are the derived rule codes and edges represent conflicts between them.
-In the PVS seminar, I have learned that resolving these conflicts manually by hand is common practice for medical staff.
-Billing experts typically eliminate those nodes that have a lower fee.
-From a mathematical point of view, this is graph optimization problem called the Maximum Weight Independent Set problem (MWIS) which is defined as follows \cite{SAKAI2003313}:
-
-Given a graph $G = (V, E)$ with node set $V$ and edge set $E$, and a weight function $w: V \rightarrow \mathbb{R}$ that assigns a weight to each node, the Maximum Weight Independent Set problem seeks to find an independent set $S \subseteq V$ that maximizes the total weight.
-An independent set is a set of vertices in the graph, no two of which are adjacent.
-Formally, the problem can be stated as:
+The Maximum Weight Independent Set problem (MWIS)
+is a well-studied and highly important problem in the field of graph optimization.
+Its formal definition is as follows \cite{SAKAI2003313}:
+Given a graph $G = (V, E)$ with node set $V$ and edge set $E$,
+and a weight function $w: V \rightarrow \mathbb{R}$ that assigns a weight to each node,
+the Maximum Weight Independent Set problem seeks
+to find an independent set $S \subseteq V$ that maximizes the total weight.
+The weight function $w$ for our use case is defined in equation \ref{eq:fee-function}.
+An independent set is a set of nodes in the graph, no two of which are adjacent.
 
 \begin{equation}
     \begin{aligned}
@@ -59,20 +136,18 @@ Formally, the problem can be stated as:
     \end{aligned}\label{eq:mwis}
 \end{equation}
 
-The weight function $w$ assigns the fee to the billing code.
-
-For private billing $w$ is defined as follows:
-\begin{equation}
-    w\left(c\right) = p\left(c\right) \times \text{multiplier} + \text{flatrate}\label{eq:fee-function}
-\end{equation}
-
-
-The MWIS problem is a well known
-
-\subsubsection{Heuristic Greedy Algorithms}
+It is a well-studied optimization problem and plays an important role in the field of graph optimization.
+Nogueira, Pinheiro, and Subramanian \cite{Nogueira2018A} introduced a hybrid iterated local search algorithm for MWIS, showing significant efficiency on well-known benchmarks.
+Dong et al. \cite{Dong2022A} developed a new local search algorithm based on the greedy randomized adaptive search framework for large-scale instances of MWIS.
+they were also able to demonstrate competitive performance on well-known benchmarks.
+Those approaches are highly sophisticated algorithm suited to large problem settings.
+Given my assumptions and the fact that my use case is comparably simple, I have decided to use one of the heuristic greedy algorithms presented by Sakai, Togasaki, and Yamazaki in 2003 \cite{SAKAI2003313}.
+In the following paragraph present the algorithm in a formal way.
 
 \paragraph{GWMin}
-GWMin starts up from an empty node set and iteratively adds the node $v_i$ with the currently optimal relation between weight $w(v_i)$ and degree $d(v_i)$ \cite{SAKAI2003313}.
+GWMin is a simple heuristic solver that works as follows:
+It starts up from an empty node set
+and iteratively adds the node $v_i$ with the currently optimal relation between weight $w(v_i)$ and degree $d(v_i)$ to the result set.
 The node selection can be formulated as the following optimization problem:
 Given a graph $G = (V, E)$ with a weight function $W: V \to \mathbb{R}_{\geq 0}$ it selects the next node as follows :
 \[
@@ -95,9 +170,10 @@ where $V'$ is the set of nodes not yet included in the independent set and not a
             \EndWhile
             \State \textbf{return} $I$
         \EndProcedure
-    \end{algorithmic}
+    \end{algorithmic}\label{alg:algorithm-gwmin}
 \end{algorithm}
 
+The selection procedure works as follows:
 
 \begin{algorithm}
     \caption{GWMIN Algorithm}
@@ -114,7 +190,7 @@ where $V'$ is the set of nodes not yet included in the independent set and not a
             \EndFor
             \State \textbf{return} $selected$
         \EndProcedure
-    \end{algorithmic}
+    \end{algorithmic}\label{alg:algorithm-gwin-selection}
 \end{algorithm}
 
 
@@ -124,22 +200,8 @@ It selects the next node as follows:
 \[
     v' = \max_{v \in V'} \frac{W(v)^2}{\sum_{u \in N_G^+(v)} W(u)}
 \]
-It focuses on maximizing the ratio of the square of a node's weight $w\left(v\right)^2$ to the sum of the weights of all vertices in its neighborhood $N\left(v\right)$.
+It focuses
+on maximizing the ratio of the square of a node's weight $w\left(v\right)^2$ to the sum of the weights of all vertices in its neighborhood $N\left(v\right)$.
 
 
-
-
-In this setting we can make a few assumptions about the actual problem that will appear.
-\begin{itemize}
-    \item The MWIS problems are comparably simple.
-    This is inherently the case because in traditional medical billing, medical staff resolves those conflict issues by hand.
-    The number of codes in a result set is very unlikely to exceed 10 codes.
-    \item Star topology sub-graphs are very likely to appear.
-    The actual implementation in the framework should be able to handle those types of graphs very well
-    \item The number of edge conflicts will be very low.
-    This is due to the reason that codes that exclude themselves using the \code{excludedTargetCodes} condition type also logically exclude themselves.
-    This means that
-\end{itemize}
-
-
-
+Finally, the derivation pipeline returns a set of applicable GOÄ codes and multiplier objects with target codes, multiplier value and justification.
