@@ -10,8 +10,10 @@ Both use a point system to quantify the value of medical services.
 A point translates to a monetary value, enabling inflation adjustments.
 Subsections \ref{sec:einheitlicher-bewertungsmastab-(ebm)} and \ref{sec:gebuhrenordnung-fur-arzte-(goa)} cover both catalogs in detail.
 
-The billing framework handles treatments covered by private and statutory insurances.
-The following sections depict both catalogs and present catalog-specific details that needed to be taken into consideration during implementation of the framework.
+We firstly cover catalog-specific information and general catalog characteristics, focussing on those relevant for the billing framework.
+Next, we depict all condition types living in the catalogs as structured meta-data that we need to consider for automatic billing generation.
+The framework can automatically parse existing meta-data condition information from the catalog and evaluate it.
+This makes it unnecessary to include them in any rules, which saves a lot of effort.
 
 \input{content/03_germanHealthcare/01_goae/goae}
 \input{content/03_germanHealthcare/02_ebm/ebm}
