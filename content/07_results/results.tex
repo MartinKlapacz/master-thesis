@@ -1,3 +1,24 @@
-\chapter{Results}
+\chapter{Results}\label{ch:results}
+This chapter demonstrates the performance of the billing framework applied to realistic treatment cases.
 
+In this chapter, we apply the framework to treatment cases developed with the assistance of billing experts.
+The cases represent realistic treatments that are likely to occur in clinical practice and that are, from a billing perspective, interesting and non-trivial.
+Billing experts at \AV subsequently validated the quality of the results.
+The framework proved largely capable of generating accurate billings.
+However, we also identified limitations of the framework in the results and during the rule-writing process.
 
+This chapter is structured as follows:
+Firstly, section \ref{sec:experimental-rule-base} introduces the rules we preloaded the Billing Server with before performing the actual experiments.
+In this work, we can only present a limited set of rules.
+A realistic rule-base used in production would need at least 100 rules even with restrictions to specific medical areas.
+
+An additional purpose of this section is to further illustrate the usage of the rule features of \RL.
+As a side note, the presented rules are a subset of the rule base that will be employed in production by \AV.
+Secondly, in the next sections we introduce the patient cases which we generate billing codes.
+This involves patient background information, history and outcomes that are part of the patient anamnesis and physical examinations.
+Applied medical procedures also characterize these treatments.
+For each treatment, we compare the actually derived codes with the expected ones determined by the billing experts.
+
+\input{content/07_results/01_ruleBase}
+\input{content/07_results/02_goaeResults/goaeResults}
+\input{content/07_results/03_ebmResults/ebmResults}

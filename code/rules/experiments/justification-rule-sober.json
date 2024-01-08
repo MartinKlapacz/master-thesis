@@ -1,0 +1,25 @@
+[
+  {
+    "code": "Erhöhter Kommunikationsaufwand aufgrund mangelnder Sprachkenntnisse",
+    "multiplier": { "constant": 2.0 },
+    "condition": {
+      "patientSpeaksGerman": false,
+      "patientSpeaksEnglish": false
+    }
+  },
+  {
+    "code": "Erhöhter Kommunikationsaufwand aufgrund von Kommunikation auf English",
+    "multiplier": { "constant": 2.5 },
+    "condition": {
+      "patientSpeaksGerman": false,
+      "patientSpeaksEnglish": true
+    }
+  },
+  {
+    "code": "Störung der verbalen Kommunikation aufgrund des gesundheitlichen Zustands",
+    "multiplier": { "constant": 2.5 },
+    "condition": {
+      "physicalBlocks": { "speaking": { "speaking": "ABNORMALITIES_EXAMINATION_CONSPICUOUS" } }
+    }
+  }
+]

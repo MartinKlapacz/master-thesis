@@ -3,9 +3,7 @@
   "targetGoaeCode": "<code>",
   "multiplier": {
     "min": [
-      {
-        "constant": C
-      },
+      { "constant": C },
       f(N)
     ]
   },
