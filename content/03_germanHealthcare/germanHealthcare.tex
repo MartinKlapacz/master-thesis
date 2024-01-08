@@ -4,12 +4,11 @@ In the German healthcare system, billing is a critical component that ensures th
 Patients in Germany can have statutory or private insurance.
 There are different regulations and catalogs for both insurance types.
 The most important coding catalogs are the Einheitlicher Bewertungsmaßstab (EBM) for statutory insurance and the Gebührenordnung für Ärzte (GOÄ) for private insurance and self-payers.
-Both are essentially a collection of services covered by insurances.
-Each service has an identifying billing code, a description, as well as conditions and an associated number of points.
-Both use a point system to quantify the value of medical services.
-A point translates to a monetary value, enabling inflation adjustments.
-Subsections \ref{sec:einheitlicher-bewertungsmastab-(ebm)} and \ref{sec:gebuhrenordnung-fur-arzte-(goa)} cover both catalogs in detail.
+Both are essentially a collection code records representing services covered by insurances.
+A code record has a schema containing the service code, the associated number of points, a description and additional meta-data.
+The points quantify the price of the medical services with one point translating to a monetary value determined by the catalog.
 
+Subsections \ref{sec:einheitlicher-bewertungsmastab-(ebm)} and \ref{sec:gebuhrenordnung-fur-arzte-(goa)} describe both catalogs in detail.
 We firstly cover catalog-specific information and general catalog characteristics, focussing on those relevant for the billing framework.
 Next, we depict all condition types living in the catalogs as structured meta-data that we need to consider for automatic billing generation.
 The framework can automatically parse existing meta-data condition information from the catalog and evaluate it.
