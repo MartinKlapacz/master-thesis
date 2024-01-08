@@ -1,21 +1,14 @@
-\section{Experimental Rule base}
-In this section we introduce the rule base used for the experimental scenarios in this work.
+\section{Experimental Rule}\label{sec:experimental-rule-base}
 
-This section serves the following purpose.
-Firstly, this section illustrates real examples of
+Obviously, in this work we cannot cover all rules that would be part of an actual rule base.
 
-\begin{itemize}
-    \item We firstly introduce real that
-    \item We illustrate the usage of language features
-\end{itemize}
+However, the first version of the billing system is highly
 
 \subsection{GOÄ}
 \subsubsection{Base GOÄ rules}
 
 \subsubsubsection{GOÄ 8}
 The following rule defines \goa{8}, which is defined as an \mete{Examination to determine the whole body status, including documentation if necessary}.
-
-
 
 \lstinputlisting[
 language=json,
@@ -57,14 +50,14 @@ The following rules are time related and cover inconveniences linked to service 
 \lstinputlisting[
 language=json,
 style=json,
-caption={\goa{A: Surcharge for services provided outside of office hours}}
+caption={\goa{A: Surcharge for services provided outside office hours}}
 label={lst:goae-A-rule}
 ]{code/rules/experiments/goae-base-rules-A.json}
 
 \lstinputlisting[
 language=json,
 style=json,
-caption={\goa{B: Surcharge for services provided outside of office hours between 8 p.m. and 10 p.m. or 6 a.m. and 8 a.m}}
+caption={\goa{B: Surcharge for services provided outside office hours between 8 p.m. and 10 p.m. or 6 a.m. and 8 a.m}}
 label={lst:goae-8-rule}
 ]{code/rules/experiments/goae-base-rules-B.json}
 
@@ -99,7 +92,20 @@ label={lst:goae-K2-rule}
 ]{code/rules/experiments/goae-base-rules-K2.json}
 
 
-\subsubsection{Multiplier Justification Rules}\label{subsec:multiplier-justification-rules}
+\goa{E} is a surcharge for services that require special urgency.
+When a patient experiences severe pain, it is often an indicator of a highly urgent medical situation.
+In such cases, the doctor assesses and documents the patient's level of pain.
+Therefore, we have a high correlation between a patient's documented pain and the urgency of the treatment.
+The following rule makes use of this connection.
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{E: Surcharge for services requiring special urgency}}
+label={lst:goae-E-rule}
+]{code/rules/experiments/goae-base-rules-E.json}
+
+
+\subsubsection{Multiplier Justification Rules}\label{subsubsec:multiplier-justification-rules}
 Section \ref{sec:billing-multipliers} and \ref{sec:multiplier-justifications} introduce the concept of billing multipliers in private treatments.
 Multipliers are applicable to existing GOÄ codes, however, require justifying and provable condition in the treatment data.
 As multiplier justifications are neither standardized nor pre-defined by any authority,
@@ -109,10 +115,13 @@ Many of the following rules implement those justifications.
 Additionally, I took part in \todo{Explain PVC semianr}
 
 
+\subsubsubsection{Non-specific multiplier justifications}
+
+
+
 \subsubsubsection{Procedure-specific and duration-related multiplier justifications}
 Procedures often take longer than expected.
-This can be the case due to unforeseen complications and issues that appear during the procedure.
-
+This can be the case due to unforeseen complications and issues.
 The following rule list shows the generic pattern used for procedure-specific and duration-related multiplier justifications.
 
 \lstinputlisting[
@@ -122,11 +131,19 @@ caption={\goa{generic procedure duration multiplier justification rule}}
 label={lst:goae-K2-rule}
 ]{code/rules/experiments/goae-base-rules-K2.json}
 
-Note that the rule only checks for the existence of the respective procedure block.
-We use the special block condition \code{\$minDuration} to impose a condition on the duration of the provided procedure.
-\code{f\(N\)} inside the multiplier object is a linear and increasing function.
-The constant makes sure that the image of the function has the upper bound \code{C}, which should be the highest allowed multiplier value for \goa{<code>}.
+The rule base contains implementations of that pattern for each of the procedures that the system currently supports.
 
+Note that the rule only checks for the existence of the respective procedure block.
+We use the special block conditions \code{\$minDuration} and \code{\$maxDuration} to make the rule only match if the duration of the procedure is within the specified interval.
+Each procedure may have multiple duration related justification rules, each one covering another time interval and another multiplier value.
+
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{E: Surcharge for services requiring special urgency}}
+label={lst:goae-E-rule}
+]{code/rules/experiments/goae-base-rules-E.json}
 
 %As described in section \ref{sec:billing-multipliers} they are merely descriptive comments attached to GOÄ billing positions.
 
