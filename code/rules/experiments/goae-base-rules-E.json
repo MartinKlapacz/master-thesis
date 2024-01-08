@@ -1,0 +1,10 @@
+{
+  "code": "E",
+  "condition": {
+    "physicalBlock": {
+      "pain": {
+        "nrs": ">7"
+      }
+    }
+  }
+}
