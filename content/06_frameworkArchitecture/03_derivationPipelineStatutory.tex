@@ -1,16 +1,22 @@
 \section{The Code Derivation Pipeline for Statutory Treatments}\label{sec:the-code-derivation-pipeline-for-statutory-treatments}
 
-EBM rules are a separate rule type
+\subsection{EBM Rule Evaluation}\label{subsec:rule-evaluation}
+The first step is equivalent to the first step of the code derivation pipeline for private treatments
+described in subsection \ref{subsec:initial-goä-rule-evalutation}.
+The system calls the \REIF for the EBM rule to obtain the \REI.
+Next, \code{EbmRuleComponent} to retrieve all EBM codes from the database and evaluate them for the previously fetched \REI.
+The set of conclusions of the matching EBM rules are the first set of EBM code candidates.
 
-Statutory treatments make use of
+\subsection{Structured Catalog Condition Evaluation}\label{subsec:structured-catalog-condition-evaluation}
+The next stage handles the structured conditions that are part of the catalog and which are described in subsection \ref{subsec:ebm-conditions}.
+We filter out codes that require missing code justifications and expect a different patient gender or another patient age.
+Furthermore, we filter out all codes for which any amount condition fails.
+We evaluate amount conditions, explained in paragraph \ref{par:amount-condition},
+using database queries that count the number of code occurrences in the respective reference context.
+Each reference context has such a query, that takes a code as an input and counts its occurrences in that reference context.
+If the code has already reached its limit in any reference context, we eliminate it from the code candidate set.
 
-The derivation pipeline for statutory treatments is compared to the GOÄ pipeline comparably simple.
-As de
-
-
-
-\subsection{Initial EBM Rule Evaluation}\label{subsec:initial-ebm-rule-evaluation}
-Similarly to
-
-\subsection{EBM Conflict Detection}\label{subsec:ebm-conflict-detection}
+In the last step, we retrieve all billed codes of that patient for each reference context.
+For each code in the current candidate set, we check for code exclusions that match with the reference context and a code in that reference context.
+If we find an exclusion conflict, we must eliminate the code from the candidate set.
 
