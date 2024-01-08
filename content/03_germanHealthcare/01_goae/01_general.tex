@@ -1,0 +1,76 @@
+\subsubsection{General GOÄ Characteristics}
+The Gebührenordnung für Ärzte (GOÄ) is the coding catalog used for billing medical services covered by private health insurance.
+The GOÄ is known for being less regulated and offering more leeway in practice.
+However, it has been a subject of longstanding criticism.
+The GOÄ has the reputation of being, unfortunately, highly outdated.
+The current version was defined in 1982, last update took place in 1996 \cite{heller2015goa}.
+Not only the lack of modern procedures in the catalog and as well as ambiguities and interpretation difficulties presents issues for healthcare providers.
+Since 1996 the consumer prices have increased by more than 50\%, inflation has effectively reduced professional fees by more than 28\% \cite{schmitzgoa}.
+The point price for the GOÄ was initially set to 5.82873 ct.
+It was increased to 5.62ct in July 1, 1988 and again increased to 5.83 ct from January 1, 1996\cite{hermanns2013bemessung}.
+Of course, these point value updates do not compensate for the actual price increase associated with medical treatments in the last decades.
+The only thing practitioners can do to manage this discrepancy on their own is to create correct billings that cover the occurred costs as well as possible.
+Fortunately, the GOÄ has some characteristics that allow for flexible billing price optimization.
+Given this growing financial discrepancy, applying those optimization techniques in a correct and appropriate way plays an important role in modern medical billing.
+In the following sections, we take a closer look at GOÄ characteristics that are relevant for optimization in private billing.
+
+\section{Billing Multipliers}\label{sec:billing-multipliers}
+Unlike the EBM, the GOÄ allows for the application of billing multipliers.
+Billing multipliers are an important tool to tailor private billing and to take into account unexpected difficulties and increased time expenditure of treatments\cite{walter2008abrechnung}.
+They are assignable to individual billing codes in a treatment billing and increase the price for the respective position by multiplication of the GOÄ base fee and the multiplier value.
+\[
+    \mathrm{service\ price} = \mathrm{base\ code\ points} \times \mathrm{billing\ multiplier} \times \mathrm{point\ value}
+\]
+Doctors can adjust multiplier values depending on the complexity, time expenditure, or special circumstances of the treatment to certain limits.
+Each GOÄ code specifies a base rate, a threshold and a max rate\cite{bruck1998kommentar}.
+\begin{itemize}
+    \item \textbf{Base Rate of 1.0}: This is the base rate for all GOÄ services and corresponds to the fee listed in each GOÄ record.
+    \item \textbf{Threshold}: Applying multipliers up to this value does not require any justifications.
+    \item \textbf{Maximum Rate}: This range is used for specialized or particularly complex services.
+    The application of these multipliers typically requires a detailed justification.
+\end{itemize}
+
+The actual values of the threshold and the maximum rate depend on the fee frame the code belongs to.
+Table\ref{tab:fee-frames} displays all fee frames with their corresponding values for the threshold and the maximum rate\cite{hermanns2013bemessung}.
+Services that include a personal patient-practitioner contact are part of the personal-medical service.
+The GOÄ allows higher multiplier values for services in that area as complications and directly affects the treating practitioner.
+Services in the technical frame and especially laboratory services affect have smaller direct effect on the practitioner and, thus, are more limited in terms of applicable multipliers.
+\begin{center}
+    \begin{tabular}{ |c|c|c| }\label{tab:fee-frames}
+        \hline
+        fee frame type & threshold & Max Rate \\
+        \hline
+        personal-medical service frame & 2.3 & 3.5 \\
+        technical service frame & 1.8 & 2.5 \\
+        laboratory service frame & 1.15 & 1.3 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\section{Multiplier Justifications}\label{sec:multiplier-justifications}
+Applying a specific multiplier that exceeds the multiplier threshold to a billing position requires a justification.
+However, the GOÄ does not standardize multiplier justifications \cite[]{bruck1998kommentar}.
+There is no official collection of applicable and excepted justifications for multipliers.
+They are essentially free texts that appear next to the respective multiplier in the final invoice.
+
+The billing framework should provide a way of expressing multiplier justifications as rules.
+As part of private billing, the system should automatically check for applicable justifications.
+This way, the system can make sure that the user does not miss out opportunities for appropriate and valid optimizations.
+It is crucial that multipliers always have justifications backed up by the structured data in the treatment.
+
+Part of the research of this work is to collect commonly used billing justifications from experts.
+It is also important to understand what the relevant data is that multiplier justifications rely on.
+Subsection \ref{subsubsec:multiplier-justification-rules} contains a selected collection of billing justifications rules that I have found during as part of my research.
+
+\section{Surcharges}\label{sec:surcharges}
+Surcharges are GOÄ billing codes but serve similar purposes as billing multipliers.
+They don't directly refer to the services provided by the practitioner but rather describe special conditions that were present during the treatment \cite{walter2008abrechnung}.
+Unlike billing multipliers, they are ordinary billing codes defined by the GOÄ and do not attach to other codes in the invoice.
+
+For example, the surcharge \goa{C} if applicable if the treatment took place between 10pm and 6am.
+One must take into account that there are strict exclusion rules that limit the application of surcharges\cite{kommentar2012zuschlage}.
+Surcharge \goa{A} conflicts with \goa{B}, \goa{C} or \goa{D}.
+Surcharges \goa{A}, \goa{B}, \goa{C}, \goa{D} and \goa{K1} are not applicable in combination with \goa{E}, \goa{F}, \goa{G}, \goa{K2} \cite{kommentar2012zuschlage}.
+Surcharges are distinguishable from ordinary GOÄ codes by their name.
+Ordinary GOÄ codes have only digit codes while surcharge codes consist of letters.
+

@@ -1,19 +1,14 @@
-\subsection{EBM Condition Types}\label{sec:ebm-conditions}
+\subsection{EBM Catalog Condition Types}\label{sec:ebm-conditions}
+The KBV maintains extensive XML schema documentation for the EBM data model.
 
+Part of this work was to understand and identify all conditions that determine under which circumstances a code applies.
+Automated derivation of applicable EBM codes require automatic checking of these conditions.
+In this section, we go through all identified relevant EBM conditions that are part of the code record schema.
 
-Each EBM code is represented by a EBM code record in the EBM dataset.
-The KBV maintains an extensive xml schema documentation for the EBM data model.
-
-
-Part of this work is to understand and identify all conditions that determine under which circumstances a code can be billed or not.
-For automated derivation of applicable EBM codes these conditions need to be automatically checked.
-In this section we go through all identified relevant EBM conditions, that the billing framework need to check automatically.
-
-
-\subsection{EBM reference contexts}\label{subsec:ebm-reference-contexts}
+\paragraph{EBM reference contexts}\label{subsec:ebm-reference-contexts}
 Before describing the EBM condition types, we need to introduce the concept of reference contexts.
 Condition types such as exclusion rules often refer to a specific reference context.
-The following is a description of those reference contexts defined by the EBM.
+The following is a description of those reference contexts defined by the KBV.
 \begin{itemize}
     \item The smallest reference context is the Visit (in der selben Sitzung), which simply refers to all services occurred during the patients visit at the practitioner.
     It occurs in 2688 EBM codes.
@@ -30,8 +25,7 @@ The following is a description of those reference contexts defined by the EBM.
     All issues, consultations, or examinations associated with menstruation fall into that context.
 \end{itemize}
 Reference contexts for the current year, current month, current weeks and treatment day that are self-explanatory exist as well.
-There are very specific reference contexts used by very few specialized EBM codes that need to be taken into consideration as well.
-For the sake of completeness they are listed in the following:
+The following are very specific reference contexts few specialized EBM codes that need to be taken into consideration as well.
 \begin{itemize}
     \item Within a period of 21 days after the provision of a service from section 31.2:
     Section 31.2 contains the \glqq outpatient operations\glqq.
@@ -43,13 +37,9 @@ In the current version of the EBM the latter two reference contexts are not used
 The system should, nonetheless, take them consideration as well as they can be used in future versions.
 
 
-
-
-\subsection{Authorized Practitioner Types List}
-
-The EBM maintains an extensive specification of what type of practitioners are allowed to bill which EBM codes.
-For that it defines the two axes medical specialization and service area.
-
+\paragraph{Authorized Practitioner Types List}\label{subsec:authorized-practitioner-types-list}
+The EBM maintains an extensive specification of what type of service providers are authorized to bill which EBM codes.
+For that, it defines the two axes of medical specialization and service area.
 All values for service area of a practitioner are
 \begin{itemize}
     \item Specialist (Facharzt)
@@ -69,17 +59,17 @@ Possible service medical specializations are the following:
 \end{itemize}
 
 Formally, each EBM code specifies a set of points from the space spanned by those two axes.
-If and only if the practitioner's service area and medical specialization pair is an element of that set, they will be authorized to bill that EBM code.
+If and only if the practitioner's service area and medical specialization pair is an element of that set, they are authorized to apply that EBM code.
 \todo{Add example}
 
 
-\subsection{Code Justification List}
+\paragraph{Code Justification List}
 Some EBM codes can have a code justification list.
 A justification is one of the following:
 \begin{itemize}
     \item An OPS code identifying a procedure conducted in this treatment.
     \item An ICD10 code of a diagnosis given to the patient during this treatment
-    \item Another EBM code that is part of this billing
+%    \item Another EBM code that is part of this billing
 \end{itemize}
 A code justification list condition holds if and only if it is empty or at least one code of the three justification categories is present.
 Localization specific OPS codes are combined with a localization identifiers (left, right or both sides).
@@ -87,44 +77,46 @@ For example the EBM code \meco{31658} has the ops number \meco{5-184.1} in combi
 For example, \meco{OPS 5-184.1} is listed in combination with the \meco{B} localization identifier and is thus a possible justification code for \meco{EBM 31658}.
 This means, applying the billing code \mete{Postoperative Behandlung Hals-Nasen-Ohren VI/2a} (\meco{31658}) i.e. \mete{Postoperative treatment of ear, nose, and throat (ENT) VI/2a} to a \mete{plastic correction of protruding ears through excision of soft tissues} is only possible if both ears were operated on.
 
-The idea behind EBM codes being justifications for other EBM codes is the following.
-There are EBM codes with a very general description.
-
 \subsection{Amount Condition}
-
 Another class of conditions are amount conditions.
-EBM codes can be limited in how often the code can be billed in a specific reference context.
+Many EBM codes are limited in how often the code can occur in a specific reference context.
 
-
-\subsection{Exclusion List}\label{subsec:exclusion-list}
+\paragraph{Exclusion List}\label{subsec:exclusion-list}
 Almost all EBM codes maintain an exclusion list.
+An exclusion condition can be seen as a triple consisting of the current EBM code, the excluded EBM code, the reference context.
 
-An exclusion condition can be seen as a quadrupel consisting of the current EBM code, the excluded EBM code, the reference context and a positive integer.
-The practitioner must resolve exclusion conflicts by hand.
-
-\subsection{Administrative Gender}\label{subsec:administrative-gender}
+\paragraph{Administrative Gender}\label{subsec:administrative-gender}
 EBM codes that contain that condition type can only be explicitly applied for a specific gender.
-The number of gender-specific EBM is 150.
-Most gender-specific EBM codes come from the fields of gynecology and urology.
 
-\subsection{Form Type List}\label{subsec:form-type-list}
+%\paragraph{Obligate Service Content}\label{subsec:obligate-service-content}
+%An obligate service contents description precisely describes the provided service that justifies the code.
+%According to the EBM specification, HTML content describing the obligate services can be considered a logical expression.
+%For example the code 16232 "Diagnostik und/oder Behandlung von Erkrankungen der Wirbelsäule bei Jugendlichen und Erwachsenen" has the following obligate service description:
+%\begin{itemize}
+%    \item Diagnosis and/or treatment of spinal diseases
+%\end{itemize}
+%and/or
+%\begin{itemize}
+%    \item Segmental functional diagnostics and differential diagnosis,
+%    \item At least two personal doctor-patient contacts in the treatment case,
+%\end{itemize}
+%
+%Obligate service descriptions make use of logical \code{OR} and \code{AND} expressions.
+%Items in a bullet point list are part of a AND expression, whereas the term "and/or" means the logical OR.
 
-\subsection{Obligate Service Content}\label{subsec:obligate-service-content}
-Obligate service contents is a description text of \todo{}
-
-\subsection{Additional Input Information}\label{subsec:additional-information}
-Form Type lists are code specific additional input fields.
-The KBV defines 35 different additional input information types.
-An EBM code can define a subset of these as required additional input information.
-This requires the practitioner to add more information to the billing.
-Effectively, the billing framework obligates the practitioner to add the required additional information for billing codes that otherwise are perfect billing candidates.
-This can be assured by displaying the inputs with the correct data types in the front-end.
-\todo{Provide a example}
-In the current version of the EBM only few additional input types are actually used.
-Those are:
-\begin{itemize}
-    \item Finish time
-    \item OPS number
-    \item ICD code
-    \item BSNR
-\end{itemize}
+%\paragraph{Additional Input Information}\label{subsec:additional-information}
+%Form Type lists are code-specific additional input fields.
+%The KBV defines 35 different additional input information types.
+%An EBM code can define a subset of these as required additional input information.
+%This requires the practitioner to add more information to the billing.
+%Effectively, the billing framework obligates the practitioner to add the required additional information for billing codes that otherwise are perfect billing candidates.
+%This can be assured by displaying the inputs with the correct data types in the front-end.
+%\todo{Provide a example}
+%In the current version of the EBM only few additional input types are actually used.
+%Those are:
+%\begin{itemize}
+%    \item Finish time
+%    \item OPS number
+%    \item ICD code
+%    \item BSNR
+%\end{itemize}
