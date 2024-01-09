@@ -1,0 +1,12 @@
+\subsection{The Target Code Field}\label{subsec:the-target-code-field}
+The \code{targetCode} field is a higher level code visible in code snippet visible in code snippet \ref{lst:rule-root}.
+We can use it to specify a hint for the application code that the conclusion of the rule should be applied to a target.
+The conclusion of the rule is always the value of the \code{code} field.
+
+The current concrete use case for this feature are multiplier justifications.
+We generally distinguish between procedure-specific and general multiplier justifications.
+Procedure-specific Multiplier Justifications specify a GOÄ code in their \code{targetCode} field and are only applicable to this GOÄ code.
+General Multiplier Justifications have no target.
+It is the user's or the application code's responsibility to assign the Multiplier Justification to a appropriate GOÄ code.
+Section \ref{subsec:multiplier-justification-rules} illustrates concrete multiplier justification rules that are part of the research results of this work.
+

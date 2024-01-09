@@ -9,7 +9,7 @@ As a computer scientist, I initially lacked important knowledge about medical bi
 This is why I conducted several expert interviews with Dr. Lorenz Thumann and Dr. Sahra Bojko, both Medical Managers at \AV.
 In these interviews, I gained crucial knowledge in medical billing and collected formal requirements for the billing framework.
 Dr. Thumann provided me with more general insights on medical billing in Germany.
-Dr. Bojko gave me useful feedback on my rule language designs while I supported her in writing first billing rules.
+Dr. Bojko gave me useful feedback on my rule language designs while I supported her in writing first billing rules with \RL.
 Other important sources of knowledge I made use of are the publicly available GOÄ and EBM catalog.
 I also took part in an online GOÄ seminar provided by the PVS Forum.
 The PVS Forum offers a wide range of seminars and training programs for medical professionals.
@@ -45,12 +45,11 @@ The following list contains all rule types that the framework currently supports
     \item GOÄ billing rules for deriving GOÄ billing codes from private treatments
     \item EBM billing rules for deriving EBM billing codes from statutory treatments
     \item OPS code rules for deriving procedure codes from treatment documentation.
-    OPS are a standardized
-    OPS codes are relevant information for both GOÄ and EBM codes as well as multiplier justifications.
+    OPS codes are not inherently crucial for billing but are part of medical documentation.
+    \AV decided to use the billing service internal rule derivation engine to automatically derive OPS codes as part of medical documentation.
     \item Multiplier Justification rules for detecting challenging conditions in private treatments
-    which serve as justifications for multipliers
-    \item Special Flat Rate rules
-    for detecting flat rates that can be applied to billing positions in the statutory treatment
+    which serve as justifications for multipliers.
+    \item Flatrate rules for special treatments at university clinics
 \end{itemize}
 
 
@@ -61,5 +60,7 @@ This does also mean that some information sources are relevant for multiple rule
 This effectively indicates an n-to-m relationship between information sources and rule types.
 For example, the patient age is highly relevant for GOÄ and EBM codes, Multiplier Justifications but not for OPS codes.
 Previous allergies are relevant for Multiplier Justifications but not necessarily for GOÄ codes.
-This is the reason, I decided to implement a rule type independent rule engine that provides all conditions used by any rule type.
-This is why in the design of the billing framework, information sources and condition types are primarily independent of any rule type.
+This is the reason, I decided to implement a rule type independent rule engine that provides all conditions that might be relevant for any rule type.
+Thus, I designed the billing framework in such a way that, information sources and condition types are independent of any rule type.
+The final result is a universal rule language employable in multiple domains including, non-billing related ones.
+
