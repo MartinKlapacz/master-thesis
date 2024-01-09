@@ -112,10 +112,10 @@ Unlike \goa{6}, \goa{8} does not mention any additional examination details.
 %\goa{6} is very similar to \goa{8} but much larger as it
 
 \subsection{GOÄ Surcharges}\label{subsec:goa-surcharges}
-
 The GOÄ defines surcharges that are easily missed out in praxis.
-We cover them in section \ref{sec:surcharges}.
-The following rules are time related and cover inconveniences linked to service provision times.
+Section \ref{sec:surcharges} covers them in details where we also mention that surcharges have tight exclusion rules.
+These exclusions are already part of the structured data in the GOÄ catalog, making the usage of the \code{excludedCodes} fields here obsolete.
+\goa{401} until \goa{409} and \goa{410} are surcharges as well, but are not relevant for the experimental treatments provided by \AV.
 
 \lstinputlisting[
 language=json,
@@ -163,10 +163,10 @@ label={lst:goae-K2-rule}
 
 
 \goa{E} is a surcharge for services that require special urgency.
-When a patient experiences severe pain, it is often an indicator of a highly urgent medical situation.
-In such cases, the doctor assesses and documents the patient's level of pain.
-Therefore, we have a high correlation between a patient's documented pain and the urgency of the treatment.
-The following rule makes use of this connection.
+
+When a patient experiences severe pain, this often necessitates urgent medical intervention.
+In these situations, the doctor documents the patient's pain level.
+The pain level can be seen as an indicator for the urgency of the treatment and therefore used as a hint for \goa{E}, which is a surcharge applicable for urgent treatments.
 \lstinputlisting[
 language=json,
 style=json,
@@ -177,19 +177,38 @@ label={lst:goae-E-rule}
 
 \subsection{Multiplier Justification Rules}\label{subsec:multiplier-justification-rules}
 Section \ref{sec:billing-multipliers} and \ref{sec:multiplier-justifications} introduce the concept of billing multipliers in private treatments.
-Multipliers are applicable to existing GOÄ codes, however, require justifying and provable conditions in the treatment data.
+Multipliers are applicable to existing GOÄ codes, however, require provable justifications and must rely on facts in the treatment data.
 As multiplier justifications are neither standardized nor pre-defined by any authority,
 part of this work was to collect commonly used multiplier justifications.
 Thanks to the medical experts at \AV, I received access to medical documents that contained real multiplier justifications used in the Dermato Oncology department of the LMU.
 Many of the following rules implement those justifications.
 As mentioned in section \ref{sec:language-design-workflow} I took part in the PVS Seminar, where I received more information about possible multiplier justifications.
-
-Multiplier justifications either be target-specific or not.
-
+As described in subsection \ref{subsec:the-target-code-field}, Multiplier justifications can either be target-specific or generally applicable.
 
 
-\subsubsection{Non-specific multiplier justifications}
 
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{Multiplier Justification refering to communication issues}}
+label={lst:mj-drugs-rule}
+]{code/rules/experiments/justification-rule-communication.json}
+
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{Multiplier Justification refering to issues caused by the patient's current drug abuse}}
+label={lst:mj-drugs-rule}
+]{code/rules/experiments/justification-rule-multimorbidity.json}
+
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{Multiplier Justification refering to issues caused by the patient's current drug abuse}}
+label={lst:mj-drugs-rule}
+]{code/rules/experiments/justification-rule-drugs.json}
 
 \subsubsection{Procedure-specific and duration-related multiplier justifications}
 Procedures often take longer than expected.
@@ -199,7 +218,7 @@ The following rule list shows the generic pattern used for procedure-specific an
 \lstinputlisting[
 language=json,
 style=json,
-caption={\goa{generic procedure duration multiplier justification rule}}
+caption={\goa{Generic procedure duration multiplier justification rule}}
 label={lst:goae-K2-rule}
 ]{code/rules/experiments/goae-base-rules-K2.json}
 

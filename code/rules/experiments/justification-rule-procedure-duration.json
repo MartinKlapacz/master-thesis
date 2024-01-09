@@ -1,0 +1,28 @@
+[
+  {
+    "description": "Erheblicher Zeitaufwand - bei Wirbelsäuleninfiltration",
+    "condition": {
+      "procedureBlocks": {
+        "intubation": {
+          "$minDuration": 40
+        }
+      }
+    },
+    "multiplier": {
+
+    }
+  },
+  {
+    "code": "Erheblicher Zeitaufwand - bei ",
+    "condition": {
+      "procedureBlocks": {
+        "cryotherapy": {
+          "$minDuration": 40
+        }
+      }
+    },
+    "multiplier": {
+
+    }
+  }
+]
