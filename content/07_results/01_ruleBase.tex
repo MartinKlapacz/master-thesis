@@ -1,14 +1,84 @@
 \section{Experimental Rule}\label{sec:experimental-rule-base}
-
 Obviously, in this work we cannot cover all rules that would be part of an actual rule base.
-
 However, the first version of the billing system is highly
 
-\subsection{GOÄ}
-\subsubsection{Base GOÄ rules}
 
-\subsubsubsection{GOÄ 8}
-The following rule defines \goa{8}, which is defined as an \mete{Examination to determine the whole body status, including documentation if necessary}.
+\subsection{Special GOÄ Consultation Code Rules}\label{subsec:special-consultation-code-rules}
+
+\paragraph{\goa{1: Advice – also via telephone}}\label{par:goa-1}
+\goa{1} is one of the most commonly used codes in the GOÄ.
+It is applicable for a conversation between patient and doctor at the beginning of the visit that takes at most 10 minutes.
+This type of conversation happens typically as part of the anamnesis.
+
+Unfortunately, this is where the billing framework as well as the \AVS reaches its limits.
+It is practically impossible to automatically track the time of the initial conversation between patient and practitioner.
+One idea could be to track the time passed between the practitioner entering the anamnesis page and moving on to the physical examination page in the front-end.
+This is, however, highly unreliable as doctors often enter the data into the software at the very end of the treatment.
+One slightly less user-friendly way to solve is to make the user explicitly enter the duration of the anamnesis.
+The current version of the \AVS does not offer this possibility, making reliably deriving \goa{1} not possible.
+The user needs to add this code manually.
+
+\paragraph{\goa{3: In-depth advice that goes beyond the usual level – also by telephone –}}
+\goa{3} is similar to \goa{1} but applies to doctor patient consultations that take longer than 10 minutes.
+Again, we have the same issue here as in \ref{par:goa-1} and are not able to automatically derive it.
+
+\subsection{GOÄ Examination Code Rules}\label{subsec:examination-code-rules}
+Examination Codes are frequently used codes that apply to provided physical examinations.
+They primarily base on the existence of physical examination blocks in the treatment.
+We consider the following codes in the experiments.
+
+\paragraph{\goa{5: Symptom-related examination}}
+\goa{5} applies to examinations the practitioner provides using simple medical tools.
+According to the GOÄ, typical examinations that fall into that category are inspections, palpations, percussions and reflex testings.
+The following rule checks for an existing examination of that type.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{5: Examination to determine the whole body status, including documentation if necessary}}
+label={lst:goae-5-rule}
+]{code/rules/experiments/goae-base-rules-5.json}
+
+\paragraph{\goa{GOÄ 8: Examination to determine the whole body status, including documentation if necessary}}
+According to its description in the GOÄ \cite{hermanns2015ebm}, it is applicable if the doctor provided the following types of examinations:
+\begin{itemize}
+    \item examinations of the skin
+    \item examinations of the visible mucous membranes
+    \item examinations of the breast or abdominal organs
+    \item examinations of the supporting and movement organs
+    \item orienting neurological examination
+\end{itemize}
+We need to conjugate the existence of all those five examinations to check if \goa{8} is applicable.
+We can easily use the logical tree feature presented in \addref to implement this as follows.
+The rule assumes that an examination of the skin is present if the practitioner has entered data into the \code{skinChangeExaminations} block as part of the physical examination stage.
+It assumes that an examination of the supporting and movement organs is present if the practitioner has entered data into the \code{mobilityTestCervicalSpine}, the \code{mobilityTestThoracicSpine} or the \code{mobilityTestLumbarSpine} block.
+Writing rules for examination codes like \goa{8} requires us to define a mapping between the anamnesis or physical examination blocks from the \AV data model and the concrete examinations required by the rule.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{8: Examination to determine the whole body status, including documentation if necessary}}
+label={lst:goae-A-rule}
+]{code/rules/experiments/goae-base-rules-8.json}
+
+\paragraph{\goa{11: Digital examination of the rectum and/or prostate}}
+This code applies for treatments with an examination of the rectum or prostate.
+This condition translates to the existence of a \code{digitalRectalExamination} or a \code{prostateExamination} block.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={GOÄ 11}
+label={lst:goae-11-rule}
+]{code/rules/experiments/goae-base-rules-11.json}
+
+
+
+
+
+This code is similar to
+
+
 
 \lstinputlisting[
 language=json,
@@ -41,10 +111,10 @@ Note that the rule just checks only for existence of examination blocks and does
 Unlike \goa{6}, \goa{8} does not mention any additional examination details.
 %\goa{6} is very similar to \goa{8} but much larger as it
 
-\subsubsection{GOÄ Surcharges}
+\subsection{GOÄ Surcharges}\label{subsec:goa-surcharges}
 
 The GOÄ defines surcharges that are easily missed out in praxis.
-Section \ref{sec:surcharges} introduces this type of GOÄ codes and mentions a few examples.
+We cover them in section \ref{sec:surcharges}.
 The following rules are time related and cover inconveniences linked to service provision times.
 
 \lstinputlisting[
@@ -105,21 +175,23 @@ label={lst:goae-E-rule}
 ]{code/rules/experiments/goae-base-rules-E.json}
 
 
-\subsubsection{Multiplier Justification Rules}\label{subsubsec:multiplier-justification-rules}
+\subsection{Multiplier Justification Rules}\label{subsec:multiplier-justification-rules}
 Section \ref{sec:billing-multipliers} and \ref{sec:multiplier-justifications} introduce the concept of billing multipliers in private treatments.
-Multipliers are applicable to existing GOÄ codes, however, require justifying and provable condition in the treatment data.
+Multipliers are applicable to existing GOÄ codes, however, require justifying and provable conditions in the treatment data.
 As multiplier justifications are neither standardized nor pre-defined by any authority,
 part of this work was to collect commonly used multiplier justifications.
 Thanks to the medical experts at \AV, I received access to medical documents that contained real multiplier justifications used in the Dermato Oncology department of the LMU.
 Many of the following rules implement those justifications.
-Additionally, I took part in \todo{Explain PVC semianr}
+As mentioned in section \ref{sec:language-design-workflow} I took part in the PVS Seminar, where I received more information about possible multiplier justifications.
+
+Multiplier justifications either be target-specific or not.
 
 
-\subsubsubsection{Non-specific multiplier justifications}
+
+\subsubsection{Non-specific multiplier justifications}
 
 
-
-\subsubsubsection{Procedure-specific and duration-related multiplier justifications}
+\subsubsection{Procedure-specific and duration-related multiplier justifications}
 Procedures often take longer than expected.
 This can be the case due to unforeseen complications and issues.
 The following rule list shows the generic pattern used for procedure-specific and duration-related multiplier justifications.

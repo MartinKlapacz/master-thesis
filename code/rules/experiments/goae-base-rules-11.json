@@ -1,9 +1,11 @@
 {
-  "code": "1",
+  "code": "11",
   "condition": {
-    "maxDurationTreatment": 10,
-    "performerIsDoctor": true,
-    "onlyOncePerGoaeTreatmentCaseInCombinationWithSpecialServices": true,
-    "patientCounseling": true
+    "procedureBlocks": {
+      "or": [
+        { "digitalRectalExamination": {} },
+        { "prostateExamination": {} }
+      ]
+    }
   }
 }
