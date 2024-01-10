@@ -6,18 +6,21 @@
         {
           "and": [
             "visualAcuity",
-            "visualFieldAndVisualAttention",
-            {
-              "pupilsAndLightReaction": {
-                "pupilLeft": {},
-                "pupilRight": {}
-              }
-            },
-            "oculomotorSkills"
+            "oculomotorSkills",
+            { "pupilsAndLightReaction": { "pupilLeft": {}, "pupilRight": {} } },
+            "visualFieldAndVisualAttention"
           ]
         },
-        { "and": [ "noseInspection", "mouthAndThroatAndLarynxInspection" ] },
-        { "and": [ "kidneyPainOnPercussion", "prostateExamination", "digitalRectalExamination" ] }
+        {
+          "and": [
+            "noseInspection",
+            "mouthAndThroatAndLarynxInspection",
+            { "earsAndMastoidPalpation": { "left": {}, "right": {} } }
+          ]
+        },
+        { "and": [ "kidneyPainOnPercussion", "prostateExamination", "digitalRectalExamination" ] },
+        // stomatognathic system, kidneys and urinary tract, vascular status
+        ...
       ]
     }
   }

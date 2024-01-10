@@ -2,10 +2,7 @@
   "code": "11",
   "condition": {
     "procedureBlocks": {
-      "or": [
-        { "digitalRectalExamination": {} },
-        { "prostateExamination": {} }
-      ]
+      "or": [ "digitalRectalExamination", "prostateExamination" ]
     }
   }
 }

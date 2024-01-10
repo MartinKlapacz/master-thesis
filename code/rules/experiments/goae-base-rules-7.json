@@ -1,0 +1,28 @@
+{
+  "code": "7",
+  "condition": {
+    "physicalBlocks": {
+      "or": [
+        // full skin examination
+        {
+          "and": [
+            "skinTurgor", "skinColor",
+            "skinThickness", "skinChangeExaminations"
+          ]
+        },
+        // full mobility examination
+        {
+          "and": [
+            "mobilityTestShoulderJointIsolated", "mobilityTestShoulder",
+            "mobilityTestElbowJoint", "mobilityTestWrist",
+            "mobilityTestFingerJoint", "mobilityTestCervicalSpine",
+            "mobilityTestThoracicSpine", "mobilityTestLumbarSpine"
+          ]
+        },
+        // other full organ system examinations
+        ...
+      ]
+    }
+  }
+}
+
