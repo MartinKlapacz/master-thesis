@@ -1,0 +1,7 @@
+{
+  "code": "255",
+  "condition": {
+    "procedureBlocks": { "spineInfiltration": {}}
+  },
+  "quantity": "spine-infiltration-quantity"
+}

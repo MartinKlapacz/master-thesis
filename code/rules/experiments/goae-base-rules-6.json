@@ -6,134 +6,21 @@
         {
           "and": [
             "visualAcuity",
-            "visualFieldAndVisualAttention",
-            {
-              "pupilsAndLightReaction": {
-                "pupilLeft": {},
-                "pupilRight": {}
-              }
-            },
-            "oculomotorSkills"
+            "oculomotorSkills",
+            { "pupilsAndLightReaction": { "pupilLeft": {}, "pupilRight": {} } },
+            "visualFieldAndVisualAttention"
           ]
         },
         {
           "and": [
             "noseInspection",
             "mouthAndThroatAndLarynxInspection",
-            {
-              "and": [
-                {
-                  "or": [
-                    {
-                      "earsInspection": {
-                        "externalEars": {
-                          "left": {}
-                        }
-                      }
-                    },
-                    {
-                      "earsInspection": {
-                        "earCanals": {
-                          "left": {}
-                        }
-                      }
-                    },
-                    {
-                      "earsInspection": {
-                        "tympanicMembranes": {
-                          "left": {}
-                        }
-                      }
-                    }
-                  ]
-                },
-                {
-                  "or": [
-                    {
-                      "earsInspection": {
-                        "externalEars": {
-                          "right": {}
-                        }
-                      }
-                    },
-                    {
-                      "earsInspection": {
-                        "earCanals": {
-                          "right": {}
-                        }
-                      }
-                    },
-                    {
-                      "earsInspection": {
-                        "tympanicMembranes": {
-                          "right": {}
-                        }
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
+            { "earsAndMastoidPalpation": { "left": {}, "right": {} } }
           ]
         },
-        {
-          "and": [
-            {
-              "mouthAndThroatAndLarynxInspection": {
-                "tongue": {},
-                "larynx": {}
-              }
-            },
-            {
-              "mouthAndThroatAndLarynxPalpation": {
-                "larynx": {}
-              }
-            }
-          ]
-        },
-        {
-          "and": [
-            "kidneyPainOnPercussion",
-            "prostateExamination",
-            "digitalRectalExamination"
-          ]
-        },
-        {
-          "and": [
-            {
-              "pulsePalpationUpperExtremity": {
-                "left": {
-                  "femoralArtery": "!VASCULAR_SYSTEM_PALPATION_NONE",
-                  "poplitealArtery": "!VASCULAR_SYSTEM_PALPATION_NONE",
-                  "posteriorTibialArtery": "!VASCULAR_SYSTEM_PALPATION_NONE",
-                  "dorsalisPedisArtery": "!VASCULAR_SYSTEM_PALPATION_NONE"
-                },
-                "right": {
-                  "femoralArtery": "!VASCULAR_SYSTEM_PALPATION_NONE",
-                  "poplitealArtery": "!VASCULAR_SYSTEM_PALPATION_NONE",
-                  "posteriorTibialArtery": "!VASCULAR_SYSTEM_PALPATION_NONE",
-                  "dorsalisPedisArtery": "!VASCULAR_SYSTEM_PALPATION_NONE"
-                }
-              }
-            },
-            {
-              "pulsePalpationUpperExtremity": {
-                "left": {
-                  "femoralArtery": "!VASCULAR_SYSTEM_PALPATION_NONE",
-                  "poplitealArtery": "!VASCULAR_SYSTEM_PALPATION_NONE",
-                  "posteriorTibialArtery": "!VASCULAR_SYSTEM_PALPATION_NONE",
-                  "dorsalisPedisArtery": "!VASCULAR_SYSTEM_PALPATION_NONE"
-                },
-                "right": {
-                  "femoralArtery": "!VASCULAR_SYSTEM_PALPATION_NONE",
-                  "poplitealArtery": "!VASCULAR_SYSTEM_PALPATION_NONE",
-                  "posteriorTibialArtery": "!VASCULAR_SYSTEM_PALPATION_NONE",
-                  "dorsalisPedisArtery": "!VASCULAR_SYSTEM_PALPATION_NONE"
-                }
-              }
-            }
-          ]
-        }
+        { "and": [ "kidneyPainOnPercussion", "prostateExamination", "digitalRectalExamination" ] },
+        // stomatognathic system, kidneys and urinary tract, vascular status
+        ...
       ]
     }
   }

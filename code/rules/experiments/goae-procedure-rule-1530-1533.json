@@ -1,0 +1,22 @@
+[
+  {
+    "code": "1530",
+    "condition": {
+      "procedureBlocks": {
+        "laryngoscopy": {
+          "floatingOrSupportedLaryngoscopy": false
+        }
+      }
+    }
+  },
+  {
+    "code": "1533",
+    "condition": {
+      "procedureBlocks": {
+        "laryngoscopy": {
+          "floatingOrSupportedLaryngoscopy": true
+        }
+      }
+    }
+  }
+]

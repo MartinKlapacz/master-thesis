@@ -1,9 +1,9 @@
 {
   "code": "1",
   "condition": {
-    "maxDurationTreatment": 10,
+    "maxDurationAnamnesis": 10,
     "performerIsDoctor": true,
     "onlyOncePerGoaeTreatmentCaseInCombinationWithSpecialServices": true,
-    "patientCounseling": true
+    "minAmountAnamnesisBlocks": 1
   }
 }
