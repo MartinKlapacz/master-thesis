@@ -17,18 +17,18 @@ For each rule, we accept the value of the \code{code} field for which the \code{
 
 \subsection{Subsequent GOÄ Rule Evaluation Rounds}\label{subsec:susequent-goä-rule-evaluation-rounds}
 
-Section \addref, introduces the \code{requiredTargetCodes} condition type.
+Section \addref, introduces the \requiredTargetCodes} condition type.
 To evaluate this condition, the system needs to know the final result set.
 At this initial rule evaluation stage, this information is not available, because the final result set is yet currently being computed.
 Therefore, any rule that specifies a set of required target codes will not match as the set of current target codes is empty.
 To solve this issue,
 I modified the derivation process by introducing subsequent rounds where we evaluate all rules of that rule type.
 After each round, we manually update the \code{currentTargetCodes} field in the \REI with the recently computed result.
-In these subsequent rounds, we again derive the codes from the previous round including those whose \code{requiredTargetCodes} condition finally match.
+In these subsequent rounds, we again derive the codes from the previous round including those whose \requiredTargetCodes} condition finally match.
 We repeat that process until there are no new changes in the result set.
 
 This way we always have at least two rule evaluation rounds,
-but are able to derive codes with arbitrarily long \code{requiredTargetCodes} dependency chains.
+but are able to derive codes with arbitrarily long \requiredTargetCodes} dependency chains.
 
 \subsection{Multiplier Justification Derivation Stage}\label{subsec:multiplier-justification-derivation-stage}
 This stage is equivalent to the initial rule evaluation in subsection \ref{subsec:initial-goä-rule-evalutation}.
@@ -79,7 +79,6 @@ The following list enumerates all known code conflict fields.
     \item The GOÄ catalog specifies code exclusions in a structured way.
     This is equivalent to the \code{excludedCodes} condition field.
     \item The condition field \code{isSingleBillingCondition: Boolean} causes conflicts between the respective code and all other codes in the result set
-    \item The condition field \code{isSingleBillingConditionIfPractitionerIsDoctor: Boolean} causes conflicts between the respective code and all other codes in the result set
 \end{enumerate}
 
 This has a fundamental impact on the derivation pipeline.
