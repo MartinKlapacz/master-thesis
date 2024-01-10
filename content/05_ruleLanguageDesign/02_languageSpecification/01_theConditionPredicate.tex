@@ -421,14 +421,6 @@ The code is always the conclusion of the rule the condition is part of.
 Similarly to the previous condition fields, \RL also allows setting limits for code usages in specific time spans.
 \todo{add example}
 
-
-\paragraph{onlyOncePerGoaeTreatmentCaseInCombinationWithSpecialServices}
-This boolean condition field handles a highly specific but important edge-case involving \goa{1} and \goa{5}.
-From the \PVC seminar, I have learned that within the same treatment case, both codes can be billed in combination with a special GOä code at most once.
-A special GOÄ code is a code whose numeric number is higher or equal to 200.
-This means within the same treatment case \goa{1} can be billed as often as possible, but only once in combination with any code larger than 200.
-The same holds for \goa{5}.
-
 \subsection{Service Performer related Conditions}\label{subsec:service-performer-related-conditions}
 
 \paragraph{performerIsDoctor}
@@ -474,3 +466,12 @@ Code exclusions are part of the structure meta data in the EBM and GOÄ catalogs
 The \excludedCodes condition type is a means to manually set code exclusions in the rule derivation result set
 It is useful for rule types where code exclusions do not exist as structured data but must be set manually.
 This is the case in the flat rates.
+
+\paragraph{onlyOncePerGoaeTreatmentCaseInCombinationWithSpecialServices}
+This boolean condition field handles a highly specific but important edge-case involving \goa{1} and \goa{5}.
+From the \PVC seminar, I have learned that within the same treatment case, both codes can be billed in combination with a special GOä code at most once.
+A special GOÄ code is a code whose numeric number is higher or equal to 200.
+This means within the same treatment case \goa{1} can be billed as often as possible, but only once in combination with any code larger than 200.
+The same holds for \goa{5}.
+Again this is not a condition field that determines if the rule matches or not.
+Instead, instead this condition generates conflicts between the rule's conclusion and all special special GOÄ codes in the current result set.
