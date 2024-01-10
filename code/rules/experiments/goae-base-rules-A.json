@@ -1,6 +1,7 @@
 {
   "code": "A",
   "condition": {
-    "outsideOfOfficeHours": true
+    "outsideOfOfficeHours": true,
+    "practitionerIsDoctor": false
   }
 }
