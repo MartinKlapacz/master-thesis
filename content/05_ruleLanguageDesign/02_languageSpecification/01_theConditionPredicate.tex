@@ -79,56 +79,50 @@ In medical practice, the age of a patient can significantly influence the comple
 In cases involving very young or very elderly patients, practitioners may encounter patient age specific challenges.
 Due to these challenges, treatments may require more time, special care or other additional resources.
 As a result, practitioners may apply billing multipliers to compensate for the additional effort.
-This is why you can use the \code{minPatientAge} and \code{maxPatientAge} fields implement these types of multiplier justification rules.
+This is why you can use the \minPatientAge and \maxPatientAge fields implement these types of multiplier justification rules.
 There are also concrete GOÄ codes such as \goa{K1} and \goa{K2} that require the patient age.
 The patient age is also highly relevant for various EBM codes, but already exists as structured conditions in the EBM catalog.
 This is why using patient age conditions in EBM rules is redundant.
 The information source for these two conditions is \code{@InformationSourcePatientAge}.
 
 \paragraph{isNewBorn}
-\code{isNewBorn} is syntactic sugar and a special case of the \code{maxPatientAge} condition.
-It is a bool field that denotes whether a patient must be a newborn or not.
+\isNewBorn is syntactic sugar and a special case of the \maxPatientAge condition.
+It is a Boolean field that denotes whether a patient must be a newborn or not.
 According to the GOÄ, babies that are at most 28 days old are newborns \cite{bruck1998kommentar}.
-It is relevant for \goa{25: Initial newborn examination – if necessary including advice from the caregiver(s) –}, which is essentially a provision of a physical examination for newborns.
+It is relevant for \goa{25: Initial newborn examination – if necessary including advice from the caregiver(s) –}, essentially covers a physical examination for newborns.
 It can also be interesting for multiplier justifications.
 The information source for these two conditions is \code{@InformationSourcePatientAge}.
 
 \paragraph{patientSpeaksGerman/patientSpeaksEnglish}
-\code{patientSpeaksGerman} and \code{patientSpeaksEnglish} are both boolean fields that denote whether the patients are able to communicate in the respective language.
+\patientSpeaksGerman and \patientSpeaksEnglish are both boolean fields that denote whether the patients are able to communicate in the respective language.
 Communication problems can increase the effort and time a treatment may require and are often used as justifications for multipliers which compensate for that.
-\goa{4: taking a third-party medical history} covers an anemnesis that \todo{finish}
-\code{patientSpeaksGerman} and \code{patientSpeaksEnglish} subscribe to the information source \code{@InformationSourcePatientLanguages}.
+\patientSpeaksGerman and \patientSpeaksEnglish subscribe to \code{@InformationSourcePatientLanguages}.
 
 \paragraph{gender}
-The \code{gender} condition is one of the most important condition types.
-It is relevant for various EBM and GOÄ codes.
-Similarly to patient age, gender conditions are already a structured part of the EBM catalog and do not need to be used in EBM rules.
-\goa{27}, \goa{28},  GOÄ codes in section \mete{H}, Obstetrics and Gynecology, and GOÄ codes in \mete{Urology} are gender-specific.
-Rules implementing these codes can use the \code{gender} condition.
-It supports the string values \code{\"female\"}, \code{\"male\"} and \code{\"diverse\"}.
-\code{gender} subscribes to the information source \code{@InformationSourcePatientGender}.
-
+The \gender condition is an important condition types relevant for various EBM and GOÄ codes.
+Its values can either be \code{\"male\"}, \code{\"female\"} or \code{\"diverse\"}
+As mentioned in paragraph \ref{par:administrative-gender} structured EBM records already cover gender conditions, making the \gender condition obsolete for EBM.
+It can nonetheless be useful for gender-specific services such as  \goa{27}, \goa{28},  GOÄ codes in section \mete{H}, Obstetrics and Gynecology, and GOÄ codes in \mete{Urology}.
+\gender subscribes to the \code{@InformationSourcePatientGender}.
 
 \paragraph{isPregnant}
-The \code{isPregnant} condition is syntactic sugar for a specific case of the \code{requiredAnamnesisBlocks}
+The \isPregnant boolean condition is syntactic sugar for a special case of the \anamnesisBlocks condition field.
 The following rules are equivalent.
-
 \lstinputlisting[
     language=json,
     style=json,
     caption={\code{isPregnant} rule},
     label={lst:is-pregnant}
 ]{code/rules/specification/isPregnant.json}
-
-A pregnancy can be reason for additionally required care or services during a treatment that is not related to the patient's pregnancy.
-This is why it can be useful in multiplier justification rules.
-It is also useful for \goa{23} which is applicable for an initial pregnancy-related examination.
+A pregnancy can be reason for additionally required care or services during a treatment that is not necessarily related to the patient's pregnancy,
+making it also a possible justification for multipliers.
+It is useful for codes such as \goa{23} which applies to initial pregnancy-related examinations.
 \code{isPregnant} subscribes to the information source \code{@InformationSourceAnamnesisBlocks}.
 
 \paragraph{isSober}
-The \code{isSober} boolean condition describes the current state of the patient during the treatment.
+The \isSober boolean condition describes the current state of the patient during the treatment.
 A patient is considered non-sober when under the influence of alcohol or addictive substances.
-\code{isSober} is effectively syntactic sugar for a specific use case of the \code{requiredAnamnesisBlocks} condition.
+\isSober is effectively syntactic sugar for a special case of the \anamnesisBlocks condition.
 The following rules are equivalent
 \lstinputlisting[
     language=json,
@@ -139,7 +133,7 @@ The following rules are equivalent
 
 
 \paragraph{minNumberOfAllergies}
-\code{minNumberOfAllergies} is a field that specifies the minimal number of allergies a patient requires.
+\minNumberOfAllergies is a field that specifies the minimal number of allergies a patient requires.
 From medical experts at \AV I have learned that a high number of allergies can make treatments more challenging for several reasons:
 \begin{itemize}
     \item It may reduce the number of medical options as medications contain allergens or can produce them in specific environments.
@@ -147,11 +141,10 @@ From medical experts at \AV I have learned that a high number of allergies can m
     \item Patients with a high number of allergies require increased caution and care.
     Practitioners need to spend more time for history review and patient monitoring.
 \end{itemize}
-This makes \code{minNumberOfAllergies} a useful condition for multiplier justifications.
+This makes \minNumberOfAllergies a useful condition for multiplier justifications.
 It subscribes to the information source \code{@InformationSourcePatientAllergies}
 
-\subsubsection{Block Content Related Sub-rules}
-
+\subsubsection{Block Content Related Sub-Rules}
 A medical treatment consists of multiple stages of patient care.
 Each stage has its specific aims and tools.
 Anamnesis,
@@ -258,7 +251,7 @@ physical examination and procedures.
 
 \subsubsection{Time Related conditions}
 
-\paragraph{procedureDurations}
+\paragraph{Procedure Durations}
 Procedure durations are a crucial information source on which GOÄ codes as well as multiplier justifications rely on.
 Anesthesia services such as \goa{460}, \goa{462}, \goa{473} and \goa{476} have a duration condition.
 Procedures that took longer than expected are an important justification for billing multipliers.
@@ -273,14 +266,15 @@ Figure \ref{lst:min-max-duration} illustrates example usages of this feature.
     label={lst:min-max-duration}
 ]{code/rules/specification/minDuration.json}
 
-Code \code{1} holds if the laryngoscopy takes at most 10 minutes.
-Code \code{2} holds if the laryngoscopy takes between 10 and 20 minutes.
-Code \code{3} holds if the laryngoscopy takes at least 20 minutes.
+Code \code{1} matches if the laryngoscopy takes at most 10 minutes.
+Code \code{2} matches if the laryngoscopy takes between 10 and 20 minutes.
+Code \code{3} matches if the laryngoscopy takes at least 20 minutes.
 
 Both \code{\$minDuration} and \code{\$maxDuration} are fields that belong inside the procedure block object of the \code{requiredProcedureBlocks} field.
 They start with a \"$\" sign character to mark them as special fields distinguishing them from ordinary procedure block content fields.
-They are integer fields that denote a number of minutes.
+They are integer fields denoting a number of minutes.
 A duration condition always refers to an existing procedure, which is why we write it directly into the respective procedure block condition.
+Procedure durations are not a separate condition field but are merely an extension of the \procedureBlocks condition.
 
 \paragraph{isOutsideOfOfficeHours}
 \code{isOutsideOfOfficeHours} is a boolean field that, if set to true, only evaluates to true if the treatment starts outside an official office hour.
@@ -290,9 +284,8 @@ However, unanticipated urgencies and scheduling issues can be the reason for tre
 This condition subscribes to \code{@InformationSourceTreatmentDate} and \code{@InformationSourceOfficeHours}.
 
 \paragraph{daysOfWeek}
-\code{daysOfWeek} is a list type condition that allows to set conditions on the week day.
-Possible values inside the list are \code{\"monday\"}, \code{\"tuesday\"}, \code{\"wednesday\"}, \code{\"thursday\"}, \code{\"friday\"}, \code{\"saturday\"} and \code{\"sunday\"}.
-Using any value outside of the weekdays leads to an error.
+\daysOfWeek is a condition field allowing to set conditions on the treatment's week day.
+Possible list values are \code{\"monday\"}, \code{\"tuesday\"}, \code{\"wednesday\"}, \code{\"thursday\"}, \code{\"friday\"}, \code{\"saturday\"} and \code{\"sunday\"}.
 This condition is relevant for multiple GOÄ surcharges.
 \lstinputlisting[
     language=json,
@@ -301,11 +294,12 @@ This condition is relevant for multiple GOÄ surcharges.
     label={lst:days-of-week}
 ]{code/rules/specification/daysOfWeek.json}
 Code \code{1} holds if the treatment takes place on Sunday or Saturday.
-The \code{daysOfWeek} condition subscribes to \code{@InformationSourceTreatmentDate}
-This condition subscribes to \code{@InformationSourceTreatmentDate}.
+The \daysOfWeek condition subscribes to \code{@InformationSourceTreatmentDate}
 
 \paragraph{timeOfDayRestrictions}
 Using the \code{timeOfDayRestrictions} condition allows you to specify that the treatment should commence within any specified timeslot from a provided list of daily timeslots.
+It expects a list of JSON objects with the keys \code{"from"} and \code{"to"}.
+The values of both fields are daytime strings formatted as \code{"hh:mm:ss"}.
 \lstinputlisting[
     language=json,
     style=json,
@@ -314,15 +308,14 @@ Using the \code{timeOfDayRestrictions} condition allows you to specify that the 
 ]{code/rules/specification/time-of-day-restrictions.json}
 This condition subscribes to \code{@InformationSourceTreatmentDate}.
 
-\subsection{Medical Coding Related Conditions}
+\subsection{Medical Coding Related Conditions}\label{subsec:medical-coding-related-conditions}
 
-\paragraph{minNumberOfDiagnosesInCurrentTreatment}
+\paragraph{minNumberOfDiagnoses}
 This field specifies the minimal number of diagnoses specified in this treatment.
-One of the commonly used
-In my research, I have learned that multimorbidity is a commonly used multiplier justification in the LMU dermatology.
+As part of my research I have learned that multimorbidity is a commonly used multiplier justification in the LMU dermatology.
 Multimorbidity in medical terms defines the combination of two or more chronic medical conditions in an individual \cite{Reste2013The}.
 These medical conditions may be can be a chronic disease, biopsychosocial factor or a somatic risk factor.
-\code{minNumberOfDiagnosesInCurrentTreatment} is useful for implementing the multimorbidity multiplier justification rule.
+\minNumberOfDiagnoses is useful for implementing the multimorbidity multiplier justification rule.
 The information source for this condition is \code{@InformationSourceTreatmentDiagnoses}.
 
 \paragraph{requiredIcdCodes}
@@ -372,7 +365,7 @@ The major difference here is how the system fetches OPS codes for this treatment
 Unlike diagnoses, the practitioner does not manually select OPS codes for the conducted procedures.
 The billing experts at \AV have therefore requested that the billing framework should automatically derive OPS codes for treatments.
 I solved this by defining OPS rules as a new rule type.
-Any rule componenent that needs to derive OPS rules makes use of another rule component, namely \code{OpsRuleComponent}.
+Any rule component that needs to derive OPS rules makes use of another rule component, namely \code{OpsRuleComponent}.
 It implements data fetching for \code{InformationSourceOpsCodes} by deriving OPS codes using OPS rules.
 Just as any rule type, billing experts are responsible for writing OPS rules, as well.
 
@@ -390,7 +383,7 @@ GOÄ, EBM and other possible code systems do not offer a hierarchical prefix tre
 Instead, \code{requiredTargetCode} uses definition \ref{eq:matching}.
 Section \addref offers a more detailed description of how the condition checking for \code{requiredTargetCode} actually works.
 
-\subsection{Previous Occurrence related Conditions}\label{subsubsec:previous-occurrence-related}
+\subsection{Previous Occurrence related Conditions}\label{subsec:previous-occurrence-related}
 
 The \AVS internally structures treatments as follows:
 A patient multiple billing cases, each one representing a quarter of the year.
@@ -428,19 +421,17 @@ The code is always the conclusion of the rule the condition is part of.
 Similarly to the previous condition fields, \RL also allows setting limits for code usages in specific time spans.
 \todo{add example}
 
-
-\paragraph{onlyOncePerGoaeTreatmentCaseInCombinationWithSpecialServices}
-This boolean condition field handles a highly specific but important edge-case involving \goa{1} and \goa{5}.
-From the \PVC seminar, I have learned that within the same treatment case, both codes can be billed in combination with a special GOä code at most once.
-A special GOÄ code is a code whose numeric number is higher or equal to 200.
-This means within the same treatment case \goa{1} can be billed as often as possible, but only once in combination with any code larger than 200.
-The same holds for \goa{5}.
-
-\subsection{Service Performer related Conditions}
+\subsection{Service Performer related Conditions}\label{subsec:service-performer-related-conditions}
 
 \paragraph{performerIsDoctor}
 The \code{performerIsDoctor} condition is a boolean condition field that allows to impose conditions on the practitioner type.
 The current version of the \AVS supports the following practitioner types:
+
+\paragraph{isCareRound / isMedicalRound}
+\code{isCareRound} and \code{isMedicalRound} are boolean conditions that enable you to check if the treatment is a care / medical rounds.
+\goa{46}, \goa{48} and \goa{50} are a few examples for services that require that information.
+Both fields subscribe to the information source \code{@InformationSourceTreatmentType}.
+
 
 \lstinputlisting[
     language=protobuf2,
@@ -461,45 +452,26 @@ This condition is relevant for \goa{1} and \goa{2}, which are only applicable by
 
 \subsection{Conflict Conditions}\label{subsec:conflict-conditions}
 Conflict conditions are special fields that the framework cannot evaluate during the ordinary rule evaluation phase.
-The reason for that is the these fields require the final rule evaluation set as an input, which is obviously not known during the rule evaluation phase.
+The reason for that is the these fields require the final rule evaluation set as an input, which is obviously not known during the initial rule evaluation phase.
 The framework does not define a information source for this type of information.
-Instead, these fields receive a special handling in a separate derivation stage described in section \addref.
+Instead, these fields receive a special handling in a separate derivation stage described in subsection \ref{subsec:susequent-goä-rule-evaluation-rounds}.
 
-\paragraph{singleBillingPosition}
-\code{singleBillingPosition} is a special condition type that if set to \true only evaluates to \true if it is the only code in the derivation result.
+\paragraph{mustBeSingle}
+\code{mustBeSingle} is a boolean condition that determines if the conclusion of the rule must be the only derivation result in the derivation result set.
 It is relevant for \goa{3}.
 This condition does not subscribe to any information sources.
 
-\paragraph{singleBillingPositionIfPractitionerIsDoctor}
-\code{singleBillingPositionIfPractitionerIsDoctor} is an extension of of \code{singleBillingPosition}
-This admittedly highly specific boolean condition field behaves as follows:
-
-\[
-    \code{\{singleBillingPositionIfPractitionerIsDoctor : true\} = \true} \leftrightarrow \code{\{practitionerIsDoctor : true\} = \false} \land \code{\{singleBillingPosition : true\} = \true}
-\]
-
-
-This condition subscribes to \code{@InformationSourcePractitionerType}.
-
-
-\todo{finish this}
-
-Even though this condition  condition field is admittedly very specific
-
-that if set to true only evaluates to \true if it is the code in the derivation result.
-It evaluates to true if the practitioner is not a doctor or the conclusion code is the only code in the derivation result.
-This condition field requires special handling but also subscribes to information source \code{@InformationSourcePractitionerType}.
-
 \paragraph{excludedCodes}
-This condition field expects a list of conclusions as a value.
-A rule using the \code{excludedCodes} field evaluates to false if any code in the \code{excludedCodes} list is a derivation result.
-This
+Code exclusions are part of the structure meta data in the EBM and GOÄ catalogs.
+The \excludedCodes condition type is a means to manually set code exclusions in the rule derivation result set
+It is useful for rule types where code exclusions do not exist as structured data but must be set manually.
+This is the case in the flat rates.
 
-
-\subsection{Miscellaneous Conditions}\label{subsec:miscellaneous-conditions}
-
-\paragraph{isCareRound / isMedicalRound}
-\code{isCareRound} and \code{isMedicalRound} are boolean conditions that enable you to check if the treatment is a care / medical rounds.
-\goa{46}, \goa{48} and \goa{50} are a few examples for services that require that information.
-Both fields subscribe to the information source \code{@InformationSourceTreatmentType}
-
+\paragraph{onlyOncePerGoaeTreatmentCaseInCombinationWithSpecialServices}
+This boolean condition field handles a highly specific but important edge-case involving \goa{1} and \goa{5}.
+From the \PVC seminar, I have learned that within the same treatment case, both codes can be billed in combination with a special GOä code at most once.
+A special GOÄ code is a code whose numeric number is higher or equal to 200.
+This means within the same treatment case \goa{1} can be billed as often as possible, but only once in combination with any code larger than 200.
+The same holds for \goa{5}.
+Again this is not a condition field that determines if the rule matches or not.
+Instead, instead this condition generates conflicts between the rule's conclusion and all special special GOÄ codes in the current result set.
