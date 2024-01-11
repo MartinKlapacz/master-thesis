@@ -1,6 +1,7 @@
 {
   "code": "5",
   "condition": {
+    "onlyOncePerGoaeTreatmentCaseInCombinationWithSpecialServices": true,
     "physicalBlocks": {
       "or": [
         // inspections
