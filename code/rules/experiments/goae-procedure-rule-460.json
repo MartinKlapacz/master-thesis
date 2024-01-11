@@ -1,0 +1,15 @@
+{
+  "code": "460",
+  "condition": {
+    "procedureBlocks": {
+      "and": [
+        { "generalAnesthesia": { "procedureType": "PROCEDURE_TYPE_BALANCED" }},
+        {
+          "not": {
+            "generalAnesthesia": {"airwayManagement": "Endobronchialtubus"}
+          }
+        }
+      ]
+    }
+  }
+}

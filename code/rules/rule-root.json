@@ -1,8 +1,7 @@
 {
   "code": "<code>",
   "description": "<description>",
-  "targetEbmCode": "<code>",
-  "targetGoaeCode": "<code>",
+  "targetCode": "<code>",
   "condition": {
     // condition predicate object
   },

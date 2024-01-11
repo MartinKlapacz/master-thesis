@@ -1,0 +1,32 @@
+\section{Future Work}\label{sec:future-work}
+
+\paragraph{Development of an IDE Plugin for Enhanced Rule Writing}
+One of the challenges faced during this work was the error-prone nature of writing rules in \RF.
+Billing experts often struggled with following the language's semantics, leading to frequent mistakes that I need to fix.
+To address this, the development of an Integrated Development Environment (IDE) plugin would be beneficial.
+Proper linting, error detection, and  auto-completion, could significantly reduce the likelihood of semantic errors
+in the rule-writing process.
+Such a tool would not only streamline the workflow but also provide a more intuitive interface for billing experts.
+
+\paragraph{Expansion of Condition Types}
+As development goes on and the billing framework will cover more and more treatment cases,
+it is very likely that further limitations of the current version will emerge.
+To accommodate evolving needs, there should be a continuous development process aimed at introducing new features,
+information sources, and condition types.
+Regular updates and version upgrades must ensure that the framework remains adaptable to evolving requirements.
+
+\paragraph{Rule Evaluation Performance improvement}
+Subsection \label{subsec:initial-goä-rule-evalutation} mentions that a rule type evaluation always includes the retrieval of all rules from the database.
+This is because condition evaluations such as \anamnesisBlocks, \physicalBlocks and \requiredIcdCodes involve more complex logic implemented in the application code.
+Partial condition evaluation on the database level is a more scalable solution in the long run.
+Future versions should replace the currently used \code{findAll} query by a filter that receives a \REI and already evaluates a set of conditions only returning the matching ones.
+
+\paragraph{Enhancing Usability with Syntactic Sugar}
+Usability is a critical aspect when developing a Domain-Specific Language (DSL) for non-technical domain experts.
+One area of improvement could be the introduction of syntactic sugar –
+simplified syntax that makes expressions more readable and easier to write.
+For instance, representing linear functions for multipliers in private billing is currently complex.
+Introducing a syntactic sugar expression that can take two points
+and return a linear function crossing both would simplify this task considerably.
+This approach would make the rule language more accessible and user-friendly,
+encouraging wider adoption and reducing the learning curve for new users.

@@ -1,5 +1,16 @@
 \chapter{\abstractname}
 
-%TODO: Abstract
-
-
+This master's thesis presents the development and implementation of a novel rule-based billing framework, designed to be compatible with both statutory and private medical treatments.
+The core of this system is a JSON-based domain-specific rule language, tailored for billing experts to encode their domain knowledge effectively.
+This language accommodates multiple rule types, including GOÄ, EBM, multiplier justifications, OPS rules, and flatrate rules, demonstrating its universal applicability.
+The billing framework is seamlessly integrated into a Java Spring Boot microservice, developed from scratch.
+This microservice leverages the encoded rules to generate valid and optimized billing codes from medical treatments.
+A significant aspect of this project involved collaboration with Avelios Medical, a company specializing in developing a clinic information system focused on structured data collection.
+This collaboration underscores the thesis's key proposition: that automated billing is contingent on the availability of structured data, which Avelios Medical's software provides.
+To design the rule language, extensive research was conducted, including interviews with billing experts and participation in a medical seminar focused on private billing.
+This research was instrumental in identifying 17 distinct information sources and supporting 41 condition types within the rule language.
+The framework's effectiveness was validated through a series of benchmark tests using example treatments provided by billing experts at Avelios Medical.
+The framework demonstrated proficiency in deriving most billing codes accurately for complex treatment scenarios.
+However, the research also uncovered limitations within the framework, primarily due to certain information not being tracked by Avelios Medical's software.
+These gaps, often outside the scope of standard medical documentation or challenging to track automatically, such as consultation durations, highlight areas for future enhancement.
+Overall, this thesis contributes significantly to the field of medical billing by introducing a flexible, data-driven solution that streamlines the billing process, ensuring accuracy and efficiency in a complex domain

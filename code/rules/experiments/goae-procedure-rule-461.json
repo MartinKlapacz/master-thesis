@@ -1,0 +1,23 @@
+{
+  "code": "461",
+  "quantity": {
+    "sum": [
+      { "constant": -2 },
+      { "procedure": "generalAnesthesia", "perNMinutes": 30 }
+    ]
+  },
+  "condition": {
+    "procedureBlocks": {
+      "and": [
+        {
+          "generalAnesthesia": { "procedureType": "balancedAnesthesia", "$minDuration": 60 }
+        },
+        {
+          "not": {
+            "generalAnesthesia": { "airwayManagement": "Endobronchialtubus"}
+          }
+        }
+      ]
+    }
+  }
+}

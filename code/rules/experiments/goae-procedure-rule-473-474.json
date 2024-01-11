@@ -2,10 +2,10 @@
   {
     "code": "473",
     "condition": {
-      "requiredProcedureBlocks": {
+      "procedureBlocks": {
         "neuraxialAnesthesia": {
           "procedureType": "Spinalanästhesie mit Kathetertechnik | Periduralanästhesie mit Kathetertechnik | CSE",
-          "$minDuration": 299
+          "$maxDuration": 299
         }
       }
     }
@@ -13,11 +13,12 @@
   {
     "code": "474",
     "condition": {
-      "requiredProcedureBlocks": {
+      "procedureBlocks": {
         "neuraxialAnesthesia": {
           "procedureType": "Spinalanästhesie mit Kathetertechnik | Periduralanästhesie mit Kathetertechnik | CSE",
           "$minDuration": 300
         }
       }
     }
-  }]
+  }
+]
