@@ -5,7 +5,7 @@ We consider the following codes in the experiments.
 
 \paragraph{\goa{5: Symptom-related examination}}
 \goa{5} applies to examinations the practitioner provides using simple medical tools.
-According to the GOÄ, typical examinations that fall into that category are inspections, palpations, percussions and reflex testings.
+According to the GOÄ, typical examinations that fall into that category are inspections, palpations, percussions, reflex testings and measurements.
 The following rule checks for an existing examination of that type.
 \lstinputlisting[
 language=json,
@@ -67,7 +67,7 @@ label={lst:goae-7-rule}
 ]{code/rules/experiments/goae-base-rules-7.json}
 
 
-\paragraph{\goa{8: Examination to determine the whole body status, including documentation if necessary}}
+\paragraph{\goa{8}}
 According to its description in the GOÄ \cite{hermanns2015ebm}, it is applicable if the doctor provided the following types of examinations:
 \begin{itemize}
     \item Examinations of the skin
@@ -88,6 +88,7 @@ style=json,
 caption={\goa{8: Examination to determine the whole body status, including documentation if necessary}}
 label={lst:goae-8-rule}
 ]{code/rules/experiments/goae-base-rules-8.json}
+
 
 \paragraph{\goa{11: Digital examination of the rectum and/or prostate}}
 This code applies for treatments with an examination of the rectum or prostate.
@@ -272,3 +273,14 @@ caption={\goa{473 and 474}}
 label={lst:goae-6-rule}
 ]{code/rules/experiments/goae-procedure-rule-473-474.json}
 
+\paragraph{614}
+\goa{614: Transcutaneous measurement(s) of oxygen partial pressure} is applicable for respiration measurements performed during the physical examination stage.
+Practitioners document these measurements in the \code{respiration} block which stores a list of measurement objects representing one performed measurement.
+\goa{614} is applicable once for each measurement, which is implemented in the following rule.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\goa{614}}
+    label={lst:goae-614-rule}
+]{code/rules/experiments/goae-procedure-rule-614.json}
