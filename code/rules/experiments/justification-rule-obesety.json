@@ -1,0 +1,11 @@
+[
+  {
+    "code": "Schwierigkeit der Leistung durch Alkoholkonsum",
+    "targetCode": "255",
+    "condition": {
+      "physicalBlocks": {
+        "nutritionStatus": { "nutritionStatusType": "NUTRITION_STATUS_OBESITY" }
+      }
+    }
+  }
+]
