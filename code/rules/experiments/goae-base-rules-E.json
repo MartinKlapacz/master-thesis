@@ -1,9 +1,9 @@
 {
   "code": "E",
   "condition": {
-    "physicalBlock": {
+    "anamnesisBlock": {
       "pain": {
-        "nrs": ">7"
+        "severity": ">=6"
       }
     }
   }

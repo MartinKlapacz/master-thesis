@@ -10,7 +10,9 @@
         // percussions
         { "or": [ "percussionSoundLung", "abdominalPercussion", "kidneyPainOnPercussion", "spinePercussion" ]},
         // reflexes
-        { "or": [ "monosynapticReflexes", "polysynapticReflexes" ]}
+        { "or": [ "monosynapticReflexes", "polysynapticReflexes" ]},
+        // measurements
+        { "or": "respiratory" }
       ]
     }
   }
