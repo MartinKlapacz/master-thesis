@@ -15,6 +15,12 @@ To accommodate evolving needs, there should be a continuous development process 
 information sources, and condition types.
 Regular updates and version upgrades must ensure that the framework remains adaptable to evolving requirements.
 
+\paragraph{Rule Evaluation Performance improvement}
+Subsection \label{subsec:initial-goä-rule-evalutation} mentions that a rule type evaluation always includes the retrieval of all rules from the database.
+This is because condition evaluations such as \anamnesisBlocks, \physicalBlocks and \requiredIcdCodes involve more complex logic implemented in the application code.
+Partial condition evaluation on the database level is a more scalable solution in the long run.
+Future versions should replace the currently used \code{findAll} query by a filter that receives a \REI and already evaluates a set of conditions only returning the matching ones.
+
 \paragraph{Enhancing Usability with Syntactic Sugar}
 Usability is a critical aspect when developing a Domain-Specific Language (DSL) for non-technical domain experts.
 One area of improvement could be the introduction of syntactic sugar –

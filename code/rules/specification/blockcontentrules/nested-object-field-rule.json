@@ -1,0 +1,11 @@
+{
+  "code": "1",
+  "condition": {
+    "physicalBlocks": {
+      "pupilsAndLightReaction": {
+        "pupilLeft": { "pupilSize": ">3"
+        }
+      }
+    }
+  }
+}

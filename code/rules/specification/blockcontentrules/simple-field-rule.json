@@ -1,0 +1,32 @@
+[
+  {
+    "code": "1",
+    "condition": {
+      "physicalBlock": { "liverPalpation": {} }
+    }
+  },
+  {
+    "code": "2",
+    "condition": {
+      "physicalBlock": { "liverPalpation": { "isLiverPalpable": true } }
+    }
+  },
+  {
+    "code": "3",
+    "condition": {
+      "physicalBlock": { "liverPalpation": { "liverTexture": "LIVER_TEXTURE_TENDER" } }
+    }
+  },
+  {
+    "code": "4",
+    "condition": {
+      "physicalBlock": {
+        "liverPalpation": {
+          "isLiverPalpable": false,
+          "liverRim": 3,
+          "liverTexture": "LIVER_TEXTURE_TENDER | LIVER_TEXTURE_TENDER"
+        }
+      }
+    }
+  }
+]

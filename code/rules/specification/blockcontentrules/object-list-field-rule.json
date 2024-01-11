@@ -1,0 +1,15 @@
+[
+  {
+    "code": "5",
+    "condition": {
+      "physicalBlock": {
+        "hernia": {
+          "hernias": [
+            { "palpable": true },
+            { "visible": false }
+          ]
+        }
+      }
+    }
+  }
+]
