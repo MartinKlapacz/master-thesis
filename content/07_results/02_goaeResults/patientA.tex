@@ -3,18 +3,16 @@ The patient is a 57-year-old female suffering from chronic back pain.
 The patient has two other visits with the same issue concerning back pain and was previously diagnosed with the so-called facet syndrome (\mete{M47.2}).
 
 \paragraph{Anamnesis}
-
+In the anamnesis stage the
 
 \paragraph{Physical Examination}
 In the physical examination stage the doctor conducts several examinations.
 The doctor firstly checks for neurological issues.
 She performs a orienting neurological examination and examines the posture and stand of the patient.
 In both examinations she does not detect anything conspicuous.
-
 Next, she examines the patient's spine mobility.
-She performs a mobility test for the thoracic spine (\code{MobilityTestThoracicSpineBlock}) and the lumbar spine (\code{mobilityTestLumbarSpineBlock}) and detects mobility issues.
-
-Additionally, the practitioner notes down the patient's nutrition status (\code{NutritionStatusBlock}), leading to the results that the patient suffers from obesity.
+She performs a mobility test for the thoracic spine (\code{MobilityTestThoracicSpineBlock}) and the lumbar spine (\code{mobilityTestLumbarSpineBlock}) and detects existing mobility issues.
+Additionally, the practitioner notes down the patient's nutrition status, leading to the results that the patient suffers from obesity.
 
 \paragraph{Procedures}
 The previous stages have revealed chronic back pain due to a diagnosed facet syndrome, missing neurological issues and obesity.
@@ -37,13 +35,20 @@ Additionally, doctors may need special syringes with longer needles to penetrate
 \subsubsection{Expected Results}
 The billing for the treatment should compensate the doctor for the performed examinations and each single spine infiltration.
 The challenging condition of the spine infiltration caused by the patient's nutrition status is a valid justification for a multiplier applied to the spine infiltration billing code.
+The physical examination consisted of an orienting neurological examination and multiple spine mobility tests.
 
 
 \subsubsection{Actual Results}
+The framework was unable to derive \goa{1} due to the issues already described in subsection \ref{subsec:special-consultation-code-rules}.
+
+The framework successfully derived \goa{8}, covering all the mobility tests and the neurological examination.
+Other examination codes failed due to missing blocks.
 
 The framework derived \goa{255} with the correct quantity of four.
 Rule \ref{lst:goae-255-rule} checked for the existence of a \code{spineInfiltration} block which was given in the documentation.
-The rule engine also computed the quantity by evaluating each child function for the corresponding localization field in the \code{spineInfiltration} object and returned the correct quantity of four.
+The rule engine also computed the quantity by evaluating each child function for the corresponding localization field in the \code{spineInfiltration} object and returned the correct quantity.
+Additionally, the framework detected the patient's obesity as a challenging factor for the infiltration,
+sucessfully deriving the multiplier justification \addref.
 
 
 
@@ -54,6 +59,7 @@ The rule engine also computed the quantity by evaluating each child function for
 %Erhöhter Aufwand bei SpineInfiltration aufgrund von Übergewicht
 
 %Codes:
+%1 x GOÄ 1
 %1 x GOÄ 8
 %4 x GOÄ 255 mit multiplier
 
