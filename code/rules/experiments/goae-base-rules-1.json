@@ -4,6 +4,5 @@
     "maxDurationAnamnesis": 10,
     "performerIsDoctor": true,
     "onlyOncePerGoaeTreatmentCaseInCombinationWithSpecialServices": true,
-    "minAmountAnamnesisBlocks": 1
   }
 }

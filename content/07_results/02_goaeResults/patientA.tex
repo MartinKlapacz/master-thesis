@@ -7,10 +7,7 @@ In the anamnesis stage the
 
 \paragraph{Physical Examination}
 In the physical examination stage the doctor conducts several examinations.
-The doctor firstly checks for neurological issues.
-She performs a orienting neurological examination and examines the posture and stand of the patient.
-In both examinations she does not detect anything conspicuous.
-Next, she examines the patient's spine mobility.
+The doctor firstly performs a spine palpation and examines the patient's spine mobility.
 She performs a mobility test for the thoracic spine (\code{MobilityTestThoracicSpineBlock}) and the lumbar spine (\code{mobilityTestLumbarSpineBlock}) and detects existing mobility issues.
 Additionally, the practitioner notes down the patient's nutrition status, leading to the results that the patient suffers from obesity.
 
@@ -23,8 +20,8 @@ In a Facet Infiltration, the performer makes direct injections into the spine jo
 She performs the following injections:
 \begin{itemize}
     \item one nerve root injection on the left side of TH2 in the thoracic spine
-    \item one facet injection on both sides of TH6 in the thoracic spine
-    \item one facet injection on the right side of L1 in the lumbar spine
+    \item one facet injection on both sides of TH4/5 in the thoracic spine
+    \item one facet injection on the right side of L1/2 in the lumbar spine
 \end{itemize}
 
 \paragraph{Difficulties and Inconveniences}
@@ -41,8 +38,7 @@ The physical examination consisted of an orienting neurological examination and 
 \subsubsection{Actual Results}
 The framework was unable to derive \goa{1} due to the issues already described in subsection \ref{subsec:special-consultation-code-rules}.
 
-The framework successfully derived \goa{8}, covering all the mobility tests and the neurological examination.
-Other examination codes failed due to missing blocks.
+The framework successfully derived \goa{5}, triggered by the spine palpation.
 
 The framework derived \goa{255} with the correct quantity of four.
 Rule \ref{lst:goae-255-rule} checked for the existence of a \code{spineInfiltration} block which was given in the documentation.
