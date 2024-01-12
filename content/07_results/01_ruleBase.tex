@@ -17,8 +17,7 @@ caption={GOÄ 6}
 label={lst:goae-8-rule}
 ]{code/rules/experiments/goae-base-rules-8.json}
 
-
-\goa{8} is formally defined as an examination of the following organ systems:
+\goa{8} requires examinations of the following organ systems:
 \begin{itemize}
     \item the Skin
     \item visible mocous membranes
@@ -148,35 +147,3 @@ label={lst:goae-E-rule}
 %As described in section \ref{sec:billing-multipliers} they are merely descriptive comments attached to GOÄ billing positions.
 
 \subsubsection{Procedure GOÄ Rules}
-The procedure GOÄ rules are primariliy based on the work of Dr. Sarah Bojko, who has a deep understanding of the specification of the procedure available in the \AVS.
-
-\goa{1530: Examination of the larynx with the laryngoscope} and \goa{1533: Floating or supporting laryngoscopy, each as an independent service} are both codes referring to a laryngoscopy procedure.
-The \code{LaryngoscopyMsg} represents this procedure and has a boolean field \code{floatingOrSupportedLaryngoscopy}.
-Both rules match check for the existence of a laryngoscopy and if \code{floatingOrSupportedLaryngoscopy} has the correct value.
-Only one of both rule can match at one time.
-
-\lstinputlisting[
-language=json,
-style=json,
-caption={\goa{E: Surcharge for services requiring special urgency}}
-label={lst:goae-1530-rule}
-]{code/rules/experiments/goae-procedure-rule-473-474.json}
-
-
-\goa{255: Injection, intra-articular or perineural} refers to a spine infiltration represented by the \code{spineInfiltration} procedure block.
-
-\lstinputlisting[
-language=json,
-style=json,
-caption={\goa{255: Surcharge for services requiring special urgency}}
-label={lst:goae-255-rule}
-]{code/rules/experiments/goae-procedure-rule-255.json}
-
-
-\lstinputlisting[
-language=json,
-style=json,
-caption={\goa{E: Surcharge for services requiring special urgency}}
-label={lst:goae-1530-rule}
-]{code/rules/experiments/goae-procedure-rule-1530-1533.json}
-

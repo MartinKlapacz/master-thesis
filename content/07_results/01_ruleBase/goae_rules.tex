@@ -5,7 +5,7 @@ We consider the following codes in the experiments.
 
 \paragraph{\goa{5: Symptom-related examination}}
 \goa{5} applies to examinations the practitioner provides using simple medical tools.
-According to the GOÄ, typical examinations that fall into that category are inspections, palpations, percussions and reflex testings.
+According to the GOÄ, typical examinations that fall into that category are inspections, palpations, percussions, reflex testings and measurements.
 The following rule checks for an existing examination of that type.
 \lstinputlisting[
 language=json,
@@ -67,7 +67,7 @@ label={lst:goae-7-rule}
 ]{code/rules/experiments/goae-base-rules-7.json}
 
 
-\paragraph{\goa{8: Examination to determine the whole body status, including documentation if necessary}}
+\paragraph{\goa{8}}
 According to its description in the GOÄ \cite{hermanns2015ebm}, it is applicable if the doctor provided the following types of examinations:
 \begin{itemize}
     \item Examinations of the skin
@@ -88,6 +88,7 @@ style=json,
 caption={\goa{8: Examination to determine the whole body status, including documentation if necessary}}
 label={lst:goae-8-rule}
 ]{code/rules/experiments/goae-base-rules-8.json}
+
 
 \paragraph{\goa{11: Digital examination of the rectum and/or prostate}}
 This code applies for treatments with an examination of the rectum or prostate.
@@ -133,10 +134,6 @@ The user needs to add this code manually.
 \paragraph{\goa{3: In-depth advice that goes beyond the usual level – also by telephone –}}
 \goa{3} is similar to \goa{1} but applies to doctor patient consultations that take longer than 10 minutes.
 Again, we have the same issue here as in \ref{par:goa-1} and are not able to automatically derive it.
-
-
-
-
 
 \subsection{GOÄ Surcharges}\label{subsec:goa-surcharges}
 The GOÄ defines surcharges that are easily missed out in praxis.
@@ -189,8 +186,7 @@ label={lst:goae-K2-rule}
 ]{code/rules/experiments/goae-base-rules-K2.json}
 
 \goa{E} is a surcharge for services that require special urgency.
-
-When a patient experiences severe pain, this often necessitates urgent medical intervention.
+A patient experiencing severe pain often necessitates urgent medical intervention.
 In these situations, the doctor documents the patient's pain level.
 The pain level can be seen as an indicator for the urgency of the treatment and therefore used as a hint for \goa{E}, which is a surcharge applicable for urgent treatments.
 \lstinputlisting[
@@ -199,3 +195,92 @@ style=json,
 caption={\goa{E: Surcharge for services requiring special urgency}}
 label={lst:goae-E-rule}
 ]{code/rules/experiments/goae-base-rules-E.json}
+
+
+\subsubsection{Procedure GOÄ Rules}
+
+The procedure GOÄ rules are primary based on the work of Dr. Sarah Bojko, who has a deep understanding of the specification of the procedure available in the \AVS.
+
+\paragraph{1530 and 1533}
+\goa{1530: Examination of the larynx with the laryngoscope} and \goa{1533: Floating or supporting laryngoscopy, each as an independent service} are both codes referring to a laryngoscopy procedure.
+The \code{LaryngoscopyMsg} block represents this procedure and has a boolean field \code{floatingOrSupportedLaryngoscopy}.
+Both rules check for the existence of a laryngoscopy and the required value of the \code{floatingOrSupportedLaryngoscopy} boolean field.
+Only one of both rule can match at one time.
+\lstinputlisting[
+language=json,
+style=json,
+caption={Rules for \goa{1530} and \goa{1533}}
+label={lst:goae-1530-1533-rules}
+]{code/rules/experiments/goae-procedure-rule-1530-1533.json}
+
+\paragraph{255}
+\goa{255: Injection, intra-articular or perineural} refers to a spine infiltration represented by the \code{spineInfiltration} procedure block.
+Subsection \ref{subsubsec:quantity-derivation-from-procedure-information} introduces the concept of quantity functions using the example of the spine infiltration.
+
+The following rule matches if a spineInfiltration exists followed by the computation the quantity of its conclusion code \code{255}.
+Code snippet \ref{lst:spineInfiltration} illustrates its protobuf representation, the field paths used in the rule must comply with.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Rule for \goa{255: Injection, intra-articular or perineural}}
+    label={lst:goae-255-rule}
+]{code/rules/experiments/goae-procedure-rule-255.json}
+
+The spine infiltration block has a localization field for all possible injection localizations in the human spine,
+making the object in the data model quite extensive.
+The rule specifies a field evaluation sub-function for each of those localization fields.
+The actual rule consists of more than 200 lines of codes,
+which is why we can only include a small section of it in the code snippet.
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\goa{E: Surcharge for services requiring special urgency}}
+    label={lst:goae-1530-rule}
+]{code/rules/experiments/goae-procedure-rule-1530-1533.json}
+
+\paragraph{460 and 461}
+\goa{460: Combination anesthesia with mask, device - also insufflation anesthesia -, up to one hour}
+and \goa{461: Combination anesthesia with mask, device - also insufflation anesthesia - every additional half hour} are two GOÄ codes that refer to the same service but cover different time spans.
+Subsection \goa{subsec:quantity-derivation-from-durations} already introduces this type of duration interconnections between GOÄ codes in more details.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{6}}
+label={lst:goae-6-rule}
+]{code/rules/experiments/goae-procedure-rule-460.json}
+
+Code \code{460} holds if a \code{generalAnesthesia} block with the required fields exists.
+Code \code{461} holds if a \code{generalAnesthesia} block with the required fields exists and the procedure has a duration of at least 60 minutes.
+In this case, the quantity of \code{461} is equal to the number of 30-minute-spans that subsequently follow the first 60 minutes.
+The quantity of \code{461} must ignore the first two 30-minute-spans, which is why the quantity function counts the number of commenced 30-minute-spans, subtracting the first two.
+Adding a constant of \code{-2} to the procedure duration expression in the quantity function implements this logic.
+
+\paragraph{473 and 474}
+\goa{473: Induction and monitoring of continuous subarachnoid spinal anesthesia (lumbar anesthesia) or epidural (epidural) anesthesia with catheter, lasting up to five hours}
+and
+\goa{474: Induction and monitoring of continuous subarachnoid spinal anesthesia (lumbar anesthesia) or epidural (epidural) anesthesia with catheter, lasting more than five hours}
+Are also two anesthesia billing codes that refer to the same type of service but distinguish between durations
+The rules in the following code snippet implement both billing conditions
+Code \code{473} applies if the practitioner provided a \code{neurexialAnesthesia} procedure with one of the required procedure types and the duration took less than five hours.
+Code \code{474} applies for the case when the same procedure takes more than five hours.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{473 and 474}}
+label={lst:goae-6-rule}
+]{code/rules/experiments/goae-procedure-rule-473-474.json}
+
+\paragraph{614}
+\goa{614: Transcutaneous measurement(s) of oxygen partial pressure} is applicable for respiration measurements performed during the physical examination stage.
+Practitioners document these measurements in the \code{respiration} block which stores a list of measurement objects representing one performed measurement.
+\goa{614} is applicable once for each measurement, which is implemented in the following rule.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\goa{614}}
+    label={lst:goae-614-rule}
+]{code/rules/experiments/goae-procedure-rule-614.json}

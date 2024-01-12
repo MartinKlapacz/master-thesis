@@ -1,0 +1,18 @@
+{
+  "code": "614",
+  "condition": {
+    "procedureBlocks": {
+      "respiration": {
+        "respirationMeasurements": [
+          {
+            "depth": "RESPIRATORY_DEPTH_NORMAL"
+          }
+        ]
+      }
+    }
+  },
+  "quantity": {
+    "fieldPath": ["respiration", "respirationMeasurements"],
+    "evaluationMode": "length"
+  }
+}

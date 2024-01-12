@@ -1,7 +1,36 @@
 {
   "code": "255",
-  "condition": {
-    "procedureBlocks": { "spineInfiltration": {}}
-  },
-  "quantity": "spine-infiltration-quantity"
+  "condition": { "procedureBlocks": { "spineInfiltration": {} } },
+  "quantity": {
+    "sum": [
+      {
+        "fieldPath": ["spineInfiltration", "nerveRootBlock", "cervicalSpine", "c4"],
+        "evaluationMode": {
+          "LATERALITY_NONE": 0,
+          "LATERALITY_RIGHT": 1,
+          "LATERALITY_LEFT": 1,
+          "LATERALITY_BOTH": 2
+        }
+      },
+      {
+        "fieldPath": ["spineInfiltration", "nerveRootBlock", "cervicalSpine", "c5"],
+        "evaluationMode": {
+          "LATERALITY_NONE": 0,
+          "LATERALITY_RIGHT": 1,
+          "LATERALITY_LEFT": 1,
+          "LATERALITY_BOTH": 2
+        }
+      },
+      // equivalent path evaluations expressions for
+      // spineInfiltration -> nerveRootBlock -> nerveRootBlock -> c6 / c7 / c8,
+      // spineInfiltration -> nerveRootBlock-> thoracicSpine -> th1 / th2 / ... /  th7 and
+      // spineInfiltration -> nerveRootBlock-> lumbarSpine -> l1 / l2 / ... / l5
+      ...
+      // and for spineInfiltration -> facetInfiltration -> nerveRootBlock
+      // and for spineInfiltration -> facetInfiltration -> thoracicSpine
+      // and for spineInfiltration -> facetInfiltration -> lumbarSpine
+      ...
+    ]
+  }
+
 }

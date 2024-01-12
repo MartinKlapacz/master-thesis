@@ -1,0 +1,12 @@
+[
+  {
+    "code": "Schwierigkeit der Spineinfiltration durch Obesity",
+    "targetCode": "255",
+    "condition": {
+      "physicalBlocks": {
+        "nutritionStatus": { "nutritionStatusType": "NUTRITION_STATUS_OBESITY" }
+      },
+      "procedureBlocks": {"spineInfiltration": {}}
+    }
+  }
+]
