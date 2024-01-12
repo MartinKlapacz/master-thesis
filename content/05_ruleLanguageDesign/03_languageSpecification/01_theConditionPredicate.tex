@@ -187,7 +187,6 @@ A classic liver palpation examination involves answering the following questions
     \item Is the liver surface smooth or knotty?
     \item Is tenderness present?
     \item Are pulsations present?
-    \item Is a hepato jugular reflux present?
 \end{itemize}
 Within the \AVS each block consists of meta-data such as timestamps, ids as well as a block content sub-object.
 The \AVS defines several hundreds block contents for physical examination, anamnesis and procedures blocks.
@@ -245,7 +244,7 @@ Implementing conditions on fields inside nested objects works as one would expec
     label={lst:nested-object-field-rules}
 ]{code/rules/specification/blockcontentrules/nested-object-field-rule.json}
 
-Proto content rules can also have fields where the type is a list of objects
+Proto content rules can also have fields where the type is a list of objects.
 Rule 5 matches if a hernia block exists in the treatment and the hernia block has two hernia objects where one is palpable and one is not visible.
 
 \lstinputlisting[
@@ -255,6 +254,20 @@ Rule 5 matches if a hernia block exists in the treatment and the hernia block ha
     label={lst:object-list-field-rules}
 ]{code/rules/specification/blockcontentrules/object-list-field-rule.json}
 
+\paragraph{Logical expression trees for block contents}
+Some billing rules depend on more than one block content.
+In such cases, we can make use of logical expression trees.
+The following rule matches if we have a \code{skinChangeExaminations} block with \code{skinChangePresent} set to \true,
+a \code{pupilsAndLightReaction} block and a \code{liverpalpation} or a \code{hernias} block in the treatment object.
+The system evaluates logical expression trees starting from the root.
+It evaluates inner nodes by recursively evaluating its children and combining their results with their operator.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Logical block content tree},
+    label={lst:block-combination-rules}
+]{code/rules/specification/blockcontentrules/block-combination-rule.json}
 
 
 \subsubsection{Time Related conditions}
