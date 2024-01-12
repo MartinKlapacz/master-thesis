@@ -1,6 +1,6 @@
 [
   {
-    "description": "Erheblicher Zeitaufwand - bei Wirbelsäuleninfiltration",
+    "code": "Significant time investment - during Spine Infiltration",
     "condition": {
       "procedureBlocks": {
         "intubation": {
@@ -13,10 +13,10 @@
     }
   },
   {
-    "code": "Erheblicher Zeitaufwand - bei ",
+    "code": "Significant time investment - during Laryngoscopie",
     "condition": {
       "procedureBlocks": {
-        "cryotherapy": {
+        "laryngoscopy": {
           "$minDuration": 40
         }
       }
