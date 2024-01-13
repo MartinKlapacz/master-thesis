@@ -1,21 +1,20 @@
 \section{Manual Billing with Code Chains}\label{sec:billing-positions-and-code-chains}
-Code chains (Leistungsketten) are one way of implementing manual billing in medical software solutions.
-They are a feature requirement posed by billing experts at \AV and.
-According to them, other software solutions employ them for medical billing.
-The following description is based on the information from a requirement posed by the billing experts at \AV.
-
-In this context, a billing position refers to the data representation of a service provided during treatment.
-The data representation of a provided service during the treatment is what we call a billing position.
+This chapter is based on the insights I received from interviews with Dr. Lorenz Thuman, Medical Manager at \AV.
+Code chains (Leistungsketten) are a very basic solution to enable manual billing in a medical software application.
+A so-called billing position refers to the data representation of a service provided during treatment.
 It consists of the billing code and meta-information which includes a catalog type, a quantity, service-specific details and more.
-
 Code chains are custom presets of billing position templates a user can apply to the current billing.
 This action adds all billing position templates to the current billing.
-After applying a code chain to the current billing, the user should edit billing positions with appropriate codes and remove inappropriate billing positions.
-
-Code chains are usually organized in a folder structure that corresponds to medical areas,
+After applying a code chain to the current billing, the user can edit the loaded billing positions and remove inappropriate ones.
+The software usually organizes code chains in a folder structure,
 making it easier for medical staff to navigate and select the billing codes for different medical procedures or treatments.
 A medical staff member is typically responsible for initially setting up the code chains and code chain folders and keeping them updated.
-The purpose of code chains and code chain folders is to facilitate manual coding and avoid coding errors.
+Finally, the purpose of code chains is to quickly provide the user with a set of possible billing code candidates for the current billing.
+The user, however, still needs to remove inappropriate codes and edit the final billing.
+
+
+%is to facilitate manual coding by
+
 %At the top level of this structure, there are main code chain folders such as \"Consultation\", \"Diagnostics\", and \"treatment\" (Treatment).
 %Within the 'Behandlung' folder, for instance, there might be sub-folders for specific treatments like 'Kryotherapie' (Cryotherapy) and 'Impfung' (Vaccination).
 %Delving deeper, within the 'Impfung' folder, there are code chains for specific types of vaccinations, such as COVID-19 vaccinations and MMR (Measles, Mumps, and Rubella) vaccinations.
