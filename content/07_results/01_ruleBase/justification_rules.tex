@@ -11,27 +11,20 @@ As described in subsection \ref{subsec:the-target-code-field}, Multiplier justif
 
 
 \lstinputlisting[
-language=json,
-style=json,
-caption={\goa{Multiplier Justification refering to communication issues}}
-label={lst:mj-drugs-rule}
+    language=json,
+    style=json,
+    caption={\goa{Multiplier Justification refering to communication issues}},
+    label={lst:mj-communication-rule}
 ]{code/rules/experiments/justification-rule-communication.json}
 
 
 \lstinputlisting[
 language=json,
 style=json,
-caption={\goa{Multiplier Justification refering to issues caused by the patient's current drug abuse}}
-label={lst:mj-drugs-rule}
+caption={\goa{Multiplier Justification refering to issues caused by the patient's current drug abuse}},
+label={lst:mj-cdrug-rule}
 ]{code/rules/experiments/justification-rule-multimorbidity.json}
 
-
-\lstinputlisting[
-language=json,
-style=json,
-caption={\goa{Multiplier Justification refering to issues caused by the patient's current drug abuse}}
-label={lst:mj-drugs-rule}
-]{code/rules/experiments/justification-rule-drugs.json}
 
 \subsubsection{Procedure-specific and duration-related multiplier justifications}
 Procedures often take longer than expected.
@@ -39,10 +32,10 @@ This can be the case due to unforeseen complications and issues.
 The following rule list shows the generic pattern used for procedure-specific and duration-related multiplier justifications.
 
 \lstinputlisting[
-language=json,
-style=json,
-caption={\goa{Generic procedure duration multiplier justification rule}}
-label={lst:goae-K2-rule}
+    language=json,
+    style=json,
+    caption={\goa{Generic procedure duration multiplier justification rule}},
+    label={lst:goae-K2-rule}
 ]{code/rules/experiments/goae-base-rules-K2.json}
 
 The rule base contains implementations of that pattern for each of the procedures that the system currently supports.
@@ -53,8 +46,8 @@ Each procedure may have multiple duration related justification rules, each one 
 
 
 \lstinputlisting[
-language=json,
-style=json,
-caption={\goa{E: Surcharge for services requiring special urgency}}
-label={lst:goae-E-rule}
+    language=json,
+    style=json,
+    caption={\goa{E: Surcharge for services requiring special urgency}},
+    label={lst:goae-E-rule}
 ]{code/rules/experiments/goae-base-rules-E.json}
