@@ -1,0 +1,20 @@
+{
+  "code": "5",
+  "condition": {
+    "onlyOncePerGoaeTreatmentCaseInCombinationWithSpecialServices": true,
+    "physicalBlocks": {
+      "or": [
+        // inspections
+        { "or": [ "hairScalpInspection",  "noseInspection",  "abdominalInspectionGeneral",  "analRegionInspection" ]},
+        // palpations
+        { "or": [ "palpationHipAndPelvic", "palpationKnee", "palpationLowerLeg", "palpationAnkleJoint", "palpationFoot" ]},
+        // percussions
+        { "or": [ "percussionSoundLung", "abdominalPercussion", "kidneyPainOnPercussion", "spinePercussion" ]},
+        // reflexes
+        { "or": [ "monosynapticReflexes", "polysynapticReflexes" ]},
+        // measurements
+        { "or": "respiratory" }
+      ]
+    }
+  }
+}

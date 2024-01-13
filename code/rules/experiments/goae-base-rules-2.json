@@ -13,7 +13,7 @@
       "singleBillingPositionIfPractitionerIsDoctor": true,
       "maxAmountAnamnesisBlocks": 2,
       "performerIsDoctor": true,
-      "requiredProcedureBlocks": {
+      "procedureBlocks": {
         "or": [
           "bodyMeasurements",
           "appearance",

@@ -2,17 +2,19 @@
   "code": "8",
   "condition": {
     "physicalBlocks": {
-      "and": {
-        "mouthAndThroatAndLarynxInspection": {},
-        "skinChangeExaminations": {},
-        "lungsThoraxPressurePain": {},
-        "or": {
-          "mobilityTestCervicalSpine": {},
-          "mobilityTestThoracicSpine": {},
-          "mobilityTestLumbarSpine": {}
+      "and": [
+        "mouthAndThroatAndLarynxInspection",
+        "skinChangeExaminations",
+        "lungsThoraxPressurePain",
+        {
+          "or": [
+            "mobilityTestCervicalSpine",
+            "mobilityTestThoracicSpine",
+            "mobilityTestLumbarSpine"
+          ]
         },
-        "orientingNeurologicalExamination": {}
-      }
+        "orientingNeurologicalExamination"
+      ]
     }
   }
 }

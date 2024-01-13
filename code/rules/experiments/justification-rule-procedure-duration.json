@@ -1,0 +1,28 @@
+[
+  {
+    "code": "Significant time investment - during Spine Infiltration",
+    "condition": {
+      "procedureBlocks": {
+        "intubation": {
+          "$minDuration": 40
+        }
+      }
+    },
+    "multiplier": {
+      "constant": 3.0
+    }
+  },
+  {
+    "code": "Significant time investment - during Laryngoscopie",
+    "condition": {
+      "procedureBlocks": {
+        "laryngoscopy": {
+          "$minDuration": 40
+        }
+      }
+    },
+    "multiplier": {
+      "constant": 3.0
+    }
+  }
+]

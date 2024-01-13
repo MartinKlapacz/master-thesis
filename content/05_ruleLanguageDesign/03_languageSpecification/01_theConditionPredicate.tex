@@ -162,11 +162,13 @@ interviews the patient directly or using a questionnaire\cite{zhang2011anamnevis
 Anamnesis is followed by the Physical Examination.
 In this practical stage, the practitioner assesses the current patient's conditions,
 looking for further information about the patient's issues\cite{seidel2010mosby}.
-The practitioner decides based on patient's symptoms which exact examinations are conducted.
-Common examinations are checking of vital sings like blood pressure, pulse and temperature.
+The practitioner decides based on patient's symptoms which exact examinations should be conducted.
 
 \paragraph{Procedures}
-The procedure stage contains the actual patient-specific interventions that \todo
+In the procedures stage the practitioner performs medical therapies based on the outcomes of the previous stages.
+The \AVS defines a procedure as a medical measure represented by an OPS code.
+A surgery consists of one or more procedures.
+At this stage, the practitioner documents medical details about the provided procedures.
 
 \paragraph{Block Contents}
 As part of the Anamnesis, Physical Examination and Procedures stage,
@@ -185,7 +187,6 @@ A classic liver palpation examination involves answering the following questions
     \item Is the liver surface smooth or knotty?
     \item Is tenderness present?
     \item Are pulsations present?
-    \item Is a hepato jugular reflux present?
 \end{itemize}
 Within the \AVS each block consists of meta-data such as timestamps, ids as well as a block content sub-object.
 The \AVS defines several hundreds block contents for physical examination, anamnesis and procedures blocks.
@@ -213,41 +214,61 @@ Logical combinations of such single field conditions may also occur.
 Expressing such conditions in a well-defined and user-friendly way is an important requirement for the rule language.
 
 \paragraph{Block Content Field Types}
-A block content can contain information of different input types.
-The billing framework must handle and validate each input type differently.
-The most basic field types are boolean flags and numeric inputs.
-The \AVS uses the following scalar wrapper protobuf messages for them:
+A proto block content introduced in section \ref{sec:protobuf-block-contents} can contain information of different input types.
+The billing framework handles and validates each input type differently.
+
+In this paragraph, we introduce the concept of protobuf block content conditions.
+It is a
 
 \lstinputlisting[
-    language=protobuf2,
-    style=protobuf,
-    caption={Scalar wrapper types}
-]{code/proto/scalarWrapper.proto}
+    language=json,
+    style=json,
+    caption={\code{minDuration} and \code{maxDuration}},
+    label={lst:simple-field-rules}
+]{code/rules/specification/blockcontentrules/simple-field-rule.json}
 
-The purpose of wrapping scalars in custom protobuf messages is to make scalar default values distinguishable from missing data.
-Initializing a protobuf message without explicitly setting the value of field has the consequence that the field gets initialized with its default value.
-The default value for \code{int32} is 0.
-If a gRPC server receives a protobuf message with an \code{int32} field set to 0, it does not know if the field was purposely initialized with 0 or not set at all.
-Wrapping integers in \code{Int32W} messages makes this distinguishable.
+A rule matches if its condition evaluates to true.
+Rule 1 matches if a liver palpation is part of the treatment, which is the case if we \code{liverPalpation} block is the set of physical blocks.
+Rule 2 matches if a liver palpation is part of the treatment and \code{isLiverPalpable} is set to \true.
+Rule 3 is similar to Rule 2 with the difference that \code{liverTexture} is a enumeration field.
+Rule 4 specifies multiple field conditions, conjugating all conditions in the block.
+We can use the \code{|} operator to disjunct enum values as shown in the \code{liverTexture} field.
 
-Liver tenderness can either be present or not, which makes it a \code{BoolW} field.
-The \AVS uses enumeration fields for inputs that have a limited number of predefined values
-For example, the most frequently used enum type is \code{AbnormalitiesExaminationResult}.
-It denotes the result of a specific examination, which can be either conspicuous or inconspicuous.
+Proto content rules can have nested objects.
+Implementing conditions on fields inside nested objects works as one would expect.
 
 \lstinputlisting[
-    language=protobuf2,
-    style=protobuf,
-    caption={\code{AbnormalitiesExaminationResult}}
-]{code/proto/enum.proto}
+    language=json,
+    style=json,
+    caption={\code{minDuration} and \code{maxDuration}},
+    label={lst:nested-object-field-rules}
+]{code/rules/specification/blockcontentrules/nested-object-field-rule.json}
 
-Knowledge inputs are another important input type.
-They serve similar purposes as enum types but are not hard-coded into the code base.
-The system fetches them from a dedicated microservice that stores them in a MeiliSearch database.
-Block content conditions are a powerful tool to make codes dependent on concrete medical information from anamnesis,
-physical examination and procedures.
+Proto content rules can also have fields where the type is a list of objects.
+Rule 5 matches if a hernia block exists in the treatment and the hernia block has two hernia objects where one is palpable and one is not visible.
 
-\todo{introduce nested objects, list objects}
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\code{minDuration} and \code{maxDuration}},
+    label={lst:object-list-field-rules}
+]{code/rules/specification/blockcontentrules/object-list-field-rule.json}
+
+\paragraph{Logical expression trees for block contents}
+Some billing rules depend on more than one block content.
+In such cases, we can make use of logical expression trees.
+The following rule matches if we have a \code{skinChangeExaminations} block with \code{skinChangePresent} set to \true,
+a \code{pupilsAndLightReaction} block and a \code{liverpalpation} or a \code{hernias} block in the treatment object.
+The system evaluates logical expression trees starting from the root.
+It evaluates inner nodes by recursively evaluating its children and combining their results with their operator.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Logical block content tree},
+    label={lst:block-combination-rules}
+]{code/rules/specification/blockcontentrules/block-combination-rule.json}
+
 
 \subsubsection{Time Related conditions}
 

@@ -1,0 +1,286 @@
+\subsection{GOÄ Examination Code Rules}\label{subsec:examination-code-rules}
+Examination Codes are frequently used codes that apply to provided physical examinations.
+They primarily base on the existence of physical examination blocks in the treatment.
+We consider the following codes in the experiments.
+
+\paragraph{\goa{5: Symptom-related examination}}
+\goa{5} applies to examinations the practitioner provides using simple medical tools.
+According to the GOÄ, typical examinations that fall into that category are inspections, palpations, percussions, reflex testings and measurements.
+The following rule checks for an existing examination of that type.
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{5: Examination to determine the whole body status, including documentation if necessary}}
+label={lst:goae-5-rule}
+]{code/rules/experiments/goae-base-rules-5.json}
+
+\paragraph{\goa{6}}
+\goa{6} applies to examinations of at least on of the following organ systems:
+\begin{itemize}
+    \item All sections of the eye
+    \item The entire ENT (ear, nose, throat) area
+    \item The stomatognathic system
+    \item The kidneys and urinary tract
+    \item Examination to determine a complete vascular status
+\end{itemize}
+For the case of simplicity, the code snipped illustrating the rule for \goa{6} omits a few less interesting details.
+\goa{6} further requirements on the provided examination \cite{bruck1998kommentar}.
+For example, an eye related examination must striclty cover both eyes.
+The same must hold for the ears, if the practitioner provided an ENT examination.
+The rule implements this by not only requiring the existence of blocks, as it does for the \code{visualAcuity} and \code{oculomotorSkills},
+but also expressing conditions on nested objects in the blocks.
+For example, it specifies the existence of a \code{pupilLeft} and \code{pupilRight} block inside the \code{pupilsAndLightReaction} physical examination block.
+The rule specifies an equivalent expression for \code{earsAndMastoidPalpation}.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{6}}
+label={lst:goae-6-rule}
+]{code/rules/experiments/goae-base-rules-6.json}
+
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{6: Complete physical examination of at least one of the following organ systems: all eye sections, the entire ENT area, the stomatognathic system, the kidneys and urinary tract (in men, including the male genital organs if necessary) or examination to determine a complete vascular status - including documentation, if necessary}}
+label={lst:goae-5-rule}
+]{code/rules/experiments/goae-base-rules-5.json}
+
+
+\paragraph{\goa{7}}
+\goa{7} applies to detailed physical examinations of at least one of the following entire organ system:
+\begin{itemize}
+    \item Skin organ
+    \item Support and movement organs
+    \item Chest organs
+    \item Abdominal organs
+    \item Female genital tract
+\end{itemize}
+For the case of simplicity, the following rule only considers the skin and the support and movement organs.
+The omitted organ systems are not relevant for the experimental treatment cases.
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{7: Complete physical examination of at least one of the following organ systems: the entire skin organ, the supporting and locomotor organs, all breast organs, all abdominal organs, the entire female genital tract (including kidneys and urinary tract, if applicable) - including documentation, if applicable -}}
+label={lst:goae-7-rule}
+]{code/rules/experiments/goae-base-rules-7.json}
+
+
+\paragraph{\goa{8}}
+According to its description in the GOÄ \cite{hermanns2015ebm}, it is applicable if the doctor provided the following types of examinations:
+\begin{itemize}
+    \item Examinations of the skin
+    \item Examinations of the visible mucous membranes
+    \item Examinations of the breast or abdominal organs
+    \item Examinations of the supporting and movement organs
+    \item Orienting neurological examination
+\end{itemize}
+We need to conjugate the existence of all those five examinations to check if \goa{8} is applicable.
+We can easily use the logical tree feature presented in \addref to implement this as follows.
+The rule assumes that an examination of the skin is present if the practitioner has entered data into the \code{skinChangeExaminations} block as part of the physical examination stage.
+It assumes that an examination of the supporting and movement organs is present if the practitioner has entered data into the \code{mobilityTestCervicalSpine}, the \code{mobilityTestThoracicSpine} or the \code{mobilityTestLumbarSpine} block.
+Writing rules for examination codes like \goa{8} requires us to define a mapping between the anamnesis or physical examination blocks from the \AV data model and the concrete examinations required by the rule.
+
+\lstinputlisting[
+Language=json,
+style=json,
+caption={\goa{8: Examination to determine the whole body status, including documentation if necessary}}
+label={lst:goae-8-rule}
+]{code/rules/experiments/goae-base-rules-8.json}
+
+
+\paragraph{\goa{11: Digital examination of the rectum and/or prostate}}
+This code applies for treatments with an examination of the rectum or prostate.
+This condition translates to the existence of a \code{digitalRectalExamination} or a \code{prostateExamination} block.
+
+\lstinputlisting[
+Language=json,
+style=json,
+caption={GOÄ 11}
+label={lst:goae-11-rule}
+]{code/rules/experiments/goae-base-rules-11.json}
+
+
+
+%Note that we use the \code{physicalBlocks} field to express conditions on physical examination blocks.
+%The rule represents each of the mentioned organ systems as a child node of the root node.
+%The root node applies an \code{AND} operation to all its sub-children.
+%Each sub-child represents one of the organ systems required by \goa{8}.
+%The \AVS does not directly define an organ systems examination
+%However, we can flexibly define an organ system examination by a logical tree of required physical blocks.
+%This rule defines a skin examination to be present if a \code{skinTurgor}, a \code{skinColor}, a \code{skinThickness} or a \code{skinChangeExamination} block is present.
+%We can represent the rest of the organ systems in a similar way using the logical tree pattern.
+%Additionally there is already a respective single block for the orienting neurological examination.
+%
+%Note that the rule checks only for existence of examination blocks and does not impose any field conditions.
+
+
+\subsection{Special GOÄ Consultation Code Rules}\label{subsec:special-consultation-code-rules}
+
+\paragraph{\goa{1: Advice – also via telephone}}\label{par:goa-1}
+\goa{1} is one of the most commonly used codes in the GOÄ.
+It is applicable for a conversation between patient and doctor at the beginning of the visit that takes at most 10 minutes.
+This type of conversation happens typically as part of the anamnesis.
+
+Unfortunately, this is where the billing framework as well as the \AVS reaches its limits.
+It is practically impossible to automatically track the time of the initial conversation between patient and practitioner.
+One idea could be to track the time passed between the practitioner entering the anamnesis page and moving on to the physical examination page in the front-end.
+This is, however, highly unreliable as doctors often enter the data into the software at the very end of the treatment.
+One slightly less user-friendly way to solve is to make the user explicitly enter the duration of the anamnesis.
+The current version of the \AVS does not offer this possibility, making reliably deriving \goa{1} not possible.
+The user needs to add this code manually.
+
+\paragraph{\goa{3: In-depth advice that goes beyond the usual level – also by telephone –}}
+\goa{3} is similar to \goa{1} but applies to doctor patient consultations that take longer than 10 minutes.
+Again, we have the same issue here as in \ref{par:goa-1} and are not able to automatically derive it.
+
+\subsection{GOÄ Surcharges}\label{subsec:goa-surcharges}
+The GOÄ defines surcharges that are easily missed out in praxis.
+Section \ref{sec:surcharges} covers them in details where we also mention that surcharges have tight exclusion rules.
+These exclusions are already part of the structured data in the GOÄ catalog, making the usage of the \code{excludedCodes} fields here obsolete.
+The codes from \goa{401} up to \goa{410} are surcharges as well, but are not relevant for the experimental treatments provided by \AV.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{A: Surcharge for services provided outside office hours}}
+label={lst:goae-A-rule}
+]{code/rules/experiments/goae-base-rules-A.json}
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{B: Surcharge for services provided outside office hours between 8 p.m. and 10 p.m. or 6 a.m. and 8 a.m}}
+label={lst:goae-8-rule}
+]{code/rules/experiments/goae-base-rules-B.json}
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{C: Surcharge for services provided between 10 p.m. and 6 a.m}}
+label={lst:goae-C-rule}
+]{code/rules/experiments/goae-base-rules-C.json}
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{D: Surcharge for services provided on Saturdays, Sundays or public holidays}}
+label={lst:goae-D-rule}
+]{code/rules/experiments/goae-base-rules-D.json}
+
+The following surcharges are applicable to patients younger than 4 years old if one of the required GOÄ codes are present.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{K1: Surcharge to the benefits according to numbers 45, 46, 48, 50, 51, 55 or 56 for children up to the age of 4}}
+label={lst:goae-K1-rule}
+]{code/rules/experiments/goae-base-rules-K1.json}
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{K2: Surcharge for examinations according to numbers 5, 6, 7 or 8 for children up to the age of 4}}
+label={lst:goae-K2-rule}
+]{code/rules/experiments/goae-base-rules-K2.json}
+
+\goa{E} is a surcharge for services that require special urgency.
+A patient experiencing severe pain often necessitates urgent medical intervention.
+In these situations, the doctor documents the patient's pain level.
+The pain level can be seen as an indicator for the urgency of the treatment and therefore used as a hint for \goa{E}, which is a surcharge applicable for urgent treatments.
+\lstinputlisting[
+Language=json,
+style=json,
+caption={\goa{E: Surcharge for services requiring special urgency}}
+label={lst:goae-E-rule}
+]{code/rules/experiments/goae-base-rules-E.json}
+
+
+\subsubsection{Procedure GOÄ Rules}
+
+The procedure GOÄ rules are primary based on the work of Dr. Sarah Bojko, who has a deep understanding of the specification of the procedure available in the \AVS.
+
+\paragraph{1530 and 1533}
+\goa{1530: Examination of the larynx with the laryngoscope} and \goa{1533: Floating or supporting laryngoscopy, each as an independent service} are both codes referring to a laryngoscopy procedure.
+The \code{LaryngoscopyMsg} block represents this procedure and has a boolean field \code{floatingOrSupportedLaryngoscopy}.
+Both rules check for the existence of a laryngoscopy and the required value of the \code{floatingOrSupportedLaryngoscopy} boolean field.
+Only one of both rule can match at one time.
+\lstinputlisting[
+language=json,
+style=json,
+caption={Rules for \goa{1530} and \goa{1533}}
+label={lst:goae-1530-1533-rules}
+]{code/rules/experiments/goae-procedure-rule-1530-1533.json}
+
+\paragraph{255}
+\goa{255: Injection, intra-articular or perineural} refers to a spine infiltration represented by the \code{spineInfiltration} procedure block.
+Subsection \ref{subsubsec:quantity-derivation-from-procedure-information} introduces the concept of quantity functions using the example of the spine infiltration.
+
+The following rule matches if a spineInfiltration exists followed by the computation the quantity of its conclusion code \code{255}.
+Code snippet \ref{lst:spineInfiltration} illustrates its protobuf representation, the field paths used in the rule must comply with.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Rule for \goa{255: Injection, intra-articular or perineural}}
+    label={lst:goae-255-rule}
+]{code/rules/experiments/goae-procedure-rule-255.json}
+
+The spine infiltration block has a localization field for all possible injection localizations in the human spine,
+making the object in the data model quite extensive.
+The rule specifies a field evaluation sub-function for each of those localization fields.
+The actual rule consists of more than 200 lines of codes,
+which is why we can only include a small section of it in the code snippet.
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\goa{E: Surcharge for services requiring special urgency}}
+    label={lst:goae-1530-rule}
+]{code/rules/experiments/goae-procedure-rule-1530-1533.json}
+
+\paragraph{460 and 461}
+\goa{460: Combination anesthesia with mask, device - also insufflation anesthesia -, up to one hour}
+and \goa{461: Combination anesthesia with mask, device - also insufflation anesthesia - every additional half hour} are two GOÄ codes that refer to the same service but cover different time spans.
+Subsection \goa{subsec:quantity-derivation-from-durations} already introduces this type of duration interconnections between GOÄ codes in more details.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{6}}
+label={lst:goae-6-rule}
+]{code/rules/experiments/goae-procedure-rule-460.json}
+
+Code \code{460} holds if a \code{generalAnesthesia} block with the required fields exists.
+Code \code{461} holds if a \code{generalAnesthesia} block with the required fields exists and the procedure has a duration of at least 60 minutes.
+In this case, the quantity of \code{461} is equal to the number of 30-minute-spans that subsequently follow the first 60 minutes.
+The quantity of \code{461} must ignore the first two 30-minute-spans, which is why the quantity function counts the number of commenced 30-minute-spans, subtracting the first two.
+Adding a constant of \code{-2} to the procedure duration expression in the quantity function implements this logic.
+
+\paragraph{473 and 474}
+\goa{473: Induction and monitoring of continuous subarachnoid spinal anesthesia (lumbar anesthesia) or epidural (epidural) anesthesia with catheter, lasting up to five hours}
+and
+\goa{474: Induction and monitoring of continuous subarachnoid spinal anesthesia (lumbar anesthesia) or epidural (epidural) anesthesia with catheter, lasting more than five hours}
+Are also two anesthesia billing codes that refer to the same type of service but distinguish between durations
+The rules in the following code snippet implement both billing conditions
+Code \code{473} applies if the practitioner provided a \code{neurexialAnesthesia} procedure with one of the required procedure types and the duration took less than five hours.
+Code \code{474} applies for the case when the same procedure takes more than five hours.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{473 and 474}}
+label={lst:goae-6-rule}
+]{code/rules/experiments/goae-procedure-rule-473-474.json}
+
+\paragraph{614}
+\goa{614: Transcutaneous measurement(s) of oxygen partial pressure} is applicable for respiration measurements performed during the physical examination stage.
+Practitioners document these measurements in the \code{respiration} block which stores a list of measurement objects representing one performed measurement.
+\goa{614} is applicable once for each measurement, which is implemented in the following rule.
+
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={\goa{614}}
+    label={lst:goae-614-rule}
+]{code/rules/experiments/goae-procedure-rule-614.json}

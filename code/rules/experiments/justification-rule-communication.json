@@ -1,6 +1,6 @@
 [
   {
-    "code": "Erhöhter Kommunikationsaufwand aufgrund mangelnder Sprachkenntnisse",
+    "code": "Increased communication effort due to a lack of language skills",
     "multiplier": { "constant": 2.0 },
     "condition": {
       "patientSpeaksGerman": false,
@@ -8,7 +8,7 @@
     }
   },
   {
-    "code": "Erhöhter Kommunikationsaufwand aufgrund von Kommunikation auf English",
+    "code": "Increased communication effort due to communication in English",
     "multiplier": { "constant": 2.5 },
     "condition": {
       "patientSpeaksGerman": false,
@@ -16,10 +16,10 @@
     }
   },
   {
-    "code": "Störung der verbalen Kommunikation aufgrund des gesundheitlichen Zustands",
+    "code": "Disturbance of verbal communication due to medical condition",
     "multiplier": { "constant": 2.5 },
     "condition": {
-      "physicalBlocks": { "speaking": { "speaking": "ABNORMALITIES_EXAMINATION_CONSPICUOUS" } }
+      "physicalBlocks": { "speaking": { "quality": "ABNORMALITIES_EXAMINATION_CONSPICUOUS" } }
     }
   }
 ]

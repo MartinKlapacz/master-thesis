@@ -1,0 +1,12 @@
+[
+  {
+    "code": "Difficulty in spinal infiltration due to obesity",
+    "targetCode": "255",
+    "condition": {
+      "physicalBlocks": {
+        "nutritionStatus": { "nutritionStatusType": "NUTRITION_STATUS_OBESITY" }
+      },
+      "procedureBlocks": {"spineInfiltration": {}}
+    }
+  }
+]

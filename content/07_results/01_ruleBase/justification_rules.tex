@@ -1,0 +1,60 @@
+\subsection{Multiplier Justification Rules}\label{subsec:multiplier-justification-rules}
+Section \ref{sec:billing-multipliers} and \ref{sec:multiplier-justifications} introduce the concept of billing multipliers in private treatments.
+Multipliers are applicable to existing GOÄ codes, however, require provable justifications and must rely on facts in the treatment data.
+As multiplier justifications are neither standardized nor pre-defined by any authority,
+part of this work was to collect commonly used multiplier justifications.
+Thanks to the medical experts at \AV, I received access to medical documents that contained real multiplier justifications used in the Dermato Oncology department of the LMU.
+Many of the following rules implement those justifications.
+As mentioned in section \ref{sec:language-design-workflow} I took part in the PVS Seminar, where I received more information about possible multiplier justifications.
+As described in subsection \ref{subsec:the-target-code-field}, Multiplier justifications can either be target-specific or generally applicable.
+
+
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{Multiplier Justification refering to communication issues}}
+label={lst:mj-drugs-rule}
+]{code/rules/experiments/justification-rule-communication.json}
+
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{Multiplier Justification refering to issues caused by the patient's current drug abuse}}
+label={lst:mj-drugs-rule}
+]{code/rules/experiments/justification-rule-multimorbidity.json}
+
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{Multiplier Justification refering to issues caused by the patient's current drug abuse}}
+label={lst:mj-drugs-rule}
+]{code/rules/experiments/justification-rule-drugs.json}
+
+\subsubsection{Procedure-specific and duration-related multiplier justifications}
+Procedures often take longer than expected.
+This can be the case due to unforeseen complications and issues.
+The following rule list shows the generic pattern used for procedure-specific and duration-related multiplier justifications.
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{Generic procedure duration multiplier justification rule}}
+label={lst:goae-K2-rule}
+]{code/rules/experiments/goae-base-rules-K2.json}
+
+The rule base contains implementations of that pattern for each of the procedures that the system currently supports.
+
+Note that the rule only checks for the existence of the respective procedure block.
+We use the special block conditions \code{\$minDuration} and \code{\$maxDuration} to make the rule only match if the duration of the procedure is within the specified interval.
+Each procedure may have multiple duration related justification rules, each one covering another time interval and another multiplier value.
+
+
+\lstinputlisting[
+language=json,
+style=json,
+caption={\goa{E: Surcharge for services requiring special urgency}}
+label={lst:goae-E-rule}
+]{code/rules/experiments/goae-base-rules-E.json}
