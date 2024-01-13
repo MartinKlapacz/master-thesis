@@ -1,20 +1,12 @@
 \section{Discussion}\label{sec:discussion}
 
-I want to express the following:
-
-the experiments have shown that the framework and the rule language successfully derive most codes with a correct quantity.
+The experiments have shown that the framework and the rule language successfully derive most codes with a correct quantity.
 however, the results have also shown concrete limitations.
+In this section, we finally discuss the results section \ref{sec:goa-results}.
+As concluded in section \ref{sec:common-issues-with-modern-billing-automation-products} the central requirement for automatic billing generation is structured data.
+The upper bound for the quality of the code generation is the completeness of the structured data that the framework has access to.
 
-
-
-
-
-As concluded in section \ref{sec:common-issues-with-modern-billing-automation-products} the central issue for automatic billing generation is the requirement for structured data.
-The upper bound for the quality of the generation results is the completeness of the structured data that the framework has access to.
-
-The reason for the missing billing codes in the previous experiments are condition features that the \RL currently does not provide.
-
-
+\subsection{Service Codes referring to patient-practitioner contact}\label{subsec:service-codes-referring-to-patient-practitioner-contact}
 One class code types is the set of services that focus on the patient-practitioner contact.
 This includes \goa{1} and \goa{3}, \goa{4}, \goa{21} and \todo{orther}.
 Rules in this code class have a high variety in used condition type.
@@ -30,25 +22,43 @@ Durations the only information sources missing in the \AV data model.
 \goa{21}, \goa{22}, \goa{23}, \goa{27}, \goa{30} are all consultation services that rely on consultation details that the \AV currently does not track,
 either because tracking them automatically is infeasible or the current software version simply does not cover these service areas.
 
-
-
-
+\subsection{Examination-related Service Codes}\label{subsec:examination-related-service-codes}
 Another class of billing codes are examination related codes.
-We have proven that the framework is indeed capable of successfully deriving this class of codes.
-In this case, checking for existences of blocks using logical combinations has turned out to be extremely useful here.
-This also requires a correct mapping of blocks to the examinations mentioned in the rule.
+This includes \goa{5}, \goa{6}, \goa{7}, \goa{8}, \goa{11} and \goa{15}.
+We have proven that the framework is indeed capable of successfully deriving this code class.
+We can use the following pattern write rules for examination-related service codes:
+\begin{enumerate}
+    \item Map examination types to concrete physical blocks
+    \item Combine blocks logically according to the rule
+\end{enumerate}
 
-Finally, we have the class of billing codes relating to specific procedures and which represent the overwhelming majority of the GOÄ.
-Writing rules for these codes is comparably simple.
-Most of the rules in this class purely rely on a specific procedure which can be expressed using the \requiredProcedure condition.
-The future production rule-base will probably contain multiple groups of procedure-related rules.
-Each group references a procedure defined in the \AV model.
-Each rule in this group checks has a slightly different conclusion code and checks for other conditions in the procedure block.
+\subsection{Surcharges and Multiplier Justifications}\label{subsec:surcharges-and-multiplier-justifications}
+We have seen that surcharges and multiplier justifications relate to one of the following condition domains
+\begin{itemize}
+    \item anamnesis and physical examination blocks
+    \item times and procedure-durations
+\end{itemize}
+The framework can express and map both condition domains very well, making multiplier justification and surcharge derivations reliable.
+
+\subsection{Procedure-related Services}\label{subsec:procedure-related-services}
+Finally, we have the class of codes relating to specific procedures.
+This represents most codes starting from 200, excluding laboratory-related codes.
+These codes represent the overwhelming majority of the GOÄ catalog.
+Writing rules for these codes is comparably simple as they mostly rely on a single procedure, which is easily expressible with \requiredProcedure condition.
+Code snippet \ref{lst:goae-1530-1533-rules} depicts the pattern, likely to be employed throughout the production rule base.
+Both rules in the code snippet refer to the \laryngoscopy procedure block, but apply slightly different field conditions and conclude different other codes.
+
+\subsection{Excluded Medical Areas}\label{subsec:excluded-medical-areas}
+Besides the class of patient-practitioner-contact-related services we also have sections within the GOÄ not covered by the current version of the billing framework.
+This includes letter- or document-related services (\goa{70} to \goa{96}) and death determinations (\goa{100} to \goa{109}).
+The laboratory services (\goa{3500} to \goa{3787}) were ultimately not part of this work.
+The software also supports laboratory services, but handles differently than standard treatments.
+How the framework would need to be expanded to cover laboratory services as well would require further investigation.
 
 
-In cases where codes cannot be automatically derived, users need to manually add them in the billing stage.
-As long as this issue persists, the billing framework should not be considered to generate a full and perfectly acceptable billing,
-but rather a set of suggestions that might require manual updates.
+%In cases where codes cannot be automatically derived, users need to manually add them in the billing stage.
+%As long as this issue persists, the billing framework should not be considered to generate a full and perfectly acceptable billing,
+%but rather a set of suggestions that might require manual updates.
 
 
 
