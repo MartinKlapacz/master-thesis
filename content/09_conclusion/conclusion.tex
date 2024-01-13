@@ -1,32 +1,18 @@
 \section{Conclusion}\label{sec:conclusion}
-Summary of Research:
-The main objective was to create a billing framework powered by a domain specific rule language that allows the creation of optimized and correct billings.
-The primary research task was to design the rule language.
-Designing the rule language included multiple expert interviews, teilnahme am PVS seminar and own research in medical billing catalogs to understand what type of information billing codes actually rely on.
-based on this collected knowledge I designed the language and its features.
+The objective of this work was to create a billing optimization framework, powered by a domain-specific rule language that allows the creation of optimized and correct billings.
+The primary task of my research was to design the rule language and implement a corresponding framework.
+This involved synthesizing knowledge from expert interviews with billing professionals,
+participation in a GOÄ seminar offered by the PVS Forum, and extensive research into medical billing catalogs and documents provided by \AV.
 
-Key Findings and Contributions:
-I identified 17 Information sources and more than 40 language conditions types.
+The research resulted in 15 identified information sources and more than 39 language condition types.
+The treatment simulations have shown mostly correct billing generations but also revealed limitations rooted in missing and untracked information sources.
+Section \ref{sec:discussion} discusses and analyzes those limitations in great detail.
 
-
-Emphasize how the development of your JSON-based domain-specific rule language and its integration into a Java Spring Boot microservice addresses existing challenges in medical billing.
-
-Mention the successful application of your framework with real-world scenarios from \AV.
-
-Medical documentations to a billing oriented orientation
-Clinic information systems need to make the transition from pure medical documentation to a billing-oriented medical orientation.
-
-
-Limitations and Challenges:
-Acknowledge the limitations encountered during your research.
-This could include issues with data availability in Avelios Medical's system and the initial challenges faced by billing experts in adapting to the rule language.
-
-Implications of the Research:
-Discuss the broader implications of your work.
-Detail how your framework contributes to the field of medical billing and what benefits it brings to healthcare providers and billing professionals.
-
-Brief Nod to Future Work:
-Without going into detail (since it's covered in a separate section), you can briefly mention that there are avenues for future research that could further enhance and expand the framework's capabilities.
-
-Final Thoughts:
-Conclude with reflective thoughts on the research process, its significance in the field, and its potential impact on the future of medical billing systems.
+One of the selling points of the \AV system is the high emphasis on a systematic and complete collection of structured medical data oriented to medical documentation standards.
+In this work, we have learned that complete automatic billing generation already works very well with a rich structured data schema aligned with conventional medical documentation.
+However, this does not perfectly cover all requirements for a full automatic billing generation system.
+Treatment documentation needs to make the transition from a conventional to medical- and billing-oriented treatment documentation.
+Medical professionals must design documentation to cover the classic medical documentation but also to track billing-relevant data.
+As a result, this will improve the overall patient documentation as it becomes more detailed, but also allow automatic billing generation systems to perform better.
+This thesis highlights the crucial role of structured data collection in revolutionizing medical applications.
+Detailed and systematic data gathering can truly accelerate digitization of the medical field and revolutionize automated medical billing.
