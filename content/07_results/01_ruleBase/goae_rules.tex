@@ -8,10 +8,10 @@ We consider the following codes in the experiments.
 According to the GOÄ, typical examinations that fall into that category are inspections, palpations, percussions, reflex testings and measurements.
 The following rule checks for an existing examination of that type.
 \lstinputlisting[
-language=json,
-style=json,
-caption={\goa{5: Examination to determine the whole body status, including documentation if necessary}}
-label={lst:goae-5-rule}
+    language=json,
+    style=json,
+    caption={\goa{5: Examination to determine the whole body status, including documentation if necessary}},
+    label={lst:goae-5-rule}
 ]{code/rules/experiments/goae-base-rules-5.json}
 
 \paragraph{\goa{6}}
@@ -33,20 +33,11 @@ For example, it specifies the existence of a \code{pupilLeft} and \code{pupilRig
 The rule specifies an equivalent expression for \code{earsAndMastoidPalpation}.
 
 \lstinputlisting[
-language=json,
-style=json,
-caption={\goa{6}}
-label={lst:goae-6-rule}
+    language=json,
+    style=json,
+    caption={\goa{6: Complete physical examination of at least one of the following organ systems: all eye sections, the entire ENT area, the stomatognathic system, the kidneys and urinary tract (in men, including the male genital organs if necessary) or examination to determine a complete vascular status - including documentation, if necessary}},
+    label={lst:goae-6-rule}
 ]{code/rules/experiments/goae-base-rules-6.json}
-
-
-\lstinputlisting[
-language=json,
-style=json,
-caption={\goa{6: Complete physical examination of at least one of the following organ systems: all eye sections, the entire ENT area, the stomatognathic system, the kidneys and urinary tract (in men, including the male genital organs if necessary) or examination to determine a complete vascular status - including documentation, if necessary}}
-label={lst:goae-5-rule}
-]{code/rules/experiments/goae-base-rules-5.json}
-
 
 \paragraph{\goa{7}}
 \goa{7} applies to detailed physical examinations of at least one of the following entire organ system:
@@ -174,14 +165,14 @@ The following surcharges are applicable to patients younger than 4 years old if 
 \lstinputlisting[
 language=json,
 style=json,
-caption={\goa{K1: Surcharge to the benefits according to numbers 45, 46, 48, 50, 51, 55 or 56 for children up to the age of 4}}
+caption={\goa{K1: Surcharge to the benefits according to numbers 45, 46, 48, 50, 51, 55 or 56 for children up to the age of 4}},
 label={lst:goae-K1-rule}
 ]{code/rules/experiments/goae-base-rules-K1.json}
 
 \lstinputlisting[
 language=json,
 style=json,
-caption={\goa{K2: Surcharge for examinations according to numbers 5, 6, 7 or 8 for children up to the age of 4}}
+caption={\goa{K2: Surcharge for examinations according to numbers 5, 6, 7 or 8 for children up to the age of 4}},
 label={lst:goae-K2-rule}
 ]{code/rules/experiments/goae-base-rules-K2.json}
 
@@ -192,7 +183,7 @@ The pain level can be seen as an indicator for the urgency of the treatment and 
 \lstinputlisting[
 Language=json,
 style=json,
-caption={\goa{E: Surcharge for services requiring special urgency}}
+caption={\goa{E: Surcharge for services requiring special urgency}},
 label={lst:goae-E-rule}
 ]{code/rules/experiments/goae-base-rules-E.json}
 
@@ -207,10 +198,10 @@ The \code{LaryngoscopyMsg} block represents this procedure and has a boolean fie
 Both rules check for the existence of a laryngoscopy and the required value of the \code{floatingOrSupportedLaryngoscopy} boolean field.
 Only one of both rule can match at one time.
 \lstinputlisting[
-language=json,
-style=json,
-caption={Rules for \goa{1530} and \goa{1533}}
-label={lst:goae-1530-1533-rules}
+    language=json,
+    style=json,
+    caption={Rules for \goa{1530} and \goa{1533}},
+    label={lst:goae-1530-1533-rules}
 ]{code/rules/experiments/goae-procedure-rule-1530-1533.json}
 
 \paragraph{255}
@@ -223,7 +214,7 @@ Code snippet \ref{lst:spineInfiltration} illustrates its protobuf representation
 \lstinputlisting[
     language=json,
     style=json,
-    caption={Rule for \goa{255: Injection, intra-articular or perineural}}
+    caption={Rule for \goa{255: Injection, intra-articular or perineural}},
     label={lst:goae-255-rule}
 ]{code/rules/experiments/goae-procedure-rule-255.json}
 
