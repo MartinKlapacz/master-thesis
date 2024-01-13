@@ -1,10 +1,6 @@
 \RequirePackage[l2tabu,orthodox]{nag}
 
-% TODO: decide if one-sided/two-sided
-%\documentclass[headsepline,footsepline,footinclude=false,fontsize=11pt,paper=a4,listof=totoc,bibliography=totoc,BCOR=12mm,DIV=12]{scrbook} % two-sided
 \documentclass[headsepline,footsepline,footinclude=false,oneside,fontsize=11pt,paper=a4,listof=totoc,bibliography=totoc]{scrbook}
-
-%\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 
 \input{settings}
 \input{conditionFields}
@@ -21,7 +17,7 @@
 \newcommand*{\getAdvisor}{Nicolas Jacob}
 \newcommand*{\getSubmissionDate}{15.01.2024}
 \newcommand*{\getSubmissionLocation}{Munich}
-\newcommand{\AV}{Avelios Medical}
+\newcommand{\AV}{Avelios Medical }
 \newcommand{\AVS}{Avelios Medical Software }
 \newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\MJ}{Multipler Justification }
@@ -34,28 +30,13 @@
 \newcommand{\meco}[1]{\textbf{#1}}
 \newcommand{\mete}[1][]{\textbf{#1}}
 \newcommand{\goa}[1][]{\mete{GOÄ #1}}
-\newcommand{\BF}{billing framework}
-\newcommand{\RL}{BiRule}
-\newcommand{\PVC}{PVC Seminar}
-\newcommand{\REI}{\code{RuleEvaluationInput}}
-\newcommand{\REIF}{\code{RuleEvaluationInputFetcher}}
+\newcommand{\BF}{billing framework }
+\newcommand{\RL}{BiRule }
+\newcommand{\PVC}{PVC Seminar }
+\newcommand{\REI}{\code{RuleEvaluationInput} }
+\newcommand{\REIF}{\code{RuleEvaluationInputFetcher} }
 \newcommand{\true}{\code{true} }
-\newcommand{\false}{\code{false}}
-
-%\newcommandx{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
-%\newcommandx{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
-%\newcommandx{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
-%\newcommandx{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
-%\newcommandx{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
-
-
-
-%\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
-%\newcommand{\unsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
-%\newcommand{\change}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
-%\newcommand{\info}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
-%\newcommand{\improvement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
-%\newcommand{\thiswillnotshow}[2][1=]{\todo[disable,#1]{#2}}
+\newcommand{\false}{\code{false} }
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
 \newcommand{\addref}[]{\todo{add ref}}
 \newcommand{\addcite}[]{\todo{add cite}}
@@ -88,7 +69,8 @@
 \input{content/05_ruleLanguageDesign/ruleLanguageDesign}
 \input{content/06_frameworkArchitecture/frameworkArchitecture}
 \input{content/07_results/results}
-\input{content/08_conclusion/conclusion}
+\input{content/08_futureWork/futureWork}
+\input{content/09_conclusion/conclusion}
 
 
 \appendix{}
@@ -96,6 +78,7 @@
 \microtypesetup{protrusion=false}
 \listoffigures{}
 \listoftables{}
+\listoflistings{}
 \microtypesetup{protrusion=true}
 \printbibliography{}
 

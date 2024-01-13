@@ -2,10 +2,7 @@
   "code": "1",
   "condition": {
     "physicalBlocks": {
-      "pupilsAndLightReaction": {
-        "pupilLeft": { "pupilSize": ">3"
-        }
-      }
+      "pupilsAndLightReaction": { "pupilLeft": { "pupilSize": ">3" } }
     }
   }
 }

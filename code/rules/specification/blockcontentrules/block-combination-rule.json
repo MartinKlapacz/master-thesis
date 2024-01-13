@@ -1,0 +1,19 @@
+[
+  {
+    "code": "6",
+    "condition": {
+      "physicalBlock": {
+        "and": [
+          { "skinChangeExaminations": { "skinChangePresent" : true} },
+          "pupilsAndLightReaction",
+          {
+            "or": [
+              "liverPalpation",
+              "hernias"
+            ]
+          }
+        ]
+      }
+    }
+  }
+]

@@ -187,7 +187,6 @@ A classic liver palpation examination involves answering the following questions
     \item Is the liver surface smooth or knotty?
     \item Is tenderness present?
     \item Are pulsations present?
-    \item Is a hepato jugular reflux present?
 \end{itemize}
 Within the \AVS each block consists of meta-data such as timestamps, ids as well as a block content sub-object.
 The \AVS defines several hundreds block contents for physical examination, anamnesis and procedures blocks.
@@ -200,8 +199,9 @@ The protobuf message of \code{LiverPalpationMsg} looks like this:
 \lstinputlisting[
     language=protobuf2,
     style=protobuf,
-    caption={LiverPalpation protobuf messages}
-]{code/proto/liverPalpation.proto}
+    caption={LiverPalpation protobuf messages},
+    label={lst:lstinputlisting}]
+{code/proto/liverPalpation.proto}
 
 
 The exact principle applies throughout the procedure and anamnesis stage as well.
@@ -245,7 +245,7 @@ Implementing conditions on fields inside nested objects works as one would expec
     label={lst:nested-object-field-rules}
 ]{code/rules/specification/blockcontentrules/nested-object-field-rule.json}
 
-Proto content rules can also have fields where the type is a list of objects
+Proto content rules can also have fields where the type is a list of objects.
 Rule 5 matches if a hernia block exists in the treatment and the hernia block has two hernia objects where one is palpable and one is not visible.
 
 \lstinputlisting[
@@ -255,7 +255,20 @@ Rule 5 matches if a hernia block exists in the treatment and the hernia block ha
     label={lst:object-list-field-rules}
 ]{code/rules/specification/blockcontentrules/object-list-field-rule.json}
 
+\paragraph{Logical expression trees for block contents}
+Some billing rules depend on more than one block content.
+In such cases, we can make use of logical expression trees.
+The following rule matches if we have a \code{skinChangeExaminations} block with \code{skinChangePresent} set to \true,
+a \code{pupilsAndLightReaction} block and a \code{liverpalpation} or a \code{hernias} block in the treatment object.
+The system evaluates logical expression trees starting from the root.
+It evaluates inner nodes by recursively evaluating its children and combining their results with their operator.
 
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Logical block content tree},
+    label={lst:block-combination-rules}
+]{code/rules/specification/blockcontentrules/block-combination-rule.json}
 
 \subsubsection{Time Related conditions}
 
@@ -342,7 +355,8 @@ To provide maximal flexibility, I implemented the concept of a logical code matc
 Firstly, we define the term \"match\":
 Let \( s_1 \) and \( s_2 \) be strings.
 We say \( s_1 \) matches with \( s_2 \) if and only if \( s_2 \) is a prefix of \( s_1 \).
-\begin{equation}\label{eq:matching}
+\begin{equation}
+    \label{eq:matching}
     s_1 \text{ matches with } s_2 \iff \exists k \in \mathbb{N} \cup \{0\} : s_1 = s_2[0:k]
 \end{equation}
 
@@ -384,8 +398,9 @@ Firstly, it refers to the result set of the derivation.
 Using this condition, you can implement that a code can only be billed with another set of codes.
 Billing experts need this feature to implement \goa{K1} and \goa{K2} as well as other surcharge codes in the GOÄ.
 Secondly, it defines the term \"match\" as a direct string equality.
-\begin{equation}\label{eq:matching-string-equals}
-s_1 \text{ matches with } s_2 \iff s_1 = s_2
+\begin{equation}
+    \label{eq:matching-string-equals}
+    s_1 \text{ matches with } s_2 \iff s_1 = s_2
 \end{equation}
 GOÄ, EBM and other possible code systems do not offer a hierarchical prefix tree structure that would allow definition \ref{eq:matching}.
 Instead, \code{requiredTargetCode} uses definition \ref{eq:matching}.
@@ -424,7 +439,6 @@ These condition fields set a limit on the code occurrences in the respective con
 The code is always the conclusion of the rule the condition is part of.
 \todo{add example}
 
-
 \paragraph{maxAmountPerDay / maxAmountPerMonth / maxAmountPerYear}
 Similarly to the previous condition fields, \RL also allows setting limits for code usages in specific time spans.
 \todo{add example}
@@ -444,7 +458,9 @@ Both fields subscribe to the information source \code{@InformationSourceTreatmen
 \lstinputlisting[
     language=protobuf2,
     style=protobuf,
-    caption={\code{AbnormalitiesExaminationResult}},label={lst:AbnormalitiesExaminationResult}]{code/proto/roleTypes.proto}
+    caption={\code{AbnormalitiesExaminationResult}},
+    label={lst:AbnormalitiesExaminationResult}
+]{code/proto/roleTypes.proto}
 
 Given the rules in code snippet \ref{lst:performerIsDoctor}, \code{code1} would hold if the practitioner had the role \code{ROLE\_TYPE\_DOCTOR}
 or \code{ROLE\_TYPE\_HEAD\_DOCTOR}.
