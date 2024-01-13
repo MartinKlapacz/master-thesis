@@ -1,7 +1,7 @@
 {
   "code": "6",
   "condition": {
-    "requiredPhysicalBlocks": {
+    "physicalBlocks": {
       "or": [
         {
           "and": [

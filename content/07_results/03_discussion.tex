@@ -1,4 +1,4 @@
-\section{Summary}\label{sec:summary}
+\section{Discussion}\label{sec:discussion}
 
 I want to express the following:
 
@@ -16,7 +16,7 @@ The reason for the missing billing codes in the previous experiments are conditi
 
 
 One class code types is the set of services that focus on the patient-practitioner contact.
-This includes \goa{1} and \goa{3} and \todo{orther}.
+This includes \goa{1} and \goa{3}, \goa{4}, \goa{21} and \todo{orther}.
 Rules in this code class have a high variety in used condition type.
 Duration-related conditions are of high importance for this code class.
 For example, we have seen that \goa{1} and \goa{3} rely on the anamnesis duration.
@@ -26,6 +26,12 @@ Measuring the time of an anamnesis, would require the front-end to start a timer
 According to the engineers at \AV, we unfortunately cannot rely on specific user actions in the UI.
 A user does not necessarily switch from the anamensis to the physical examination stage at the very moment when the anamnesis actually finishes.
 Making the user manually enter durations into the user interface is neither a practical or user-friendly solution.
+Durations the only information sources missing in the \AV data model.
+\goa{21}, \goa{22}, \goa{23}, \goa{27}, \goa{30} are all consultation services that rely on consultation details that the \AV currently does not track,
+either because tracking them automatically is infeasible or the current software version simply does not cover these service areas.
+
+
+
 
 Another class of billing codes are examination related codes.
 We have proven that the framework is indeed capable of successfully deriving this class of codes.

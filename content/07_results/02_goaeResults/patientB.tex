@@ -1,19 +1,54 @@
-\subsection{Patient Case 2: Injury of child}\label{subsec:patient-case-2:-anesthesia-for-birth}
-The patient is a four-years-old boy that came to the doctor due to an injury while playing soccer.
+\subsection{Patient case 4: Neurological Examination due to speech difficulties}\label{subsec:patient-case-4:-neurological-examination-due-to-speech-difficulties}
+The patient, a male individual, presented unaccompanied to the clinic with significant speech difficulties.
+He had a stroke 6 weeks ago from which he has recovered well.
+However, since then he has had poorer speech quality and is coming for treatment to have it examined more closely.
+The purpose of the treatment is to find the reason for the speech difficulties.
+It is likely to be a direct consequences of the stroke, but can also be linked to a yet undiscovered tumor.
+The outcome of this treatment will determine further the path for further treatments.
 
-Patient B - Körperliche Untersuchung mit Kind -> Fußball verletzung
+\paragraph{Anamnese}:
+The anamnesis revealed the previously occurred stroke, which is likely to be the cause for the speaking issues the patient is experiencing now.
+The patient was revealed to be a regular smoker, which is a risk factor for vascular diseases that might have favored the stroke.
+The anamnesis took about 12 minutes.
+
+\paragraph{Physical Examination}
+The practitioner conducted a Speech examination (\code{SpeechBlock}) and documented that the patient had severe speaking issues.
+Addtionally, the practitioner inspected the patient's mouth and throat, documenting the outcomes in the \code{mouthThroatAndLarynxInspection} block.
+
+\paragraph{Procedures}
+The doctor decided to perform a laryngoscopy, which revealed a paralysis of the vocal cords.
+This procedure provides an in-depth evaluation of the throat and vocal cords to check for any issues that might be affecting his speech.
+This condition is often associated with neurological issues which is a direct consequence of the recent stroke,
+explaining the patient's significant speech difficulties.
 
 
-- männlich
 
+\paragraph{Difficulties and Inconveniences}
+The patient was unaccompanied and had neurological issues to articulate himself.
+This turned out to be a challenging factor complicating the treatment.
 
-Anamnese:
-? sports block fussball
+\subsubsection{Expected Results}
+As the anamnesis, took longer that \goa{10} minutes, the framework should suggest to bill \goa{3}.
+The framework should be able to distinguish between \goa{1: Advice – also by telephone} and \goa{3: In-depth advice that goes beyond the usual level – also by telephone –}
+Both codes refer to the same service but require different durations.
+\goa{1} is applicable for consultations that take less than 10 minutes while \goa{3} is applicable for the same type of medical conversation but requires a duration of at least 10 minutes.
+The framework should also be able to detect challenging communication caused by the patient's health issues and suggest an appropriate multiplier.
 
-examination:
-->
+Additionally, the provided speech examination can be billed with \todo{add goa code for this}.
 
-GOÄ 1
-GOÄ 4
-GOÄ 7
-GOÄ K1
+The laryngoscopy should be billed with \goa{1530}.
+
+\subsubsection{Actual Results}
+
+% - anesthesia?
+
+%- sprach untersuchung
+
+% -
+
+3
+5
+1530
+
+%-> informationen für weitere behandlung und logopädie, hätte auch tumor sein können, man schließt aus ob man operativ was machen muss, behadlungspfad anpassen
+%move invasive -> need more aufwand which is why its a procedure

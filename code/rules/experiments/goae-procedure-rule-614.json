@@ -5,14 +5,10 @@
       "respiration": {
         "respirationMeasurements": [
           {
-            "depth": "RESPIRATORY_DEPTH_NORMAL"
+            "pulseOxymetry": ">=0"
           }
         ]
       }
     }
-  },
-  "quantity": {
-    "fieldPath": ["respiration", "respirationMeasurements"],
-    "evaluationMode": "length"
   }
 }
