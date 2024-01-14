@@ -1,22 +1,24 @@
 \chapter{Results}\label{ch:results}
 %This chapter demonstrates the performance of the billing framework applied to realistic treatment cases.
-In this chapter, we apply the framework to treatment cases developed with the assistance of billing experts.
-The cases represent realistic treatments that are likely to occur in clinical practice and that are, from a billing perspective, interesting and non-trivial.
+In this chapter, we apply the framework to treatment cases received from billing experts.
+The cases represent realistic treatments that are likely to occur in clinical practice and are interesting and non-trivial from a billing perspective.
 Billing experts at \AV subsequently validated the quality of the results.
 The framework proved largely capable of generating accurate billings.
 However, we also identified limitations of the framework in the results and during the rule-writing process.
 
 This chapter is structured as follows:
 Firstly, section \ref{sec:experimental-rule-base} introduces the rules we preloaded the Billing Server with before performing the actual experiments.
-In this work, we can only present a limited set of rules.
-A realistic rule-base used in production would need at least hundreds of rules even with tight restrictions to specific medical areas.
+This ensures transparency and explainability.
+For obvious reasons, we cannot cover a complete and production-ready rule base in this work, so the rule base used in experiments contains only a limited set of relevant and selected rules.
+A realistic rule base used in production would need at least multiple hundreds of rules, even with tight restrictions to specific medical areas.
+Another purpose of this section is to illustrate further the usage of the rule features of \RL.
+Many rules introduced in section \ref{sec:experimental-rule-base} are contributions of Dr. Sarah Bojko, showing that billing experts can successfully learn the rule language.
 
-An additional purpose of this section is to further illustrate the usage of the rule features of \RL.
-As a side note, the presented rules are a subset of the rule base that will be employed in production by \AV.
-Secondly, in the next sections we introduce the patient cases which we generate billing codes.
-This involves patient background information, history and outcomes that are part of the patient anamnesis and physical examinations.
+Secondly, in the following sections, we introduce the patient cases for which we generate billing codes.
+In these sections, we define patient background information, history, and outcomes of the patient's anamnesis and physical examination.
 Applied medical procedures also characterize these treatments.
-For each treatment, we compare the actually derived codes with the expected ones determined by the billing experts.
+We assess the performance of each billing derivation by comparing the derived codes with the expected ones determined by the billing experts.
+
 
 \input{content/07_results/01_ruleBase/ruleBase}
 \input{content/07_results/02_goaeResults/goaeResults}
