@@ -1,14 +1,13 @@
 \subsection{Multiplier Justification Rules}\label{subsec:multiplier-justification-rules}
-Section \ref{sec:billing-multipliers} and \ref{sec:multiplier-justifications} introduce the concept of billing multipliers in private treatments.
-Multipliers are applicable to existing GOÄ codes, however, require provable justifications and must rely on facts in the treatment data.
+Sections \ref{sec:billing-multipliers} and \ref{sec:multiplier-justifications} introduce the concept of billing multipliers in private treatments.
+Multipliers apply to existing GOÄ codes.
+However, they require provable justifications and must rely on facts in the treatment data.
 As multiplier justifications are neither standardized nor pre-defined by any authority,
 part of this work was to collect commonly used multiplier justifications.
-Thanks to the medical experts at \AV, I received access to medical documents that contained real multiplier justifications used in the Dermato Oncology department of the LMU.
+Thanks to the medical experts at \AV, I received access to medical documents that contained multiplier justifications used in the Dermato Oncology department of the LMU.
 Many of the following rules implement those justifications.
-As mentioned in section \ref{sec:language-design-workflow} I took part in the PVS Seminar, where I received more information about possible multiplier justifications.
-As described in subsection \ref{subsec:the-target-code-field}, Multiplier justifications can either be target-specific or generally applicable.
-
-
+As mentioned in section \ref{sec:language-design-workflow}, I participated in the PVS Seminar, where I received more information about possible multiplier justifications.
+As described in subsection \ref{subsec:the-target-code-field}, Multiplier justifications can be target-specific or generally applicable.
 
 \lstinputlisting[
     language=json,
@@ -27,8 +26,7 @@ label={lst:mj-cdrug-rule}
 
 
 \subsubsection{Procedure-specific and duration-related multiplier justifications}
-Procedures often take longer than expected.
-This can be the case due to unforeseen complications and issues.
+Procedures often take longer than expected, which can be the case due to unforeseen complications and issues.
 The following rule list shows the generic pattern used for procedure-specific and duration-related multiplier justifications.
 
 %\lstinputlisting[
@@ -41,11 +39,9 @@ The following rule list shows the generic pattern used for procedure-specific an
 \todo{add rules}
 
 The rule base contains implementations of that pattern for each of the procedures that the system currently supports.
-
 Note that the rule only checks for the existence of the respective procedure block.
 We use the special block conditions \code{\$minDuration} and \code{\$maxDuration} to make the rule only match if the duration of the procedure is within the specified interval.
-Each procedure may have multiple duration related justification rules, each one covering another time interval and another multiplier value.
-
+Each procedure may have multiple duration-related justification rules, covering another time interval and multiplier value.
 
 %\lstinputlisting[
 %    language=json,

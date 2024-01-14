@@ -1,14 +1,14 @@
 \subsection{Quantity Functions}\label{subsec:quantity-functions}
 
-In the previous chapter we introduced the concept of a billing rule.
+In the previous chapter, we introduced the concept of a billing rule.
 
-Not only which codes are part of the billing but also their quantity is highly important information.
+Not only which codes are part of the billing, but also their quantity is critical information.
 In the previous section, we explained how the billing framework derives a set of applicable billing codes.
 The result data type was essentially a set of billing codes.
-In this section, we generalize the framework in such a way that it returns each code in combination with its quantity.
+In this section, we generalize the framework such that it returns each code in combination with its quantity.
 
 We extend the general rule structure by introducing the concept of quantity functions.
-Similarly to rule conditions, quantity functions are evaluatable subcomponents of a rule.
+Similarly to rule conditions, quantity functions are valuable subcomponents of a rule.
 The framework evaluates quantity functions of rules for a\code{RuleEvaluationInput}.
 The result is an integer that indicates how often it should be billed in the billing.
 

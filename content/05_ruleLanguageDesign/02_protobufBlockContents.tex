@@ -36,8 +36,8 @@ A classic liver palpation examination involves answering the following questions
 \begin{itemize}
     \item Is the liver palpable?
     \item Is the liver texture soft or tender?
-    \item Is the liver surface smooth or knotty?
-    \item Is tenderness present?
+%    \item Is the liver surface smooth or knotty?
+%    \item Is tenderness present?
     \item Are pulsations present?
     \item Is a hepato jugular reflux present?
 \end{itemize}
@@ -53,8 +53,9 @@ For example, the protobuf message of \code{LiverPalpationMsg} looks like this:
 \lstinputlisting[
     language=protobuf2,
     style=protobuf,
-    caption={LiverPalpation protobuf messages}
-]{code/proto/liverPalpation.proto}
+    caption={LiverPalpation protobuf messages},
+    label={lst:lstinputlisting2}]
+{code/proto/liverPalpation.proto}
 
 Data stored in such blocks is crucial for billing.
 The billing framework must provide a way to express conditions on proto block contents in a treatment.

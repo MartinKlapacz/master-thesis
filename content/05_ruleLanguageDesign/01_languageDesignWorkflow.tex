@@ -7,14 +7,14 @@ Section \todo{add section} describes this procedure in more detail.
 
 As a computer scientist, I initially lacked important knowledge about medical billing.
 This is why I conducted several expert interviews with Dr. Lorenz Thumann and Dr. Sahra Bojko, both Medical Managers at \AV.
-In these interviews, I gained crucial knowledge in medical billing and collected formal requirements for the billing framework.
+In these interviews, I gained crucial knowledge of medical billing and collected formal requirements for the billing framework.
 Dr. Thumann provided me with more general insights on medical billing in Germany.
-Dr. Bojko gave me useful feedback on my rule language designs while I supported her in writing first billing rules with \RL.
-Other important sources of knowledge I made use of are the publicly available GOÄ and EBM catalog.
+Dr. Bojko gave me useful feedback on my rule language designs while I supported her in writing the first billing rules with \RL.
+Other important sources of knowledge I made use of are the publicly available GOÄ and EBM catalogs.
 I also took part in an online GOÄ seminar provided by the PVS Forum.
 The PVS Forum offers a wide range of seminars and training programs for medical professionals.
 The GOÄ seminar, held by Dr. med. Markus Molitor,
-consisted of three distinct sessions and covering GOÄ basics such as GOÄ paragraphs, services types and concrete GOÄ case studies.
+consisted of three distinct sessions covering GOÄ basics such as GOÄ paragraphs, services types, and concrete GOÄ case studies.
 
 The development workflow of the rule language during my time at \AV had the following structure:
 
@@ -55,12 +55,12 @@ The following list contains all rule types that the framework currently supports
 
 The initial idea of having separate implementations for each rule type turned out to be not very scalable.
 Each rule type has a set of relevant information sources that billing codes rely on.
-Important information sources are patient age, the diagnoses, physical examination results and many more.
-This does also mean that some information sources are relevant for multiple rule types.
+Important information sources are the patient's age, the diagnoses, physical examination results, and many more.
+This also means that some information sources are relevant for multiple rule types.
 This effectively indicates an n-to-m relationship between information sources and rule types.
 For example, the patient age is highly relevant for GOÄ and EBM codes, Multiplier Justifications but not for OPS codes.
 Previous allergies are relevant for Multiplier Justifications but not necessarily for GOÄ codes.
 This is the reason, I decided to implement a rule type independent rule engine that provides all conditions that might be relevant for any rule type.
-Thus, I designed the billing framework in such a way that, information sources and condition types are independent of any rule type.
+Thus, I designed the billing framework in such a way that information sources and condition types are independent of any rule type.
 The final result is a universal rule language employable in multiple domains including, non-billing related ones.
 

@@ -1,6 +1,5 @@
 \subsection{GOÄ Examination Code Rules}\label{subsec:examination-code-rules}
-Examination Codes are frequently used codes that apply to provided physical examinations.
-They primarily base on the existence of physical examination blocks in the treatment.
+Examination Codes, commonly used for physical examinations provided, primarily depend on the presence of physical examination blocks in the treatment.
 We consider the following codes in the experiments.
 
 \paragraph{\goa{5: Symptom-related examination}}
@@ -114,12 +113,12 @@ label={lst:goae-11-rule}
 It is applicable for a conversation between patient and doctor at the beginning of the visit that takes at most 10 minutes.
 This type of conversation happens typically as part of the anamnesis.
 
-Unfortunately, this is where the billing framework as well as the \AVS reaches its limits.
-It is practically impossible to automatically track the time of the initial conversation between patient and practitioner.
-One idea could be to track the time passed between the practitioner entering the anamnesis page and moving on to the physical examination page in the front-end.
-This is, however, highly unreliable as doctors often enter the data into the software at the very end of the treatment.
-One slightly less user-friendly way to solve is to make the user explicitly enter the duration of the anamnesis.
-The current version of the \AVS does not offer this possibility, making reliably deriving \goa{1} not possible.
+Unfortunately, this is where the billing framework and the \AVS reach its limits.
+It is impossible to automatically track the time of the initial conversation between patient and practitioner.
+One idea could be to track the time between the practitioner entering the anamnesis page and moving on to the physical examination page in the front end.
+However, this is highly unreliable as doctors often enter the data into the software at the end of the treatment.
+One less user-friendly way to solve this is to make the user explicitly enter the duration of the anamnesis.
+The current version of the \AVS does not offer this possibility, making deriving \goa{1} impossible.
 The user needs to add this code manually.
 
 \paragraph{\goa{3: In-depth advice that goes beyond the usual level – also by telephone –}}

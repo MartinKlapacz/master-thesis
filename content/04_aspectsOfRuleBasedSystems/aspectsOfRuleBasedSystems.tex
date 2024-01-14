@@ -1,68 +1,51 @@
 \chapter{Aspects of Rule-Based Systems}\label{ch:aspects-of-rule-based-systems}
-
-Rule-based systems are systems that apply predefined rules to a given problem or dataset
-and derive conclusions or make decisions based on the input data\cite{grosan2011rule}.
+Rule-based systems are systems that apply predefined rules to a dataset and derive conclusions based on the input data \cite{grosan2011rule}.
 Deriving conclusions requires expert knowledge in the respective domain.
-The main difference to an ordinary software system is that the system does not hard-cde the domain-specific knowledge.
-Instead, we have rules that encode domain knowledge in a predefined rule language.
-The system treats these rules as an external resource and loads them into a rule-base.
-It directly uses the rule-encoded knowledge found in the rule-base to derive conclusions.
-A rule-based system is therefore a framework for knowledge experts that do not necessarily need a technical background.
-However, users must possess the requisite skill to translate their expert knowledge into rules,
-which requires them to have a profound understanding of the rule language.
+Rule-based systems have a clear separation between application software and expert knowledge \cite{abdullah2017performance}.
+Domain knowledge is not a hard-coded part of the software application.
+Instead, the domain knowledge lives in files with rules that encode domain knowledge using a rule language that the system understands.
+It treats these rules as an external resource and loads them into a rule-base where it can easily access it.
+A rule-based system is therefore a framework for knowledge experts that do not necessarily need a technical background \cite{masri2019survey}.
+However, they must possess the requisite skill to translate their expert knowledge into rules.
+This requires them to actively learn the rule language before writing rules for the system.
 
 These rules are typically explicit,
-declarative and logical statements about specific conditions that must hold to make the system act in a specific way.
-Rule-based systems are inherently knowledge-intensive applications\cite{hayes1985rule}.
-Their performance heavily relies on the quality,
-depth and richness of the knowledge encoded in its rules.
+declarative, deterministic and logical statements about specific conditions that must hold to make the system act in a specific way \cite{hayes1985rule}.
+Their performance heavily relies on the quality, depth and richness of the knowledge encoded in its rules.
 Rules in a rule-based system have the following form \cite{hayes1985rule}:
 
 \[
-    \text{<Rule-id>}: \text{IF} \text{<condition>} \text{THEN} \text{<conclusion>} \text{holds}
+    \text{<Rule-id>}: \text{ IF } \text{<condition>} \text{ THEN } \text{<conclusion>} \text{ holds}
 \]
-
 
 A rule consists of a \textbf{condition} and a \textbf{conclusion}
 and makes the rule-based system apply the conclusion if the condition holds.
-Its purely logical and declarative nature and makes them explicit, deterministic and predictable.
-Each rule has an identifier that makes it unique among the set of all rules in the system.
 
 However, due to their simplicity, they also come with some limitations.
-They lack the ability to learn from new data autonomously and new rules to be added manually.
+They lack the ability to learn from new data autonomously and new rules to be added manually \cite{oberste2022supporting}.
 Domain knowledge can also change which requires domain experts to be responsible for maintenance and rule updates.
 Knowledge domains can also be highly complex.
 High complexities increase the number of rules that a rule-based system requires to work effectively in production.
 
 
 \section{General Requirements for Rule Languages}\label{sec:general-rule-language-requirements}
-
-\begin{itemize}
-    \item Clearly defined syntax and semantics.
-    \item User-friendliness
-    \item Satisfactory expressiveness for all concrete cases
-    \item Rule base should be easy to extend
-    \item Rule language should be updatable
-\end{itemize}
-
 As every machine-readable language, a rule language needs clearly defined semantics and syntax.
 Depending on the target group, a domain-specific language should be user-friendly and easy to learn.
-Finding the correct compromise between language expressiveness and user-friendliness\cite{https://doi.org/10.1002/widm.11},
+Finding the correct compromise between language expressiveness and user-friendliness \cite{https://doi.org/10.1002/widm.11},
 however, requires careful consideration.
 On one side, the language needs
 to be sufficiently powerful to articulate all conditional logics and edge cases that may occur in the knowledge domain.
-On the other side, the language must remain accessible to domain experts,
-that may lack prior programming experience, and that will finally use it in production.
+On the other side, the language must remain accessible to domain experts, that do not necessarily have a technical background.
 This might involve introducing new constructs or syntactic sugar to simplify common tasks.
 For the language to remain relevant and effective, it should adapt over time and incorporate feedback from its user base.
-This may require a dedicated developer team that is able to quickly update the system.
+This may require a dedicated developer team that is able to quickly extend the system with new features.
 
-The performance of a rule-based system is only as good as its rule-base. \todo{schöner machen}
-A rule-base requires a high number of valid rules that incorporate large parts of the respective knowledge domain.
-
-\[
-    \text{conclusion \code{f}h olds} \Leftrightarrow \code{f}(\text{input1}, \text{input2}, \ldots, \text{input3}) = \text{true}
-\]
+%The performance of a rule-based system is only as good as its rule-base. \todo{schöner machen}
+%A rule-base requires a high number of valid rules that incorporate large parts of the respective knowledge domain.
+%
+%\[
+%    \text{conclusion \code{f}h olds} \Leftrightarrow \code{f}(\text{input1}, \text{input2}, \ldots, \text{input3}) = \text{true}
+%\]
 
 \section{Inference Mechanism}\label{sec:inference-mechanism}
 
@@ -73,39 +56,33 @@ According to \cite{https://doi.org/10.1002/widm.11}, there are two modes of infe
     \item backward chaining
 \end{itemize}
 
-Forward chaining is an inference strategy where reasoning begins with the existing facts.
-The inference engine simply applies the conditions of all rules in the rule base to the known data.
-Finally,
-we add the conclusions of those rules
-whose conditions hold to the set of valid conclusions and thus to the set of facts.
+Forward chaining is an inference strategy where reasoning begins with the existing facts \cite{al2015comparison}.
+The inference engine evaluates all rules by applying their rule conditions to the known facts.
+It adds conclusions with matching conditions to the set of known facts.
+It repeats the process until there are no fact updates and returns the final set of facts
 
-Backward chaining uses a different strategy\cite{al2015comparison}.
+Backward chaining uses a different strategy \cite{al2015comparison}.
 The user specifies a single goal or hypothesis
 which we want to proof or reject and looks for rules in the rule base whose conclusion would match with it.
-The conditions of those rules are now the new goal which the system needs to satisfy.
+The conditions of those rules are now the new goal that the system needs to satisfy.
 The system then recursively looks for rules with matching conclusion
-and tries to satisfy their conditions as new sub-goals.
-If the system is able to reduce all sub-goals to facts, we accept the initial hypothesis.
+and tries to satisfy their conditions as new goal.
+If the system is able to reduce all goals to facts, we accept the initial hypothesis.
 If the system cannot find further rules, we reject the initial hypothesis.
-This inference strategy is often used in diagnostics and decision support\cite{https://doi.org/10.1002/widm.11}
+This inference strategy is often used in diagnostics and decision support \cite{https://doi.org/10.1002/widm.11}
 
 Part of the design of the rule-based framework in this work is the decision between forward and backward chaining.
-Chapter \todo{add correct ref} revisits this design decision
-and provides a more detailed justification for the choice taken.
 
-\subsection{Roles in the Implementation of Rule-based Systems}\label{subsec:roles-in-the-implementation-of-rule-based-systems} \todo{put this into results}
+
+\subsection{Roles in the Implementation of Rule-based Systems}\label{subsec:roles-in-the-implementation-of-rule-based-systems}
 Due to the clear separation between knowledge domain and application framework there are essentially two groups of people
 involved in the implementation of the rule-based system:
-The framework engineers and the knowledge engineers.
-
-During the implementation of the billing optimization framework, I took the role of a framework engineer.
-
-I have received support from billing experts at \AV.
-
+The framework engineers and the knowledge engineers \cite{jacob1990software}.
 \begin{itemize}
     \item The application engineer is responsible for implementing and maintaining the framework software.
     Implementing a rule-based system does not only require advanced skills in software engineering and system design but also a basic understanding of the knowledge domain.
-    Framework engineers collaborate with knowledge engineers to design the rule language
-    and to get all the domain-specific information they need.
-    \item
+    Framework engineers obtain requirements and domain-specific information necessary to develop the framework.
+    \item The knowledge engineer is an expert in the knowledge domain of the rule-based system.
+    They support the framework engineer in developing the framework and provide them with all the knowledge-domain details they need.
+    They learn the rule language and finally populate the rule-based system with valid and correct rules that make their knowledge usable for the system.
 \end{itemize}
