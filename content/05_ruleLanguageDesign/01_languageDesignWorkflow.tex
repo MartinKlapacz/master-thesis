@@ -1,20 +1,19 @@
 \section{Language Design Workflow}\label{sec:language-design-workflow}
 Traditionally, billing experts create bills for treatments using their knowledge in this field.
-They need to know the conditions which must hold and which make a billing code applicable.
-This work introduces \RL, a new JSON-based domain specific rule language for medical billing experts.
-The billing optimization framework loads and understands those rule files and uses their encoded knowledge to automatically derive billing codes for finalized treatments.
+This work introduces \RL, a new JSON-based domain-specific rule language for medical billing experts.
+The billing optimization framework loads and understands those rule files and uses their encoded knowledge to derive billing codes automatically for finalized treatments.
 Section \todo{add section} describes this procedure in more detail.
 
-As a computer scientist, I initially lacked important knowledge about medical billing.
+As a computer scientist, I initially needed to learn about medical billing.
 This is why I conducted several expert interviews with Dr. Lorenz Thumann and Dr. Sahra Bojko, both Medical Managers at \AV.
 In these interviews, I gained crucial knowledge of medical billing and collected formal requirements for the billing framework.
 Dr. Thumann provided me with more general insights on medical billing in Germany.
 Dr. Bojko gave me useful feedback on my rule language designs while I supported her in writing the first billing rules with \RL.
-Other important sources of knowledge I made use of are the publicly available GOÄ and EBM catalogs.
-I also took part in an online GOÄ seminar provided by the PVS Forum.
-The PVS Forum offers a wide range of seminars and training programs for medical professionals.
+Other significant sources of knowledge I used are the publicly available GOÄ and EBM catalogs \cite{hermanns2015ebm, bruck1998kommentar}.
+I also participated in an online GOÄ seminar provided by the PVS Forum.
+The PVS Forum offers various seminars and training programs for medical professionals.
 The GOÄ seminar, held by Dr. med. Markus Molitor,
-consisted of three distinct sessions covering GOÄ basics such as GOÄ paragraphs, services types, and concrete GOÄ case studies.
+consisted of three sessions covering GOÄ basics such as GOÄ paragraphs, services types, and concrete GOÄ case studies.
 
 The development workflow of the rule language during my time at \AV had the following structure:
 
@@ -34,12 +33,12 @@ The development workflow of the rule language during my time at \AV had the foll
     During these meetings and gave him updates on the new changes since our last meeting, and I received clarifications regarding the \AV architecture and data models.
 \end{enumerate}
 
-Firstly, we needed to specify the concrete use-cases for the rule language.
-The initial plan was to implement two separate languages, one for statutory billing and one for private billing.
+Firstly, we needed to specify the concrete use cases for the rule language.
+The initial plan was to implement two separate languages, one for statutory and one for private billing.
 Section\ref{sec:billing-catalogs} introduces their billing catalogs and presents their differences and characteristics.
 
 However, interviews with Dr. Lorenz Thumann have revealed further requirements for the billing framework.
-This includes additional use-cases for the billing language.
+This includes additional use cases for the billing language.
 The following list contains all rule types that the framework currently supports:
 \begin{itemize}
     \item GOÄ billing rules for deriving GOÄ billing codes from private treatments
@@ -53,14 +52,15 @@ The following list contains all rule types that the framework currently supports
 \end{itemize}
 
 
-The initial idea of having separate implementations for each rule type turned out to be not very scalable.
+The initial idea of having separate implementations for each rule type could have been more scalable.
 Each rule type has a set of relevant information sources that billing codes rely on.
-Important information sources are the patient's age, the diagnoses, physical examination results, and many more.
+Essential information sources include the patient's age, diagnoses, and physical examination results.
 This also means that some information sources are relevant for multiple rule types.
 This effectively indicates an n-to-m relationship between information sources and rule types.
-For example, the patient age is highly relevant for GOÄ and EBM codes, Multiplier Justifications but not for OPS codes.
+For example, the patient age is highly relevant for GOÄ and EBM codes, Multiplier Justifications, but not OPS codes.
 Previous allergies are relevant for Multiplier Justifications but not necessarily for GOÄ codes.
-This is the reason, I decided to implement a rule type independent rule engine that provides all conditions that might be relevant for any rule type.
-Thus, I designed the billing framework in such a way that information sources and condition types are independent of any rule type.
-The final result is a universal rule language employable in multiple domains including, non-billing related ones.
+This is the reason I decided to implement an independent rule engine that provides all conditions that might be relevant for any rule type.
+Thus, I designed the billing framework so that information sources and condition types are independent of any rule type.
+The final result is a universal rule language employable in multiple domains, including non-billing related ones.
+
 

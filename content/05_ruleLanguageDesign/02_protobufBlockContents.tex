@@ -6,31 +6,29 @@ Anamnesis, physical examination and procedures are treatment stages relevant for
 
 \paragraph{Anamnesis}
 Anamnesis is the first stage of a treatment.
-Its purpose is to collect a detailed medical history from the patient \cite{lino2021medical}.
-More specifically, it is about understanding the patient's general health conditions,
-their lifestyle and previous patient's diagnoses.
+It aims to collect a detailed medical history from the patient\cite{lino2021medical}.
+It is about understanding the patient's general health conditions,
+lifestyle, and previous diagnoses.
 If possible, the practitioner reviews available medical records,
-interviews the patient directly or using a questionnaire \cite{zhang2011anamnevis}.
+interviews the patient directly or using a questionnaire\cite{zhang2011anamnevis}.
 
 \paragraph{Physical Examination}
-Anamnesis is followed by the Physical Examination.
-In this practical stage, the practitioner assesses the current patient's conditions,
-looking for further information about the patient's issues \cite{seidel2010mosby}.
-The practitioner decides based on patient's symptoms which exact examinations are conducted.
-Common examinations are checking of vital sings like blood pressure, pulse and temperature.
+The Physical Examination follows anamnesis.
+In this practical stage, the practitioner assesses the current patient's condition,
+looking for further information about the patient's issues\cite{seidel2010mosby}.
+Based on the patient's symptoms, the practitioner decides which examinations they perform.
 
 \paragraph{Procedures}
-The procedure stage contains the actual patient-specific interventions that \todo
+In the procedures stage the practitioner performs medical therapies based on the outcomes of the previous stages.
+The \AVS defines a procedure as a medical measure represented by an OPS code.
+A surgery consists of one or more procedures.
+At this stage, the practitioner documents medical details about the provided procedures.
 
 \paragraph{Block Contents}
 As part of the Anamnesis, Physical Examination and Procedures stage,
 the practitioner enters medical treatment specific information into the \AVS.
 All three stages have separate documentation with a tree-like structure consisting of sections, cards and blocks.
-Blocks are topic-related medical questionnaires that the practitioner selects and fills out.
-
-%For example, the physical examination contains the section \mete{abdomen} that contains the \mete{liver} card.
-%The \mete{liver} card contains the blocks \mete{liverPalpation} and \mete{liverSize}.
-Blocks are essentially small questionnaires for the practitioner with input fields to be filled out by the practitioner.
+Blocks are topic-related questionnaires for to be filled out by the user.
 \code{LiverPalpation} is an example for an example for a physical block in the \code{liver} section.
 A classic liver palpation examination involves answering the following questions \cite{wolf1990evaluation}:
 \begin{itemize}
@@ -41,12 +39,7 @@ A classic liver palpation examination involves answering the following questions
     \item Are pulsations present?
     \item Is a hepato jugular reflux present?
 \end{itemize}
-%Within the \AVS each block consists of meta-data such as timestamps, ids as well as a block content sub-object.
-%The \AVS defines several hundreds block contents for physical examination, anamnesis and procedures blocks.
-%It uses the object-relationship-mapping Hibernate to map all block content class definitions to database tables.
-%Each attribute of that class stores a questionnaire input entered by the practitioner.
-
-
+The physical examination block \code{liver} stores the outcomes of such an examination.
 The system stores every block directly in the database in a structured way, making it accessible for other components of the system.
 Each block has a Protobuf representation used for transmission between services, that we call protobuf block contents.
 For example, the protobuf message of \code{LiverPalpationMsg} looks like this:
@@ -56,46 +49,7 @@ For example, the protobuf message of \code{LiverPalpationMsg} looks like this:
     caption={LiverPalpation protobuf messages},
     label={lst:lstinputlisting2}]
 {code/proto/liverPalpation.proto}
-
 Data stored in such blocks is crucial for billing.
 The billing framework must provide a way to express conditions on proto block contents in a treatment.
 This does not only include conditions on the existence of blocks in a treatment, but also conditions on protobuf block content fields.
-Subsection \addref covers this type of conditions in detail.
-But firstly, we need to give an overview of relevant protobuf
-
-%\paragraph{Block Content Field Types}
-%A block content can contain information of different input types.
-%The billing framework must handle and validate each input type differently.
-%The most basic field types are boolean flags and numeric inputs.
-%The \AVS uses the following scalar wrapper protobuf messages for them:
-%
-%\lstinputlisting[
-%    language=protobuf2,
-%    style=protobuf,
-%    caption={Scalar wrapper types}
-%]{code/proto/scalarWrapper.proto}
-%
-%The purpose of wrapping scalars in custom protobuf messages is to make scalar default values distinguishable from missing data.
-%Initializing a protobuf message without explicitly setting the value of field has the consequence that the field gets initialized with its default value.
-%The default value for \code{int32} is 0.
-%If a gRPC server receives a protobuf message with an \code{int32} field set to 0, it does not know if the field was purposely initialized with 0 or not set at all.
-%Wrapping integers in \code{Int32W} messages makes this distinguishable.
-%
-%Liver tenderness can either be present or not, which makes it a \code{BoolW} field.
-%The \AVS uses enumeration fields for inputs that have a limited number of predefined values
-%For example, the most frequently used enum type is \code{AbnormalitiesExaminationResult}.
-%It denotes the result of a specific examination, which can be either conspicuous or inconspicuous.
-%
-%\lstinputlisting[
-%    language=protobuf2,
-%    style=protobuf,
-%    caption={\code{AbnormalitiesExaminationResult}}
-%]{code/proto/enum.proto}
-%
-%Knowledge inputs are another important input type.
-%They serve similar purposes as enum types but are not hard-coded into the code base.
-%The system fetches them from a dedicated microservice that stores them in a MeiliSearch database.
-%Block content conditions are a powerful tool to make codes dependent on concrete medical information from anamnesis,
-%physical examination and procedures.
-%
-%\todo{introduce nested objects, list objects}
+Paragraph \ref{par:block-content-field-types} covers this type of conditions in more detail.

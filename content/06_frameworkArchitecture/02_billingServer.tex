@@ -4,10 +4,9 @@ It contains most parts of the billing framework implemented in this work.
 It implements the derivation pipelines described in section \ref{sec:the-code-derivation-pipeline-for-statutory-treatments}
 and \ref{sec:the-code-derivation-pipeline-for-private-treatments}
 as well as the rule language as specified in section \ref{sec:rule-language-specification}.
-In this section we explain the most important components of the Billing Server
+In this section, we explain the most important components of the Billing Server.
 
 \subsection{Billing Server API}\label{sec:billing-server-api}
-
 The \code{CodeDerivationService} gRPC service of the billing server exposes endpoints for code derivation and validation for specific treatments.
 It also allows deriving OPS codes, EBM flatrates and multiplier justifications.
 
@@ -20,7 +19,6 @@ It also allows deriving OPS codes, EBM flatrates and multiplier justifications.
 A \code{DeriveCodesResponse} contains actual billing codes mapped to their quantity.
 Other services can use \code{validateEbmCodes} and \code{validateGoaeCodes} to check if a set of codes are applicable for a specific treatment.
 They respond with a \code{CodeValidationResponse} which, if present, contains explanatory information about existing conflicts.
-
 Besides automatic rule derivation, it exposes gRPC endpoints for CRUD operations on billing positions, billing cases, code chains and code chain folders.
 These endpoints are necessary for manual and conventional billing creation.
 It exposes endpoints for receiving and storing rules and catalogs used by the clients described in section \ref{sec:rule-file-repository}.
@@ -28,19 +26,19 @@ It exposes endpoints for receiving and storing rules and catalogs used by the cl
 
 \subsection{Rule Evaluation Input Fetcher}\label{subsec:rule-evaluation-input-fetcher}
 A \REIF is a rule-type specific component responsible for fetching billing-relevant information from other \AV microservices.
-The term \"Rule-type specific\" means that the framework instantiates one \REIF for each rule-type.
-Depending on which rule type the system currently evaluates, the system uses another fetcher.
+The term \"Rule-type specific\" means that the framework instantiates one \REIF for each rule type.
+The system uses another fetcher depending on which rule type the system currently evaluates.
 They are auto-programmable components that hide fetching details from the rest of the system.
 The term \"auto-programmable\" means that they configure themselves automatically upon rule loading.
-This works as follows: The \code{Rule} entity class has as described before multiple condition fields.
+This works as follows: As described before, the Rule entity class has multiple condition fields.
 The condition field names are equal to their corresponding condition keys in the rule language.
-As described in \addref Each condition field subscribes to one or more information sources.
-Each information source lives as a custom java annotation in the billing server.
-To distinguish those custom annotation types from unrelated annotations, they are annotated with \code{@InformationSource}.
-Condition fields inside the \code{Rule} entity class are decorated with annotations for the information sources they subscribe to.
+Each condition field subscribes to one or more information sources.
+Each information source lives as a custom Java annotation in the billing server.
+To distinguish those custom annotation types from unrelated annotations, they have \code{@InformationSource} as a type-level annotation.
+Condition fields inside the Rule entity class are decorated with annotations for the information sources they subscribe to.
 Upon receiving all rules of a rule type, a rule type specific \code{RuleEvaluationFetcher} scans those rules.
-It collects all \code{@InformationSource} annotated annotations of any non-null condition field in any received rule of that rule type in a hashset.
-The frameworks make use of the Java Reflection API that allows us to inspects class objects at runtime.
+It collects all \code{@InformationSource} annotated annotations of any non-null condition field in any received rule of that rule type in a HashSet.
+The framework uses the Java Reflection API to inspect class instances at runtime.
 This includes iterating over all fields of a class object and inspecting their annotations.
 For each derivation call, the respective \code{RuleEvaluationFetcher} instance executes the fetch implementations of its collected information source annotations.
 Finally, it populates \REI instance with its received data and returns it.
@@ -50,12 +48,12 @@ A \REI is a simple data class that contains all information a Rule Component nee
 It is the result of a fetch execution performed by a \REIF and the input for a rule evaluation.
 
 \subsection{Rule Component}\label{subsec:rule-component}
-A \code{RuleComponent} is again a type specific component that provides a method for actually deriving rules.
-In simple words, deriving codes is a three-step process.
+A \REI is a simple data class that contains all the information a Rule Component needs to evaluate its rules.
+It results from a fetch execution performed by a \REIF and the input for a rule evaluation.
 \begin{enumerate}
     \item Firstly, it requests a \REI from its corresponding \REIF
     \item Next it retrieves all its rules from the database
-    \item Then it evaluates all its rules for the received \REI and returns the result
+    \item Then it evaluates all its rules for the received \REI and returns the matching conclusions and computed quantities
 \end{enumerate}
 Section \ref{sec:language-design-workflow} covers step three in more detail.
 
