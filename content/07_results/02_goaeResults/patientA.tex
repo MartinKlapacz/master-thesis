@@ -3,20 +3,22 @@ The patient is a 57-year-old female suffering from chronic back pain.
 The patient has two other visits with the same issue concerning back pain and was previously diagnosed with the so-called facet syndrome (\mete{M47.2}).
 
 \paragraph{Anamnesis}
-In the anamnesis stage the
+The anamnesis stage reveals that the patient had two previous visits with the same issue concerning back pain, where she received a diagnosis of the so-called facet syndrome (\mete{M47.2})
 
 \paragraph{Physical Examination}
 In the physical examination stage, the doctor conducts several examinations.
-The doctor first performs a spine palpation and examines the patient's spine mobility.
-She performs a mobility test for the thoracic spine (\code{MobilityTestThoracicSpineBlock}) and the lumbar spine (\code{mobilityTestLumbarSpineBlock}) and detects existing mobility issues.
-Additionally, the practitioner notes down the patient's nutrition status, leading to the result that the patient suffers from obesity.
+The doctor performs a spine palpation and examines the patient's spine mobility.
+She performs a mobility test for the thoracic and lumbar spine and detects existing mobility issues.
+She enters the tou into the \code{mobilityTestThoracicSpine} and \code{mobilityTestLumbarSpine} blocks.
+Additionally, the practitioner notes down the patient's nutrition status, leading to the patient suffering from obesity.
 
 \paragraph{Procedures}
-The previous stages have revealed chronic back pain due to a diagnosed facet syndrome, missing neurological issues and obesity.
-That is why she decides to perform non-operative and conservative treatment, namely a spine infiltration.
-A spine infiltration is applicable to chronic and acute back pain issues to reduce the pain.
-As the patient suffers from the facet syndrome, the doctor decides to perform facet injections in the spine infiltration procedure.
+The previous stages have revealed chronic back pain due to a diagnosed facet syndrome, missing neurological issues, and obesity.
+That is why she decided to perform non-operative and conservative treatment, namely a spine infiltration.
+A spine infiltration applies to chronic and acute back pain issues to reduce the pain.
+As the patient suffers from facet syndrome, the doctor decides to perform facet injections in the spine infiltration procedure.
 In a Facet Infiltration, the performer performs direct injections into the spine joints instead of the surrounding muscles.
+
 She performs the following injections:
 \begin{itemize}
     \item one nerve root injection on the left side of TH2 in the thoracic spine
@@ -25,9 +27,8 @@ She performs the following injections:
 \end{itemize}
 
 \paragraph{Difficulties and Inconveniences}
-Overweight individuals have a thicker layer of subcutaneous fat, making locating veins, muscles and joins more difficult.
+Overweight individuals have a thicker subcutaneous fat layer, making targeting veins, muscles, and joints more difficult.
 Additionally, doctors may need special syringes with longer needles to penetrate the fat layer to reach the underlying joint.
-
 
 \subsubsection{Expected Results}
 The billing for the treatment should compensate the doctor for the performed examinations and every single spine infiltration.
@@ -36,15 +37,15 @@ The physical examination consisted of an orienting neurological examination and 
 
 
 \subsubsection{Actual Results}
-The framework was unable to derive \goa{1} due to the issues already described in subsection \ref{subsec:special-consultation-code-rules}.
-
-The framework successfully derived \goa{5}, triggered by the spine palpation.
+The framework could not derive \goa{1} due to the issues already described in paragraph \ref{par:goa-1}.
+The framework successfully derived \goa{5} showed in listing \ref{lst:goae-5-rule}, triggered by the spine palpation.
 
 The framework derived \goa{255} with the correct quantity of four.
-Rule \ref{lst:goae-255-rule} checked for the existence of a \code{spineInfiltration} block which was given in the documentation.
+Rule \ref{lst:goae-255-rule} matched due to the \code{spineInfiltration} procedure block.
 The rule engine also computed the quantity by evaluating each child function for the corresponding localization field in the \code{spineInfiltration} object and returned the correct quantity.
 Additionally, the framework detected the patient's obesity as a challenging factor for the infiltration,
-sucessfully deriving the multiplier justification \addref.
+successfully deriving the multiplier justification in listing \ref{lst:mj-obesity}.
+
 
 
 
