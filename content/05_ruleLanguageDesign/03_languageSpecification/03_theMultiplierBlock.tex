@@ -1,17 +1,16 @@
 \subsection{The Multiplier Function}\label{subsec:the-multiplier-function}
-The multiplier justification rule type does not use the concept of a quantity.
-They require \code{condition} blocks to make them derivable for certain conditions.
-Additionally, we also want to compute suggested multiplier values dynamically from the environment.
-This is why I introduced the \code{multiplier} field, which is very similar to the previously introduced \code{quantity} field.
-Both make use of numeric function expressions that allow for dynamic computation from their environment.
+Multiplier justifications are a special rule type that does not require the concept of dynamic quantities.
+Instead, we want to allow dynamic computation of multiplier values from the environment.
+In this section, we introduced the \code{multiplier} field, similar to the previously introduced \code{quantity} field.
+Both use numeric function expressions that allow for dynamic computation from their environment.
 
 In contrast to quantity functions, a multiplier expression returns a positive floating point number with two decimal places.
 
 In this subsection, we illustrate this concept using the following example.
-From Dr. Sahra Bojko I have learned that regular laryngoscopies should take at most 20 minutes.
-We can apply a duration related multiplier for laryngoscopies that exceed this duration.
-The longer the laryngoscopy takes, the greater should be the value of the multiplier for the provided service.
-One way of implementing this is by declaring multiple multiplier justification rules applying to different time intervals.
+According to Dr. Sahra Bojko, a regular laryngoscopy should take at most 20 minutes.
+We can apply a duration-related multiplier for laryngoscopies that exceed this duration.
+The longer the laryngoscopy takes, the greater the multiplier value for the provided service should be.
+One way of implementing this is by declaring multiple multiplier justification rules applying to different time intervals as shown in listing \ref{lst:multiplier-justification-function-steps}.
 
 \clearpage
 \lstinputlisting[
@@ -20,10 +19,8 @@ One way of implementing this is by declaring multiple multiplier justification r
     caption={Step multiplier function},
     label={lst:multiplier-justification-function-steps}
 ]{code/rules/specification/multiplier-expression-steps.json}
-
 All three rules logically exclude themselves due to the duration intervals in their \code{laryngoscopy} block conditions.
-
-This implements the following step function declared in equation \ref{eq:multilier-justification-step-function} and illustrated in figure \ref{plot:multiplier-justification-step-function}.
+This implements the step function declared in equation \ref{eq:multilier-justification-step-function} and illustrated in figure \ref{plot:multiplier-justification-step-function}.
 
 \begin{equation}\label{eq:multilier-justification-step-function}
     f(x) =
@@ -63,11 +60,10 @@ Formula \ref{eq:bounded-linear-multiplier-function} is a valid choice for a mult
     f: \left[20, \infty\right) \rightarrow \left[ 1, \infty \right) : d \mapsto \min\left( 3.5, \frac{5}{40} d - \frac{3}{2} \right)
 \end{equation}
 
-
-Code snippet \ref{lst:multiplier-justification-function-linear} illustrates a rule that implements this multiplier function.
+Listing \ref{lst:multiplier-justification-function-linear} illustrates a rule that implements this multiplier function.
 Note that the \code{condition} assures that the rule only applies to treatments with a provided laryngoscopy that took at least \code{20} minutes.
 This sets the domain of the function to $\left[20, \infty\right)$.
-This way inside, we can inside the \code{multiplier} block safely assume that the duration is greater or equal to 20.
+This way, the \code{multiplier} block can safely assume that the duration is greater or equal to 20.
 
 \lstinputlisting[
     language=json,
@@ -99,8 +95,6 @@ This way inside, we can inside the \code{multiplier} block safely assume that th
 \end{center}
 
 Plot \ref{plot:linear-mul-just} illustrates the graph for the multiplier function.
-
-For ordinary laryngoscopies that take less than 20 minutes, the multiplier justification rule does not match at all.
-Note that with increasing laryngoscopy duration, the suggested multiplier linearly increases between 20 and 40 minutes.
-For very unlikely cases where complications are so severe that the laryngoscopy takes more than 40 minutes, the rule suggests the maximum multiplier value of 3.5.
-
+The multiplier justification rule does not match ordinary laryngoscopies that take less than 20 minutes.
+Note that the suggested multiplier linearly increases between 20 and 40 minutes with increasing laryngoscopy duration.
+For doubtful cases where complications are so severe that the laryngoscopy takes more than 40 minutes, the rule suggests a maximum multiplier value of 3.5.
