@@ -1,64 +1,61 @@
 \subsection{Patient Case 3: Anesthesia Provision For Birth}\label{subsec:patient-case-3:-anesthesia-for-birth}
-The patient is a 32-year-old woman and is currently about to give birth on a wednesday night at 3 am.
-It is common practice to create two distinct bills for a birth, one for the anesthesist and another one for the gynecologist.
-The treating anesthesist is not a doctor but a care professional.
+The patient is a 32-year-old woman and is currently about to give birth on a Wednesday at 3 am.
+It is common practice to create two bills for birth, one for the anesthetist and another for the gynecologist.
+The treating anesthetist is not a doctor but a care professional.
 This scenario covers the billing for the anesthesia.
 The current version of the \AVS does not cover birth treatments.
-The patient is not a native German speaker, which has been entered into the software during patient registration.
+The patient did not register as a native German speaker but has sufficient English capabilities.
 
-\paragraph{Anamnese}:
+\paragraph{Anamnesis}
 The treatment starts with a short introductory conversation between the patient and the anesthetist.
 This involves details about the anesthesia and the patient's current and previous pregnancies.
 Additionally, the practitioner documents the patient's high level of pain.
 The practitioner enters a pain severity of 8 into the software.
 
 \paragraph{Physical Examination}
-Monitoring the blood oxygen is part of an anesthesia procedure and assures the patient's safety during the anesthesia.
-This happens in the stage of the physical examination.
+Blood oxygen monitoring is an essential part of an anesthesia procedure to ensure the patient's safety, which happens during the physical examination stage.
 The doctor makes a single pulse oximetry measurement of 95 and documents the results in a \code{Respiration} block.
-Additionally, the doctor documents the patient's scale of pain in a \code{Pain} block,
-setting a severity score of 8.
 
 \paragraph{Procedures}
 Finally, the anesthetist performs a so-called spinal anesthesia with catheter technology.
 The practitioner documents the details in the corresponding \code{neurexialAnesthesia} procedure block.
-The anesthesia procedure takes 11.5 hours.
+Finally, the anesthetist performs a so-called spinal anesthesia with catheter technology.
+The practitioner documents the details in the corresponding \code{neurexialAnesthesia} procedure block.
+The anesthesia will be kept stable during the entire birth and will last for 11.5 hours.
 
 \paragraph{Difficulties and Inconveniences}
 The requirement to communicate in english during such a critical treatment is considerable as a challenging condition for the practitioners.
 
 \subsubsection{Expected Results}
 The introductory conversation in the anamnesis stage took longer than 10 minutes, making \goa{1} applicable.
-The system should derive \goa{614: Transcutaneous measurement(s) of oxygen partial pressure} for the measurement of the pulse oxymetry during the anesthesia.
+The system should derive \goa{614: Transcutaneous measurement(s) of oxygen partial pressure} for measuring the pulse oximetry during the anesthesia.
 Additionally, the framework should suggest \goa{474} for the actual anesthesia performed before the birth.
-The framework must not confuse it with \goa{473} which applies to the same anesthesia service that, however, takes less than 5 hours.
-Due to the critical nature of a birth and the pain experienced by the patient, this anesthesia treatment can be considered highly urgent.
-This justifies the application of \goa{E: Surcharge for urgently requested and immediate execution}.
-Additionally, the treatment happens at an inconvenient time at 3am during the week,
-making \goa{D: Surcharge for services provided between 10 p.m. and 6 a.m} applicable.
-Additionally, the framework should suggest an appropriate multiplier justification that compensates for the requirement to communicate in english.
+The framework must not confuse it with \goa{473}, which applies to equal anesthesia services that take less than 5 hours.
+Due to the critical nature of birth and the pain experienced by the patient, this anesthesia treatment is highly urgent, justifying the application of \goa{E: Surcharge for urgently requested and immediate execution}.
+Additionally, the treatment happens at an inconvenient time at 3 am during the week,
+making \goa{D: Surcharge for services provided between 10 pm and 6 am} applicable.
+Additionally, the framework should suggest an appropriate multiplier justification that compensates for the requirement to communicate in English.
 
 \subsubsection{Actual Results}
-
-The framework was unable to derive \goa{1} due to the issues already described in subsection \ref{subsec:special-consultation-code-rules}.
+The framework could not derive \goa{1} due to the issues already described in subsection \ref{subsec:special-consultation-code-rules}.
 It successfully derived a multiplier justification for the communication problems.
-The issue is that this multiplier applies to a consultation service such as \goa{1}, which is not in der derivation set.
+However, this multiplier should apply to a consultation service such as \goa{1}, which the user must manually add.
 
-A \code{neuraxialAnesthesiaMsg} block was also part of the treatment, which triggered rules in \addref{473,474}.
-Both rules check the procedure duration of \code{neuraxialAnesthesiaMsg}
-As the anesthesia has a duration of 11.5 hours, the framework correctly rejected \code{473} and accepted \code{474}.
+A \code{neuraxialAnesthesiaMsg} block was also part of the treatment, triggering rules in listing \ref{lst:goae-473-474-rule}.
+Both rules check the procedure duration of \code{neuraxialAnesthesiaMsg}.
+As the anesthesia lasts 11.5 hours, the framework correctly rejected \code{473} and accepted \code{474}.
 
 Code \code{614} matches due to the respiration documentation.
-Its quantity function returns the length of the list containing all measurements inside the \code{respiration} block.
-As the practitioner entered a single block, the rule engine derives a single \goa{614} code.
+Rule \ref{lst:goae-614-rule} checks for the presence of a respiration measurement that includes a pulse oximetry measurement.
+The anesthetist performed a single measurement with an oximetry value of 95, which matches the rule.
 
 The framework also derived the \goa{E} surcharge applicable for urgent treatment.
-Rule \addref matched due to the high pain documented in the \code{pain} block during anamnesis.
-The anesthesist documented a pain score of 8 whilst the \code{pain} requires a pain score of at least 6.
+Rule \ref{lst:goae-E-rule} matched due to the high pain documented in the \code{pain} block during anamnesis.
+The anesthesist documented a pain score of 8, which is greater than the minimum limit of 6 specified in the rule.
 
-The treatment takes place at 3 am on a wednesday night, which is outside any office hour.
+The treatment occurs at 3 am on a Wednesday night, outside any office hours.
 This triggers surcharges \goa{A} and \goa{C}, which mutually exclude themselves.
-The conflict resolution algorithm choses \goa{C} (320 points) over \goa{A} (70 points).
+The conflict resolution algorithm chose \goa{C} (320 points) over \goa{A} (70 points).
 This results in the following bill.
 
 %Codes:

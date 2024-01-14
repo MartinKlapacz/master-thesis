@@ -182,10 +182,10 @@ In these situations, the doctor documents the patient's pain level.
 The pain level can be seen as an indicator of the urgency of the treatment and therefore used as a hint for \goa{E}, which is a surcharge applicable for urgent treatments.
 
 \lstinputlisting[
-Language=json,
-style=json,
-caption={\goa{E: Surcharge for services requiring special urgency}},
-label={lst:goae-E-rule}
+    Language=json,
+    style=json,
+    caption={\goa{E: Surcharge for services requiring special urgency}},
+    label={lst:goae-E-rule}
 ]{code/rules/experiments/goae-base-rules-E.json}
 
 
@@ -249,15 +249,15 @@ Code \code{474} matches if the specified procedure lasts more than five hours.
 \lstinputlisting[
 language=json,
 style=json,
-caption={\goa{473 and 474}}
+caption={\goa{473 and 474}},
 label={lst:goae-473-474-rule}
 ]{code/rules/experiments/goae-procedure-rule-473-474.json}
 
 \paragraph{614}
-\goa{614: Transcutaneous measurement(s) of oxygen partial pressure} is applicable for respiration measurements performed during the physical examination stage.
-Practitioners document these measurements in the \code{respiration} block, which stores a list of measurement objects representing one performed measurement.
-\goa{614} is applicable once for each measurement, implemented in listing \ref{lst:goae-614-rule}.
-
+\goa{614: Transcutaneous measurement(s) of oxygen partial pressure} is applicable for pulse oximetry measurements.
+The \AVS models measure pulse oximetry measurements in the \code{respiration} block.
+A \code{respiration} block stores multiple respiration measurements and has an input field for the measured pulse oximetry.
+Listing \ref{lst:goae-614-rule} implements this rule by checking if the \code{pulseOximetry} field contains any non-negative value.
 \lstinputlisting[
     language=json,
     style=json,
