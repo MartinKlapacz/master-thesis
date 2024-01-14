@@ -2,52 +2,41 @@
 The KBV maintains extensive XML schema documentation for the EBM data model.
 Part of this work was to understand and identify all conditions that determine under which circumstances a code applies.
 Automated derivation of applicable EBM codes requires automatic checking of these conditions.
-This section explains all relevant identified EBM conditions that are part of the code record schema.
-The contents of this section and the analysis of EBM is pure based on the official EBM \cite{hermanns2015ebm}.
+This section explains all relevant identified EBM conditions in the code record schema.
+This section's contents and the EBM analysis are purely based on the official EBM \cite{hermanns2015ebm}.
 
 \paragraph{KBV reference contexts}\label{par:kbv-reference-contexts}
-Before describing the EBM condition types, we need to introduce the concept of reference contexts.
+Before describing the EBM condition types, we must introduce the concept of reference contexts.
 Condition types such as exclusion rules often refer to a specific reference context.
 The following is a description of reference contexts defined by the KBV.
+
 \begin{itemize}
-    \item The smallest reference context is the Visit (in der selben Sitzung), which simply refers to all services occurred during the patient's visit at the practitioner.
+    \item The most minor reference context is the visit, which refers to all services during the patient's visit to the practitioner.
     It occurs in 2688 EBM codes.
     \item One level above is the case (Behandlungsfall), which refers to the current quarter of the year.
-     The case encompasses all billing positions that happened between start and end of the quarter.
+    The case encompasses all billing positions between the start and end of the quarter.
     It is even more important than the visit reference context.
-    It is used 4091 times.
+    It occurs 4091 times.
     \item The Illness Case (Krankheitsfall) refers to the current and the three following quarters.
     It is less important but still occurs in 343 conditions.
-    \item A Reproduction Case (Reproduktionsfall) encompasses all services that are linked to a pregnancy.
-    It refers to the entire pregnancy of a patient from the determination of the pregnancy to delivery, including postnatal care.
-    It has just 13 usages.
-    \item Similarly to the reproduction case, the Cycle Case encompasses all service provisions linked to the patients menstrual cycle
-    All issues, consultations, or examinations associated with menstruation fall into that context.
+%    \item A Reproduction Case (Reproduktionsfall) encompasses all services that are linked to a pregnancy.
+%    It refers to the entire pregnancy of a patient from the determination of the pregnancy to delivery, including postnatal care.
+%    It has just 13 usages.
+%    \item Similarly to the reproduction case, the Cycle Case encompasses all service provisions linked to the patients menstrual cycle
+%    All issues, consultations, or examinations associated with menstruation fall into that context.
 \end{itemize}
-Reference contexts for the current year, current month, current weeks and treatment day that are self-explanatory exist as well.
-The following are very specific reference contexts few specialized EBM codes that need to be taken into consideration as well.
-\begin{itemize}
-    \item Within a period of 21 days after the provision of a service from section 31.2:
-    Section 31.2 contains the \glqq outpatient operations\glqq.
-    \item Within a period of 3 days after the provision of a service from section 36.2:
-    Section 36.2 contains the \glqq Attendant medical operations\glqq.
-    \item Within a period of 3 days after the provision of a service from section 31.2:
-\end{itemize}
-In the current version of the EBM the latter two reference contexts are not used at all.
-The system should, nonetheless, take them consideration as they might be relevant in future versions.
-
+Reference contexts for the current year, month, weeks, and treatment day that are self-explanatory also exist.
 
 \paragraph{Authorized Practitioner Types List}\label{par:authorized-practitioner-types-list}
 The EBM maintains an extensive specification of what type of service providers are authorized to bill which EBM codes.
-For that, it defines the two axes of medical specialization and service area.
-All values for service area of a practitioner are
+It defines the two axes of medical specialization and service area.
+All values for the service area of a practitioner are the following:
 \begin{itemize}
-    \item Specialist (Facharzt)
-    \item General Practitioner (Hausarzt)
-    \item Specialist-General Practitioner (Fach- Hausarzt)
-    \item Authorized Physician (Ermächtigter Arzt)
+    \item Specialist
+    \item General Practitioner
+    \item Specialist-General Practitioner
+    \item Authorized Physician
 \end{itemize}
-
 The EBM distinguishes 206 medical specializations.
 Possible service medical specializations are the following:
 \begin{itemize}
@@ -56,7 +45,7 @@ Possible service medical specializations are the following:
     \item Specialist/Consultant in General Surgery (FÄ/FA Allgemeine Chirurgie)
 \end{itemize}
 Formally, each EBM code specifies a set of points from the space spanned by those two axes.
-If and only if the practitioner's service area and medical specialization pair is an element of that set, they are authorized to apply that EBM code.
+If and only if the practitioner's service area and medical specialization pair are an element of that set, they are authorized to apply that EBM code.
 
 
 \paragraph{Code Justification List}
@@ -67,16 +56,15 @@ A justification is one of the following:
     \item An ICD10 code of a diagnosis given to the patient during this treatment
 %    \item Another EBM code that is part of this billing
 \end{itemize}
-A code justification list condition holds if and only if it is empty or at least one code of the three justification categories is present.
-This means, applying the billing code \mete{Postoperative Behandlung Hals-Nasen-Ohren VI/2a} (\meco{31658}) i.e. \mete{Postoperative treatment of ear, nose, and throat (ENT) VI/2a} to a \mete{plastic correction of protruding ears through excision of soft tissues} is only possible if both ears were operated on.
+A code justification list condition holds if it is empty or at least one code of the three justification categories is present.
 
 \paragraph{Amount Condition}\label{par:amount-condition}
-Quantity conditions are another type of conditions.
-The EBM limits many codes in terms of number of applications throughout a specific reference context.
+Quantity conditions are another type of condition.
+The EBM limits many codes regarding the number of applications throughout a specific reference context.
 
 \paragraph{Exclusion List}\label{par:exclusion-list}
 Almost all EBM codes maintain an exclusion list.
-An exclusion condition denotes a excluded code and refers again to a specific reference context.
+An exclusion condition denotes an excluded code and refers to a specific reference context.
 
 \paragraph{Administrative Gender}\label{par:administrative-gender}
 EBM codes that have an administrative gender condition only apply to patients of the respective gender.
