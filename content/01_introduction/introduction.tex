@@ -1,45 +1,74 @@
 \chapter{Introduction}\label{ch:introduction}
 
 
+
+
+The importance of 'right-coding' – the practice of accurately billing for services provided without exaggeration – is emphasized as a cornerstone of billing optimization.
+
+
+Contrasting this, 'up-coding', a practice identified in existing literature, refers to exaggerated billing and is problematic in the healthcare industry.
+
+
+In recent years, the financial situation of clinics in Germany has been challenging.
+
+The pandemic
+
+%An integral aspect of process optimization is enhancing the accuracy of billing, crucial for preventing disputes with insurers.
+%Inaccurate billing can lead to delays in payments or loss of revenue, making it essential in the revenue cycle management process of translating medical services into universal codes for claims and reimbursement.
+%Given the error-prone nature of manual billing, this research seeks to explore and understand the nuances of medical billing, including types of billing codes, necessary information for deriving and justifying these codes, and the sources of information on which these codes rely.
+%The research was conducted in collaboration with Avelios Medical, utilizing methods such as expert interviews, participation in billing seminars, and an in-depth analysis of medical documents and billing catalogs.
+%The outcome is a billing framework integrated into Avelios Medical's backend architecture, allowing access to their structured data.
+%This thesis predominantly focuses on GOÄ and EBM codes, with a particular emphasis on GOÄ. It aims to provide a comprehensive understanding and an innovative solution to the challenges in medical billing, contributing significantly to the field.
+%
+
+
+
+
+
+motivational statement: critical financial situation of clinics, one reason is down-coding in billing
+
 Background information:
 - Define the term Right-coding / Up-coding
 - Define the term billing optimization:
 
-In this work, we define the term billing optimization as follows.
+Firstly define Right-coding and Up-coding
+up-coding is ... \cite{coustasse2021upcoding}
+Right-coding is when you really try to bill exclty the services that you provided without exaggeration etc.
+
+What we want to do is Right coding!
+
+
+In this work, we define billing optimization as follows.
 \begin{description}
-    \item Fee Optimization: The billing should strictly cover all provided services, making use of all regularities
-    \item Process Optimization: automatic derivation, less time spent on billing
+    \item Fee Optimization focuses on an appropriate revenue for practitioners while adhering to all legal regulations.
+    The framework should cover all provided services, including those that are easy to miss out.
+    Medical professionals should receive full compensation for their services.
+    \item Process Optimization focuses on improvement of the overall billing process.
+    Our goal is to automate code derivation to reduce manual efforts and time in selecting appropriate billing codes.
+    An integral aspect of process optimization is enhancing the accuracy of billing, crucial for preventing disputes with insurers, delays in payments and loss of revenue.
 \end{description}
-Correct coding ensures that hospitals and healthcare providers receive reimbursed for their provided services.
+Correct coding ensures that hospitals and healthcare providers receive quick reimbursed for their provided services.
 Inaccurate coding can lead to delayed payments or lost revenue.
 It's a key element in revenue cycle management, translating medical services into universal codes used for claims and reimbursement.
-Manual billing is an error-prone and tedious task.
 
-
-problem statement: critical financial situation of clinics
-
-research objective:
-find all necessary rule language features t
-
-
-
-Scope and Limitations:
-- GOÄ and EBM, focussion the GOÄ
-
-- thesis structure
+The research aims to develop a sophisticated billing optimization framework that enables custom billing automation.
+This involves designing a novel rule language that billing experts can use to express their knowledge in rule files.
+The framework can use the knowledge encoded in those rules to generate billings for outpatient treatments.
+The design of the framework and the rule language requires a deep understanding of the nuances and logic hidden in many billing codes.
+It requires identifying the underlying information sources that billing codes rely on.
+Research methods are conducting expert interviews, participating in a billing seminar, and performing an in-depth analysis of medical documents and billing catalogs.
+The framework is an embedded component of a new microservice integrated into the \AV back-end architecture.
+It intelligently uses the structured data that the \AV system collects.
 
 This work is structured as follows.
-
-In the first part, we talk about the modern landscape of medical billing in Germany.
-We talk about typical process and software solutions used in medical billing, followed by a comparison and discussion of the presented solutions.
+In the first part, we discuss Germany's outpatient billing landscape.
+We introduce processes and software solutions used in medical billing, followed by comparing and discussing the presented solutions.
 Next, we talk about the regulatory landscape in Germany.
 We present billing catalogs and their details that we must consider in the design of the billing framework.
-
-In the second part, we firstly cover theoretical aspects of rule-based systems, followed by a formal specification of \RL.
-Then we cover the framework architecture, give an overview of important architectural design decisions and present the code derivation pipeline.
-
-In the third part, we simulate the treatment cases provided by billing experts at \AV.
-This includes the presentation of the experimental rule-base used in for the simulations and the treatment cases.
-For each case, we present the generated billing and compare it with the results required by the billing experts.
-We explain the results and finally discuss and give reasons for framework strengths and limitations found in the experimental part.
-
+The second part covers the theoretical aspects of rule-based systems, helpful for the design of the billing framework.
+Next, we provide a formal specification of \RL.
+Then, we cover the framework architecture, give an overview of crucial architectural design decisions, and present the final code derivation pipeline.
+In the third part, present and validate the performance of the billing framework for realistic and non-trivial treatment cases provided by billing experts at \AV.
+This also includes presenting the experimental rule base used for the simulations and the treatment cases.
+For each case, we present the generated claims and compare them with the results required by the billing experts.
+We illustrate the results and discuss the billing framework's strengths and limitations.
