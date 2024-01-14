@@ -1,12 +1,13 @@
 \section{Rule File Repository}\label{sec:rule-file-repository}
 One component of the billing framework is the rule file repository.
-This is the space where billing experts can work on the rule base, make changes and update existing rules.
-To ensure semantic correctness, the framework uses a schema validation package called Pydantic to validate the rule files.
-It is extremely important that the system detects all issues at loading time.
+This space allows billing experts to work on the rule base, make changes, and update existing rules.
+The framework uses a schema validation package called Pydantic to validate the rule files and to ensure semantic correctness.
+The system must detect all issues at loading time.
 Otherwise, the system will experience runtime issues due to invalid rules when deriving codes in production.
 
-As mentioned in section \ref{sec:language-design-workflow} we distinguish between multiple rule types.
-For each rule type the system executes the following procedure to parse, validate and send \RL rules to the billing server.
+As mentioned in section \ref{sec:language-design-workflow}, we distinguish between multiple rule types.
+The system executes the following procedure for each rule type to parse, validate, and send \RL rules to the billing server.
+
 \begin{enumerate}
     \item Parse the rule file into a python dictionary
     \item Validate all dictionaries against the Pydantic rule schema.
@@ -16,4 +17,4 @@ For each rule type the system executes the following procedure to parse, validat
 
 The rule file repository also contains the EBM and GOÄ datasets.
 It provides Python scripts for sending them to the billing service.
-The billing service, requires both the rule and the catalogs to be able to properly derive billing codes for treatments.
+The billing service requires both the rule and the catalogs to correctly derive billing codes for treatments.
