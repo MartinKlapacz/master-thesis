@@ -1,0 +1,9 @@
+{
+  "code": "Difficult diagnostics due to high number of allergies",
+  "condition": {
+    "minNumberOfAllergies": 8
+  },
+  "multiplier": {
+    "constant": 2
+  }
+}

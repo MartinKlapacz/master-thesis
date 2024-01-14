@@ -1,17 +1,17 @@
 {
-  "code": "Erheblicher Zeitaufwand - bei <procedure name>",
+  "code": "Considerable time expenditure - <procedure name>",
   "targetGoaeCode": "<code>",
-  "multiplier": {
-    "min": [
-      { "constant": C },
-      f(N)
-    ]
-  },
   "condition": {
     "requiredProcedureBlocks": {
       "<procedure name>": {
         "$minDuration": N
       }
     }
+  },
+  "multiplier": {
+    "min": [
+      { "constant": C },
+      f(N)
+    ]
   }
 }
