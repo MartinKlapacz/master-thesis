@@ -1,37 +1,26 @@
 \subsection{Quantity Functions}\label{subsec:quantity-functions}
-
 In the previous chapter, we introduced the concept of a billing rule.
-
 Not only which codes are part of the billing, but also their quantity is critical information.
 In the previous section, we explained how the billing framework derives a set of applicable billing codes.
-The result data type was essentially a set of billing codes.
 In this section, we generalize the framework such that it returns each code in combination with its quantity.
-
-We extend the general rule structure by introducing the concept of quantity functions.
-Similarly to rule conditions, quantity functions are valuable subcomponents of a rule.
+We extend the general rule schema by introducing the concept of quantity functions.
+Similarly to rule conditions, quantity functions are subcomponents of a rule.
 The framework evaluates quantity functions of rules for a\code{RuleEvaluationInput}.
-The result is an integer that indicates how often it should be billed in the billing.
-
+Formally, quantity functions are functions that map an \REI to a natural number.
 \begin{equation}
     \label{eq:quantity-function-natural}
     f_{quantity}: \code{RuleEvaluationInput} \longrightarrow \mathbb{N}
 \end{equation}
-
 Billing code quantities typically rely on two types of billing information.
 Subsection\ref{subsubsec:quantity-derivation-from-procedure-information} and\ref{subsec:quantity-derivation-from-durations} explain these sources.
 
 \subsubsection{Quantity Derivation From Procedure Information}\label{subsubsec:quantity-derivation-from-procedure-information}
-
-I derived the requirement for quantity functions from \goa{255: Injection, intra-articular or perineural}.
-It is an example of a code, that is likely to appear in a billing with a quantity larger than one.
-
 The so-called Spine Infiltration is a procedure, that includes injections into spine nerves.
 Billing experts use \goa{255} for this medical service.
 Procedure block \code{SpineInfiltrationMsg} represents this procedure.
 However, \goa{255} typically applies once for each spine injection the practitioner actually provided.
 Therefore, a spine infiltration can include multiple injections at different localizations.
-The system should not only be able to derive \goa{255} for a provided spine infiltration, but should also be able to derive the correct quantity of \goa{255} codes.
-
+The system should not only be able to derive \goa{255} for a provided spine infiltration, but should also be able to derive the correct quantity of \goa{255} codes as the number of injections.
 To illustrate this example, it is worth mentioning that the human spine consists of three primary regions \cite{BOGDUK2016675}:
 \begin{itemize}
     \item The cervical spine, the thoracic spine, and the lumbar spine.
@@ -40,7 +29,7 @@ To illustrate this example, it is worth mentioning that the human spine consists
     \item Lastly, the lumbar spine at the lower back is made up of five larger vertebrae, designed to bear the body's weight and provide flexibility and movement.
 \end{itemize}
 Each region has well-defined localizations that can be targets for injections.
-The \AVS stores the data of a spine infiltration in a \code{SpineInfiltrationMsg}procedure block.
+The \AVS stores the data of a spine infiltration in a \code{SpineInfiltrationMsg} procedure block.
 
 The following code snipped displays a simplified version of it.
 \lstinputlisting[
@@ -52,20 +41,18 @@ The following code snipped displays a simplified version of it.
 
 
 \code{SpineInfiltrationMsg} has a nested message\code{NerveRootBlockMsg}.
-\code{NerveRootBlockMsg} contains the messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg}.
+\code{NerveRootBlockMsg} contains the messages, \code{CervicalSpineMsg}, \code{ThoracicSpineMsg}, and \code{LumbarSpineMsg}.
 These messages represent the before-mentioned sections of the human spine.
-Each variable in these nested messages is of type \code{Laterality}and represents injections at the respective localization alongside the spine.
-The laterality of an injection refers to the specific side or sides where the injection is administered in the spine localization.
-This can be either on the left side, the right side, or on both sides.
+Each variable in these nested messages is of type \code{Laterality} and represents injections at the respective localization alongside the spine.
+The laterality of an injection refers to the specific side or sides where the practitioner performs the injection.
+This can be either on the left, right, or both sides.
 
 To get the total number of injections, the system would need to peek into the nested messages \code{CervicalSpineMsg}, \code{ThoracicSpineMsg} and\ code{LumbarSpineMsg} and compute the total number of injections from the laterality values.
 Additionally, the framework needs to be able to understand that \code{LATERALITY\_NONE} refers to zero and \code{LATERALITY\_LEFT} as well as\code{LATERALITY\_RIGHT} refer to one injection.
 \code{LATERALITY\_BOTH} refers to two injections.
 It is important to assign quantities to enum values.
 
-
 \subsubsection{Quantity Derivation From Durations}\label{subsec:quantity-derivation-from-durations}
-
 Many GOÄ codes specify not only a service content but also a time range.
 If provided services exceed that time range the respective code can be billed more than once.
 
@@ -101,23 +88,3 @@ They refer to an initiation and monitoring of a continuous subarachnoid spinal a
 These examples lead to concrete requirements for the billing framework and underline the importance of \"quantity functions\".
 They must be expressive enough to represent and manage the nuances of these examples.
 Section \ref{sec:quantity-function-specification} illustrates how users can express these cases using the rule language.
-
-%\subsection{Partial Billing Quantitys}\label{subsec:partial-billing-quantitys}
-%In very special cases billing codes apply with a reduced quantity of points.
-
-%There are at least two cases:
-%\goa{D} is a surcharge for services provided on saturday, sunday and on holidays.
-%If service provision happens during an opening hour, \goa{D} only applies with half the fee, though.
-%This is also the case for surcharges \goa{E}, \goa{F}, \goa{G} and \goa{H} if \goa{51} is part of the billing, as well.
-%
-%The framework must be able to express these edge cases but does not allow any point value manipulations of billing codes.
-%It solves this issue using quantity functions.
-%In those cases the quantity function must be able to evaluate to 0.5 which results in the same fee reduction as required by the GOÄ specification.
-%
-%This requirement changes the formal definition given in formula \ref{eq:quantity-function-natural} to:
-%\begin{equation}
-%    \label{eq:quantity-function-real}
-%    f_{quantity}: \code{RuleEvaluationInput} \longrightarrow \mathbb{R}^{+} \\ \left{0\right}
-%\end{equation}
-%Quantity function now evaluate
-
