@@ -1,0 +1,23 @@
+{
+  "code": "255",
+  "condition": {
+    // ...
+  },
+  "quantity": {
+    "sum": [
+      {
+        "fieldPath": ["spineInfiltration", "nerveRootBlock", "cervicalSpine", "c4"],
+        "evaluationMode": {
+          // ...
+        }
+      },
+      {
+        "fieldPath": ["spineInfiltration", "nerveRootBlock", "cervicalSpine", "c5"],
+        "evaluationMode": {
+          // ...
+        }
+      }
+    ]
+  }
+}
+

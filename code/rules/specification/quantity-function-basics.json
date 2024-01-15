@@ -1,0 +1,17 @@
+[
+  {
+    "code": "255",
+    "condition": {
+      // ...
+    },
+    "quantity": {
+      "fieldPath": ["spineInfiltration", "nerveRootBlock", "cervicalSpine", "c4"],
+      "evaluationMode": {
+        "LATERALITY_NONE": 0,
+        "LATERALITY_RIGHT": 1,
+        "LATERALITY_LEFT": 1,
+        "LATERALITY_BOTH": 2
+      }
+    }
+  }
+]

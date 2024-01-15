@@ -1,0 +1,10 @@
+{
+  "code": "<code>",
+  "condition": {
+    "procedureBlocks": { "laryngoscopy": {
+      "$minDuration": 20,
+      "$maxDuration": 30
+    } },
+    "multiplier": { "constant": 1.5 }
+  }
+}
