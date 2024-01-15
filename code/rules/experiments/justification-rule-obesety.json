@@ -7,6 +7,18 @@
         "nutritionStatus": { "nutritionStatusType": "NUTRITION_STATUS_OBESITY" }
       },
       "procedureBlocks": {"spineInfiltration": {}}
-    }
+    },
+    "multiplier": { "constant": 2 }
+  },
+  {
+    "code": "Difficulty in spinal infiltration due to adipositas",
+    "targetCode": "255",
+    "condition": {
+      "physicalBlocks": {
+        "nutritionStatus": { "nutritionStatusType": "NUTRITION_STATUS_ADIPOSITAS" }
+      },
+      "procedureBlocks": {"spineInfiltration": {}}
+    },
+    "multiplier": { "constant": 2.5 }
   }
 ]

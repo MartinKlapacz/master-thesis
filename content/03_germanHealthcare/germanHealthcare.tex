@@ -1,22 +1,22 @@
 \chapter{Private and Statutory Billing}\label{ch:billing-in-the-german-healthcare-system}
 
-In the German healthcare system, billing is a critical component that ensures the smooth functioning of medical services.
+In the German healthcare system, billing is a critical component ensuring the smooth functioning of medical services.
 Patients in Germany can have statutory or private insurance.
 There are different regulations and catalogs for both insurance types.
-The most important coding catalogs are the Einheitlicher Bewertungsmaßstab (EBM) for statutory insurance and the Gebührenordnung für Ärzte (GOÄ) for private insurance and self-payers \cite{Stausberg1998}.
+The most essential coding catalogs are the Einheitlicher Bewertungsmaßstab (EBM) for statutory insurance and the Gebührenordnung für Ärzte (GOÄ) for private insurance and self-payers \cite{Stausberg1998}.
 Both contain a large number of code records representing billable services.
-A code record is a detailed description of the service, which includes the service code, a number of points, a title, conditions and a detailed description.
+A code record is a detailed description of the service, which includes the service code, a number of points, a title, conditions, and a detailed description.
 The points quantify the service fees with one point translating to a monetary value determined by the catalog \cite{Stausberg1998}.
 
 Subsections \ref{sec:einheitlicher-bewertungsmastab-(ebm)} and \ref{sec:gebuhrenordnung-fur-arzte-(goa)} describe both catalogs and depict details that are relevant in this work.
-We firstly cover catalog-specific information and general catalog characteristics.
+We first cover catalog-specific information and general catalog characteristics.
 Next, we depict all condition types living in the catalogs as structured meta-data that we need to consider for automatic billing generation.
-The framework can automatically parse existing meta-data condition information from the catalog and evaluate it.
-This makes it unnecessary to include them in any rules, which saves a lot of effort.
+The framework can automatically parse and evaluate existing meta-data condition information from the catalog.
+This makes it unnecessary to include them in any rules, saving a lot of effort.
 
 Throughout this work, we will frequently refer to specific GOÄ codes, directly quoting their official titles and elucidating their underlying principles.
 All such references are based on the official Gebührenordnung für Ärzte (GOÄ) \cite{bruck1998kommentar}.
-Similarly, for the Einheitlicher Bewertungsmaßstab (EBM), we will base our discussion on the official EBM documentation \cite{hermanns2015ebm}.
+Similarly, we will base our discussion on the Einheitlicher Bewertungsmaßstab (EBM) on the official EBM documentation \cite{hermanns2015ebm}.
 
 \input{content/03_germanHealthcare/01_goae/goae}
 \input{content/03_germanHealthcare/02_ebm/ebm}

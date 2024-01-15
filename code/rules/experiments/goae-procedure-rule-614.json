@@ -5,7 +5,7 @@
       "respiration": {
         "respirationMeasurements": [
           {
-            "pulseOxymetry": ">=0"
+            "pulseOximetry": ">=0"
           }
         ]
       }

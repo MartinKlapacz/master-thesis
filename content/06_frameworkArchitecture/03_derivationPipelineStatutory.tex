@@ -5,18 +5,17 @@ The first step is equivalent to the first step of the code derivation pipeline f
 described in subsection \ref{subsec:initial-goä-rule-evalutation}.
 The system calls the \REIF for the EBM rule to obtain the \REI.
 Next, \code{EbmRuleComponent} to retrieve all EBM codes from the database and evaluate them for the previously fetched \REI.
-The set of conclusions of the matching EBM rules are the first set of EBM code candidates.
+The set of conclusions of the matching EBM rules is the first set of EBM code candidates.
 
 \subsection{Structured Catalog Condition Evaluation}\label{subsec:structured-catalog-condition-evaluation}
-The next stage handles the structured conditions that are part of the catalog and which are described in subsection \ref{subsec:ebm-conditions}.
-We filter out codes that require missing code justifications and expect a different patient gender or another patient age.
+The next stage handles the structured conditions part of the catalog described in subsection \ref{subsec:ebm-conditions}.
+We filter out codes that require missing code justifications and expect a different patient's gender or another patient's age.
 Furthermore, we filter out all codes for which any amount condition fails.
 We evaluate amount conditions, explained in paragraph \ref{par:amount-condition},
 using database queries that count the number of code occurrences in the respective reference context.
-Each reference context has such a query, that takes a code as an input and counts its occurrences in that reference context.
+Each reference context has a query that takes a code as an input and counts its occurrences in that reference context.
 If the code has already reached its limit in any reference context, we eliminate it from the code candidate set.
 
-In the last step, we retrieve all billed codes of that patient for each reference context.
-For each code in the current candidate set, we check for code exclusions that match with the reference context and a code in that reference context.
+In the last step, we retrieve all already billed codes of that patient for each reference context.
+For each code in the current candidate set, we check for code exclusions that match the reference context and a code in that context.
 If we find an exclusion conflict, we must eliminate the code from the candidate set.
-

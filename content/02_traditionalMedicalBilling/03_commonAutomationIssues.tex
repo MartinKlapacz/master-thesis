@@ -1,21 +1,19 @@
 \section{Common Issues with Modern Billing Automation Products}\label{sec:common-issues-with-modern-billing-automation-products}
-When comparing the approaches of the previously presented billing automation solutions, one might notice a certain pattern.
+When comparing the approaches of the previously presented billing automation solutions, one might notice a particular pattern.
 All those billing automation solutions employ a three-step-procedure:
 \begin{enumerate}
     \item The first step is to scrape as much billing-relevant data as possible from multiple external services and resources.
-    \item Next, the systems transform and map the collected unstructured information to their own structured data schema.
-    \item Given the structured data, the systems then apply their own techniques to generate billing codes.
-    Those techniques are often AI or rule-based approaches or a hybrid of both.
+    \item Next, the systems transform and map the collected unstructured information to their structured data schema.
+    \item Given the structured data, the systems apply their techniques to generate billing codes.
 \end{enumerate}
 
-One of the crucial issues that make automatic billing generation such a difficult task is the following:
-Automatic billing generation strictly requires structured and complete data. \addcite
-This data often lives as unstructured information scattered across multiple sources such as existing clinical systems or human-readable documents.
-Medical records often lack accuracy and completeness of documentation, which strongly correlates with accurate coding \cite{Farhan2005Documentation}.
+According to the engineers at \AV, the crucial issue that makes automatic billing generation such a difficult task is the following:
+Automatic billing generation strictly requires structured and complete data.
+This data often lives as unstructured information scattered across multiple sources, such as existing clinical systems or human-readable documents.
+Medical records often lack accuracy and completeness, which correlates with accurate coding \cite{Farhan2005Documentation}.
 Additionally, these information sources suffer from differences in quality and redundancies \cite{Scheurwegs2017Selecting}.
 The systems presented in section \ref{sec:existing-billing-automation-solutions} rely on these information sources suffering from those issues.
-All of them do their best to optimize the data collection step and to reduce the information loss to a minimum.
+They all do their best to optimize the data collection step and reduce the information loss to a minimum.
 
-A solution for that issue is a billing automation system directly integrated into a clinic information system that guarantees access to the entire billing-relevant data.
-It is crucial that the clinic information system collects the full extent of the billing-relevant information as structured data, making fuzzy data scraping from external sources unnecessary.
-
+The approach in this work is to build a billing automation system that directly integrates with a clinic information system that guarantees access to all billing-relevant data.
+The clinic information system must collect the full extent of the billing-relevant information as structured data, making fuzzy data scraping from external sources unnecessary.

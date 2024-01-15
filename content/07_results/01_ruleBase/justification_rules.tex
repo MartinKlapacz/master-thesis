@@ -9,43 +9,62 @@ Many of the following rules implement those justifications.
 As mentioned in section \ref{sec:language-design-workflow}, I participated in the PVS Seminar, where I received more information about possible multiplier justifications.
 As described in subsection \ref{subsec:the-target-code-field}, Multiplier justifications can be target-specific or generally applicable.
 
+\subsubsection{General multiplier justifications}
+One group of multiplier justifications is communication-related.
+Missing language skills or the patient's clinical condition can complicate patient-to-doctor communication.
+The rules in listing \ref{lst:mj-communication-rule} detect such inconveniences.
 \lstinputlisting[
     language=json,
     style=json,
-    caption={\goa{Multiplier Justification refering to communication issues}},
+    caption={Multiplier Justification refering to communication issues},
     label={lst:mj-communication-rule}
 ]{code/rules/experiments/justification-rule-communication.json}
 
-
+The rule in listing \ref{lst:mj-cdrug-rule} detects if a patient is currently under the influence of drugs.
 \lstinputlisting[
-language=json,
-style=json,
-caption={\goa{Multiplier Justification refering to issues caused by the patient's current drug abuse}},
-label={lst:mj-cdrug-rule}
-]{code/rules/experiments/justification-rule-multimorbidity.json}
+    language=json,
+    style=json,
+    caption={Multiplier Justification refering the patient's current drug abuse},
+    label={lst:mj-cdrug-rule}
+]{code/rules/experiments/justification-rule-drugs.json}
 
 
-\subsubsection{Procedure-specific and duration-related multiplier justifications}
+
+The rule in listing \ref{lst:mj-allergies-rule} detects if a patient has a high number of allergies.
+A high number of allergies can complicate a treatment due to the reasons given in paragraph \ref{par:minNumberOfAllergies}.
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Multiplier Justification refering the patient's number of allergies},
+    label={lst:mj-allergies-rule}
+]{code/rules/experiments/justification-rule-allergies.json}
+
+
+\subsubsection{Procedure-specific multiplier justifications}
 Procedures often take longer than expected, which can be the case due to unforeseen complications and issues.
-The following rule list shows the generic pattern used for procedure-specific and duration-related multiplier justifications.
+Listing \ref{lst:mj-laryngoscopy} shows a linear duration-related multiplier justification for the laryngoscopy.
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Linear duration-related multiplier justification for the laryngoscopy},
+    label={lst:mj-laryngoscopy}
+]{code/rules/specification/multiplier-expression-linear.json}
 
-%\lstinputlisting[
-%    language=json,
-%    style=json,
-%    caption={\goa{Generic procedure duration multiplier justification rule}},
-%    label={lst:goae-K2-rule}
-%]{code/rules/experiments/goae-base-rules-K2.json}
-
-\todo{add rules}
+The rule base contains such a procedure-duration related rule for each of the currently defined procedure blocks.
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Generic template for duration-related and procedure specific multiplier justification rules},
+    label={lst:mj-duration-pattern}
+]{code/rules/experiments/multiplier-base-rules-pattern.json}
 
 The rule base contains implementations of that pattern for each of the procedures that the system currently supports.
 Note that the rule only checks for the existence of the respective procedure block.
-We use the special block conditions \code{\$minDuration} and \code{\$maxDuration} to make the rule only match if the duration of the procedure is within the specified interval.
-Each procedure may have multiple duration-related justification rules, covering another time interval and multiplier value.
+We use the special block conditions \code{\$minDuration} to ensure the rule only matches if the duration of the procedure exceeds the specified minimum duration.
 
-%\lstinputlisting[
-%    language=json,
-%    style=json,
-%    caption={\goa{E: Surcharge for services requiring special urgency}},
-%    label={lst:goae-E-rule}
-%]{code/rules/experiments/goae-base-rules-E.json}
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Multiplier justification for weight-related difficult conditions during a spine infiltration},
+    label={lst:mj-obesity}
+]{code/rules/experiments/multiplier-base-rules-pattern.json}

@@ -1,17 +1,17 @@
 \chapter{Aspects of Rule-Based Systems}\label{ch:aspects-of-rule-based-systems}
-Rule-based systems are systems that apply predefined rules to a dataset and derive conclusions based on the input data \cite{grosan2011rule}.
+Rule-based systems apply predefined rules to a dataset and derive conclusions based on the input data \cite{grosan2011rule}.
 Deriving conclusions requires expert knowledge in the respective domain.
-Rule-based systems have a clear separation between application software and expert knowledge \cite{abdullah2017performance}.
+Rule-based systems clearly separate application software and expert knowledge \cite{abdullah2017performance}.
 Domain knowledge is not a hard-coded part of the software application.
 Instead, the domain knowledge lives in files with rules that encode domain knowledge using a rule language that the system understands.
-It treats these rules as an external resource and loads them into a rule-base where it can easily access it.
-A rule-based system is therefore a framework for knowledge experts that do not necessarily need a technical background \cite{masri2019survey}.
-However, they must possess the requisite skill to translate their expert knowledge into rules.
-This requires them to actively learn the rule language before writing rules for the system.
+It treats these rules as an external resource and loads them into a rule base where it can easily access them.
+A rule-based system is, therefore, a framework for knowledge experts who do not necessarily need a technical background \cite{masri2019survey}.
+However, they must possess the requisite skills to translate their expert knowledge into rules.
+This requires them to learn the rule language before writing rules for the system.
 
 These rules are typically explicit,
-declarative, deterministic and logical statements about specific conditions that must hold to make the system act in a specific way \cite{hayes1985rule}.
-Their performance heavily relies on the quality, depth and richness of the knowledge encoded in its rules.
+declarative, deterministic, and logical statements about specific conditions that must hold to make the system act in a specific way \cite{hayes1985rule}.
+Their performance heavily relies on the quality, depth, and richness of the knowledge encoded in its rules.
 Rules in a rule-based system have the following form \cite{hayes1985rule}:
 
 \[
@@ -20,59 +20,45 @@ Rules in a rule-based system have the following form \cite{hayes1985rule}:
 
 A rule consists of a \textbf{condition} and a \textbf{conclusion}
 and makes the rule-based system apply the conclusion if the condition holds.
-
 However, due to their simplicity, they also come with some limitations.
-They lack the ability to learn from new data autonomously and new rules to be added manually \cite{oberste2022supporting}.
-Domain knowledge can also change which requires domain experts to be responsible for maintenance and rule updates.
+They cannot adapt autonomously and only learn by getting more rules \cite{oberste2022supporting}.
+Domain knowledge can also change, requiring domain experts to be responsible for maintenance and rule updates.
 Knowledge domains can also be highly complex.
-High complexities increase the number of rules that a rule-based system requires to work effectively in production.
-
+High complexity increases the number of rules a rule based system requires to work effectively in production.
 
 \section{General Requirements for Rule Languages}\label{sec:general-rule-language-requirements}
-As every machine-readable language, a rule language needs clearly defined semantics and syntax.
-Depending on the target group, a domain-specific language should be user-friendly and easy to learn.
+As with every machine-readable language, a rule language needs clearly defined semantics and syntax.
+A domain-specific language should be user-friendly and easy to learn, depending on the target group.
 Finding the correct compromise between language expressiveness and user-friendliness \cite{https://doi.org/10.1002/widm.11},
-however, requires careful consideration.
-On one side, the language needs
-to be sufficiently powerful to articulate all conditional logics and edge cases that may occur in the knowledge domain.
-On the other side, the language must remain accessible to domain experts, that do not necessarily have a technical background.
-This might involve introducing new constructs or syntactic sugar to simplify common tasks.
-For the language to remain relevant and effective, it should adapt over time and incorporate feedback from its user base.
-This may require a dedicated developer team that is able to quickly extend the system with new features.
+however, it requires careful consideration.
+On one side, the language must be sufficiently robust to articulate all conditional logic and edge cases in the knowledge domain.
+Conversely, the language must remain accessible to domain experts who do not necessarily have a technical background.
+This might involve introducing new constructs or syntactic sugar to simplify everyday tasks.
+For the language to remain relevant and practical, it should adapt over time and incorporate feedback from its user base.
+This may require a dedicated developer team that can quickly extend the system with new features.
 
-%The performance of a rule-based system is only as good as its rule-base. \todo{schöner machen}
-%A rule-base requires a high number of valid rules that incorporate large parts of the respective knowledge domain.
+%\section{Inference Mechanisms}\label{sec:inference-mechanism}
+%According to \cite{https://doi.org/10.1002/widm.11}, there are two modes of inference mechanisms:
+%\begin{itemize}
+%    \item forward chaining
+%    \item backward chaining
+%\end{itemize}
+%Forward chaining is an inference strategy where reasoning begins with the existing facts \cite{al2015comparison}.
+%The inference engine evaluates all rules by applying their rule conditions to the known facts.
+%It adds conclusions with matching conditions to the set of known facts.
+%It repeats the process until there are no fact updates and returns the final set of facts
 %
-%\[
-%    \text{conclusion \code{f}h olds} \Leftrightarrow \code{f}(\text{input1}, \text{input2}, \ldots, \text{input3}) = \text{true}
-%\]
-
-\section{Inference Mechanism}\label{sec:inference-mechanism}
-
-According to \cite{https://doi.org/10.1002/widm.11}, there are two modes of inference mechanisms:
-
-\begin{itemize}
-    \item forward chaining
-    \item backward chaining
-\end{itemize}
-
-Forward chaining is an inference strategy where reasoning begins with the existing facts \cite{al2015comparison}.
-The inference engine evaluates all rules by applying their rule conditions to the known facts.
-It adds conclusions with matching conditions to the set of known facts.
-It repeats the process until there are no fact updates and returns the final set of facts
-
-Backward chaining uses a different strategy \cite{al2015comparison}.
-The user specifies a single goal or hypothesis
-which we want to proof or reject and looks for rules in the rule base whose conclusion would match with it.
-The conditions of those rules are now the new goal that the system needs to satisfy.
-The system then recursively looks for rules with matching conclusion
-and tries to satisfy their conditions as new goal.
-If the system is able to reduce all goals to facts, we accept the initial hypothesis.
-If the system cannot find further rules, we reject the initial hypothesis.
-This inference strategy is often used in diagnostics and decision support \cite{https://doi.org/10.1002/widm.11}
-
-Part of the design of the rule-based framework in this work is the decision between forward and backward chaining.
-
+%Backward chaining uses a different strategy \cite{al2015comparison}.
+%The user specifies a single goal or hypothesis
+%which we want to proof or reject and looks for rules in the rule base whose conclusion would match with it.
+%The conditions of those rules are now the new goal that the system needs to satisfy.
+%The system then recursively looks for rules with matching conclusion
+%and tries to satisfy their conditions as new goal.
+%If the system is able to reduce all goals to facts, we accept the initial hypothesis.
+%If the system cannot find further rules, we reject the initial hypothesis.
+%This inference strategy is often used in diagnostics and decision support \cite{https://doi.org/10.1002/widm.11}
+%
+%Part of the design of the rule-based framework in this work is the decision between forward and backward chaining.
 
 \subsection{Roles in the Implementation of Rule-based Systems}\label{subsec:roles-in-the-implementation-of-rule-based-systems}
 Due to the clear separation between knowledge domain and application framework there are essentially two groups of people

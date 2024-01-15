@@ -1,10 +1,23 @@
-{
-  "code": "<code>",
-  "condition": {
-    // condition body
+[
+  {
+    "code": "<code1>",
+    "condition": {
+      // ...
+    },
+    "quantity": {
+      "blockName": "woundTreatment",
+      "perNMinutes": 60
+    }
   },
-  "quantity": {
-    "blockName": "woundTreatment",
-    "perNMinutes": 120
+  {
+    "code": "<code2>",
+    "condition": {
+      // ...
+    },
+    "quantity": {
+      "blockName": "woundTreatment",
+      "perNHours": 1
+    }
   }
-}
+
+]

@@ -1,37 +1,26 @@
 \subsection{Quantity Functions}\label{subsec:quantity-functions}
-
 In the previous chapter, we introduced the concept of a billing rule.
-
 Not only which codes are part of the billing, but also their quantity is critical information.
 In the previous section, we explained how the billing framework derives a set of applicable billing codes.
-The result data type was essentially a set of billing codes.
 In this section, we generalize the framework such that it returns each code in combination with its quantity.
-
-We extend the general rule structure by introducing the concept of quantity functions.
-Similarly to rule conditions, quantity functions are valuable subcomponents of a rule.
-The framework evaluates quantity functions of rules for a\code{RuleEvaluationInput}.
-The result is an integer that indicates how often it should be billed in the billing.
-
+We extend the general rule schema by introducing the concept of quantity functions.
+Similarly to rule conditions, quantity functions are subcomponents of a rule.
+The framework evaluates quantity functions of rules for a \REI.
+Formally, quantity functions are functions that map an \REI to a natural number.
 \begin{equation}
     \label{eq:quantity-function-natural}
     f_{quantity}: \code{RuleEvaluationInput} \longrightarrow \mathbb{N}
 \end{equation}
-
-Billing code quantities typically rely on two types of billing information.
-Subsection\ref{subsubsec:quantity-derivation-from-procedure-information} and\ref{subsec:quantity-derivation-from-durations} explain these sources.
+%Billing code quantities typically rely on two types of billing information.
+%Subsection \ref{subsubsec:quantity-derivation-from-procedure-information} and \ref{subsec:quantity-derivation-from-durations} explain these sources.
 
 \subsubsection{Quantity Derivation From Procedure Information}\label{subsubsec:quantity-derivation-from-procedure-information}
-
-I derived the requirement for quantity functions from \goa{255: Injection, intra-articular or perineural}.
-It is an example of a code, that is likely to appear in a billing with a quantity larger than one.
-
 The so-called Spine Infiltration is a procedure, that includes injections into spine nerves.
 Billing experts use \goa{255} for this medical service.
 Procedure block \code{SpineInfiltrationMsg} represents this procedure.
 However, \goa{255} typically applies once for each spine injection the practitioner actually provided.
 Therefore, a spine infiltration can include multiple injections at different localizations.
-The system should not only be able to derive \goa{255} for a provided spine infiltration, but should also be able to derive the correct quantity of \goa{255} codes.
-
+The system should be able to derive the correct quantity of \goa{255} codes as the number of injections.
 To illustrate this example, it is worth mentioning that the human spine consists of three primary regions \cite{BOGDUK2016675}:
 \begin{itemize}
     \item The cervical spine, the thoracic spine, and the lumbar spine.
@@ -40,7 +29,7 @@ To illustrate this example, it is worth mentioning that the human spine consists
     \item Lastly, the lumbar spine at the lower back is made up of five larger vertebrae, designed to bear the body's weight and provide flexibility and movement.
 \end{itemize}
 Each region has well-defined localizations that can be targets for injections.
-The \AVS stores the data of a spine infiltration in a \code{SpineInfiltrationMsg}procedure block.
+The \AVS stores the data of a spine infiltration in a \code{spineInfiltration} procedure block.
 
 The following code snipped displays a simplified version of it.
 \lstinputlisting[
@@ -52,28 +41,45 @@ The following code snipped displays a simplified version of it.
 
 
 \code{SpineInfiltrationMsg} has a nested message\code{NerveRootBlockMsg}.
-\code{NerveRootBlockMsg} contains the messages,\code{CervicalSpineMsg}\code{ThoracicSpineMsg} and\code{LumbarSpineMsg}.
+\code{NerveRootBlockMsg} contains the messages, \code{CervicalSpineMsg}, \code{ThoracicSpineMsg}, and \code{LumbarSpineMsg}.
 These messages represent the before-mentioned sections of the human spine.
-Each variable in these nested messages is of type \code{Laterality}and represents injections at the respective localization alongside the spine.
-The laterality of an injection refers to the specific side or sides where the injection is administered in the spine localization.
-This can be either on the left side, the right side, or on both sides.
+Each variable in these nested messages is of type \code{Laterality} and represents injections at the respective localization alongside the spine.
+The laterality of an injection refers to the specific side or sides where the practitioner performs the injection.
+This can be either on the left, right, or both sides.
 
 To get the total number of injections, the system would need to peek into the nested messages \code{CervicalSpineMsg}, \code{ThoracicSpineMsg} and\ code{LumbarSpineMsg} and compute the total number of injections from the laterality values.
-Additionally, the framework needs to be able to understand that \code{LATERALITY\_NONE} refers to zero and \code{LATERALITY\_LEFT} as well as\code{LATERALITY\_RIGHT} refer to one injection.
+The framework must understand that \code{LATERALITY\_NONE} refers to zero and \code{LATERALITY\_LEFT} as well as\code{LATERALITY\_RIGHT} refer to one injection.
 \code{LATERALITY\_BOTH} refers to two injections.
 It is important to assign quantities to enum values.
+Listing \ref{lst:quantity-function-basics} illustrates a rule with a simple quantity function expression.
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Relevant localizations in a spine infiltration},
+    label={lst:quantity-function-basics},
+]{code/rules/specification/quantity-function-basics.json}
+The value of the \code{quantity} field is an object with a \code{fieldPath} key and a \code{evaluationMode}.
+The value of the \code{fieldPath} key is a list with the first entry being the procedure name.
+The subsequent entries in the list is the path to the referred field.
+The value of \code{evaluationMode} is a mapping that assigns enum values to integers as described before.
+The framework evaluates this quantity function expression by applying this map to the value of the \code{c4} field.
 
+Similarly to logical expression trees for block contents, we can also combine quantity functions in tree-like structures as shown in listing \ref{lst:quantity-function-combination}.
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Relevant localizations in a spine infiltration},
+    label={lst:quantity-function-combination},
+]{code/rules/specification/quantity-function-combination.json}
+The language supports \code{sum}, \code{mul}, \code{max} and \code{min} operators
 
-\subsubsection{Quantity Derivation From Durations}\label{subsec:quantity-derivation-from-durations}
-
-Many GOÄ codes specify not only a service content but also a time range.
-If provided services exceed that time range the respective code can be billed more than once.
+\subsubsection{Quantity Derivation From Durations}\label{subsubsec:quantity-derivation-from-durations}
+There are some GOÄ codes that have a quantity that depends on the duration of the referenced service.
 
 \goa{21: Incoming human genetic counseling, per commenced half-hour and session} is an example for such a code.
-If the counseling takes one hour and 10 minutes, \goa{21} can be billed 3 times.
+If the counseling takes one hour and 10 minutes, \goa{21} can be applies with a quantity of three.
 Similar codes are \goa{61: Assistance in the medical service of another doctor (Assistance), per commenced half-hour}
 and \goa{85: Written expert opinion involving an effort exceeding the usual extent – possibly with scientific justification –, per commenced hour of work}
-Codes that with that characteristic often end with \("\)per commenced hour\("\) or \("\)per commenced half-hour\("\) to indicate the time range.
 Those are comparably simple cases.
 
 \mete{Section D: Anesthesia Services} contains a specific class of edge case that use time ranges.
@@ -91,33 +97,18 @@ This is the most critical phase involving continuous administration of medicatio
 The time after the first hour typically requires only maintenance of anesthesia and is therefore less critical.
 \goa{463} applies to subsequent commenced half-hours after the first hour and is therefore lower priced than \goa{462}.
 
-
 Anesthesia services frequently use this pattern of code groups referring to the same provided procedure but distinguishing between service periods.
 Equivalent examples are \goa{460/461}, \goa{476/477} and \goa{478/479}.
-\goa{473, 474 and 475} are a more special example.
+\goa{473, 474 and 475} are a more special examples.
 They refer to an initiation and monitoring of a continuous subarachnoid spinal anesthesia, again distinguishing between durations.
 \goa{473} applies to durations shorter than five hours, \goa{474} to the subsequent five hours and \goa{475} applies once for the second and every subsequent day.
 
-These examples lead to concrete requirements for the billing framework and underline the importance of \"quantity functions\".
-They must be expressive enough to represent and manage the nuances of these examples.
-Section \ref{sec:quantity-function-specification} illustrates how users can express these cases using the rule language.
-
-%\subsection{Partial Billing Quantitys}\label{subsec:partial-billing-quantitys}
-%In very special cases billing codes apply with a reduced quantity of points.
-
-%There are at least two cases:
-%\goa{D} is a surcharge for services provided on saturday, sunday and on holidays.
-%If service provision happens during an opening hour, \goa{D} only applies with half the fee, though.
-%This is also the case for surcharges \goa{E}, \goa{F}, \goa{G} and \goa{H} if \goa{51} is part of the billing, as well.
-%
-%The framework must be able to express these edge cases but does not allow any point value manipulations of billing codes.
-%It solves this issue using quantity functions.
-%In those cases the quantity function must be able to evaluate to 0.5 which results in the same fee reduction as required by the GOÄ specification.
-%
-%This requirement changes the formal definition given in formula \ref{eq:quantity-function-natural} to:
-%\begin{equation}
-%    \label{eq:quantity-function-real}
-%    f_{quantity}: \code{RuleEvaluationInput} \longrightarrow \mathbb{R}^{+} \\ \left{0\right}
-%\end{equation}
-%Quantity function now evaluate
+We can express such situations as follows:
+\lstinputlisting[
+    language=json,
+    style=json,
+    caption={Relevant localizations in a spine infiltration},
+    label={lst:quantity-function-duration},
+]{code/rules/quantityfunctions/per-n-hours.json}
+The framework evaluates quantity function expressions with \code{blockName} and \code{perNMinutes} / \code{perNHours} fields by dividing the duration of the procedure block in minutes by the value of \code{perNMinutes} / \code{perNHours}.
 
