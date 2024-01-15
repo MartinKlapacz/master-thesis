@@ -55,7 +55,7 @@ Listing \ref{lst:quantity-function-basics} illustrates a rule with a simple quan
 \lstinputlisting[
     language=json,
     style=json,
-    caption={Relevant localizations in a spine infiltration},
+    caption={Field-related quantity function expression},
     label={lst:quantity-function-basics},
 ]{code/rules/specification/quantity-function-basics.json}
 The value of the \code{quantity} field is an object with a \code{fieldPath} key and a \code{evaluationMode}.
@@ -68,7 +68,7 @@ Similarly to logical expression trees for block contents, we can also combine qu
 \lstinputlisting[
     language=json,
     style=json,
-    caption={Relevant localizations in a spine infiltration},
+    caption={Quantity function expression tree},
     label={lst:quantity-function-combination},
 ]{code/rules/specification/quantity-function-combination.json}
 The language supports \code{sum}, \code{mul}, \code{max} and \code{min} operators
@@ -107,7 +107,7 @@ We can express such situations as follows:
 \lstinputlisting[
     language=json,
     style=json,
-    caption={Relevant localizations in a spine infiltration},
+    caption={Duration-related quantity function expression},
     label={lst:quantity-function-duration},
 ]{code/rules/quantityfunctions/per-n-hours.json}
 The framework evaluates quantity function expressions with \code{blockName} and \code{perNMinutes} / \code{perNHours} fields by dividing the duration of the procedure block in minutes by the value of \code{perNMinutes} / \code{perNHours}.
