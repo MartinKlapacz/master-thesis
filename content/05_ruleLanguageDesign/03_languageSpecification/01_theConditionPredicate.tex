@@ -12,7 +12,7 @@ During the design of the billing framework, I emphasized extendability by using 
 \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth]{./figures/condition-triplet-pattern}
-    \caption{Generic illustration of the triplet pattern}
+    \caption{Illustration of the condition triplet pattern}
     \label{fig:condition-triplet-pattern}
 \end{figure}
 Adding a new condition type to the condition predicate of \RL requires implementing the condition triplet pattern.
@@ -31,30 +31,29 @@ Each Information source requires a fetch implementation that gets the data from 
 \paragraph{Condition Check Implementation}
 Each condition field requires an actual condition implementation that expects a \code{RuleEvaluationInput} object as an input and returns the condition result.
 \code{RuleEvaluationInput} objects are data classes that conveniently provide the data that represents fetched information sources required by the existing condition fields.
-Section \addref describes them in more detail.
 
-Figure \ref{fig:condition-triplet-pattern-instance-1} and \ref{fig:condition-triplet-pattern-instance-2} illustrate concrete implementations of the condition triplet pattern
-for the condition fields \code{newBorn} and \code{minPatientAge}.
-Both subscribe to the \code{@InformationSourcePatientAge} information source but have different condition check implementations.
-
-\begin{figure}
-    \centering
-    \begin{subfigure}[b]{0.45\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{./figures/ctp-is-new-born}
-        \caption{Condition Triplet pattern instance 1}
-        \label{fig:condition-triplet-pattern-instance-1}
-    \end{subfigure}
-    % Adjust or remove the space between figures as needed
-    \hspace{5mm} % This adds a bit of horizontal space between the figures
-    \begin{subfigure}[b]{0.45\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{./figures/ctp-max-patient-age}
-        \caption{Condition Triplet pattern instance 2}
-        \label{fig:condition-triplet-pattern-instance-2}
-    \end{subfigure}
-    \label{fig:coffee}
-\end{figure}
+%Figure \ref{fig:condition-triplet-pattern-instance-1} and \ref{fig:condition-triplet-pattern-instance-2} illustrate concrete implementations of the condition triplet pattern
+%for the condition fields \code{newBorn} and \code{minPatientAge}.
+%Both subscribe to the \code{@InformationSourcePatientAge} information source but have different condition check implementations.
+%
+%\begin{figure}
+%    \centering
+%    \begin{subfigure}[b]{0.45\linewidth}
+%        \centering
+%        \includegraphics[width=\linewidth]{./figures/ctp-is-new-born}
+%        \caption{Condition Triplet pattern instance 1}
+%        \label{fig:condition-triplet-pattern-instance-1}
+%    \end{subfigure}
+%    % Adjust or remove the space between figures as needed
+%    \hspace{5mm} % This adds a bit of horizontal space between the figures
+%    \begin{subfigure}[b]{0.45\linewidth}
+%        \centering
+%        \includegraphics[width=\linewidth]{./figures/ctp-max-patient-age}
+%        \caption{Condition Triplet pattern instance 2}
+%        \label{fig:condition-triplet-pattern-instance-2}
+%    \end{subfigure}
+%    \label{fig:coffee}
+%\end{figure}
 This section discusses the \code{condition} field of a rule.
 Its value is a condition object with the following fields.
 
@@ -101,7 +100,6 @@ The following rules are equivalent.
 \lstinputlisting[
     language=json,
     style=json,
-    caption={\code{isPregnant} rule},
     label={lst:is-pregnant}
 ]{code/rules/specification/isPregnant.json}
 Pregnancy can be a reason for additionally required care or services during a treatment that is not necessarily related to the patient's pregnancy,
@@ -116,7 +114,6 @@ A patient is non-sober when under the influence of alcohol or addictive substanc
 \lstinputlisting[
     language=json,
     style=json,
-    caption={\code{is sober} rule},
     label={lst:is-sober}
 ]{code/rules/specification/isSober.json}
 
